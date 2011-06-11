@@ -1,0 +1,527 @@
+#NOP =========================================
+#NOP  Global Variables
+#NOP =========================================
+
+#read travel.tt
+#read spelltracker.tt
+#read glance.tt
+#read return.tt
+#read search.tt
+
+#VAR expmode 0
+#VAR autocast 0
+#VAR asearch 0
+#VAR imafk 0
+#VAR Acircl 0
+#VAR Aloot 0
+#VAR stonetank 0
+#VAR blurtank 0
+#VAR expmode 0
+#VAR docast 0
+#VAR checkcast 0
+#VAR icasted 0
+#VAR healwhenback 0
+#VAR tdoor 1
+#VAR blurwhenback 0
+#VAR adie 0
+#VAR dieticker 0
+#VAR dietickeron 0
+#VAR stonewhenback 0
+#VAR icasted 0
+#VAR assist 0
+#VAR pres_1round 0
+#VAR pres_auto 0
+#VAR loaded 0
+#VAR autoassist 0
+#VAR aflee 1
+#VAR Agroup 1
+#VAR gleader 0
+#VAR myname 0
+#VAR auto_path 0
+
+#GAG {Your spell is partially absorbed}
+#GAG {If you do not get a response, it's because the staff are busy or unavailable.}
+#GAG {If this is a pressing matter, please mudmail admin by typing mwrite admin}
+#GAG {<subject> and your message.}
+
+#config {command echo} {off}
+
+#NOP =========================================
+#NOP  Prompts
+#NOP =========================================
+
+#unprompt %*
+#prompt {< %1h/%2H %3v/%4V >} {  <100>$myname <020>%1<100>/<020>%2<120> h <100>- <060>%3<100>/<060>%4<090><160> v<090> <100>(@get_affect{$myname} <100>)<090>} {3}
+#nop #prompt {<%0P: %1 >} { %0p: %1} {2}
+#prompt {~^\e[32m<%1> \e[0m} { %1} {2}
+
+#NOP =========================================
+#NOP  Global Actions
+#NOP =========================================
+
+#ACT {(Head) %0 - %1} {#var gleader %1}
+#ACT {< P: %1 >} {#var incombat 0;#nop;}
+#ACT {< T: %1 TC:} {#var incombat 1;#nop;}
+#ACT {Autosaving} {save}
+#ACT {PANIC!  You couldn't escape!}  {#IF {$aflee == 1} {flee}}
+#ACT {The %1 seems to be closed.}  {#IF {$auto_path == 1 || $auto_map == 1} {#map undo};#IF {$tdoor == 1} {open %1 $ld}}
+#ACT {the Sojourner's Home Welcomes You!} {#tick {scorestart} {#CR;1;score;#untick scorestart;#split 0 4;} {1}}
+#ACT {Reconnecting.} {#tick {scorestart} {score;#untick scorestart;#split 0 4;} {1}}
+#ACT {Disconnecting previous link.} {#tick {scorestart} {score;#untick scorestart;#split 0 4;} {1}}
+#ACT {Let the journey begin anew, for the final time.} {#showme \e[2J;n}
+#ACT {Please enter your term} {#CR}
+#ACT {Score information for %1} {
+	#var myname %1;
+	#IF {$loaded} {} {
+		#IF {"%1" == "{Rrema|Hibboble}"} {lench;#var loaded 1};
+		#IF {"%1" == "Kirros"} {lill;#var loaded 1};
+		#IF {"%1" == "Elner"} {lnec;#var loaded 1};
+		#IF {"%1" == "{Eln|Mung|Rrama}"} {lwarr;#var loaded 1};
+		#IF {"%1" == "Nil"} {lsham;#var loaded 1};
+		#IF {"%1" == "{Rrifus|Belo}"} {lrogue;#var loaded 1};
+	}
+}
+#MACRO {\t} {#cursor TAB FORWARD}
+
+#ACT {You receive your share of experience.}  {
+    #IF {$autoassist == 1} {#VAR assist 1};
+    #IF {$Acircl == 1} {#untick circl};
+	#IF {$docast == 1} {dco};
+	#IF {$cPrac == 1} {#untick chargePractice;#var cPrac 0};
+	#IF {$asearch == 1} {srch corpse};
+    #IF {$Aloot == 1} {loot;p all.coin};
+    #IF {$Apoison == 1} {ap};
+	#IF {$dietickeron == 1} {#untick dieticker;#var adie 1};
+    #VAR ccph 0;
+    #VAR ccawf 0
+}
+
+#ACT {Casting: %0 *%1} { 
+        #IF {&{castarg}} {#NOP} {#if {$incombat == 1} {#var castarg fighting} {#var castarg room}};
+        #UNSUB {Casting: %0 *%1};
+        #IF {@getlen{%1} > 3} {
+                #SUB {Casting: %0 *%1} {<070>cast <100>(<060>%0<070> <100>-> <160>$castarg<100>): <100>*%1};
+        };
+        #IF {@getlen{%1} <= 3} {
+                #SUB {Casting: %0 *%1} {<070>cast <100>(<060>%0<070> <100>-> <160>$castarg<100>): <140>*%1};
+        }
+}
+
+#NOP =========================================
+#NOP  Stand up!
+#NOP =========================================
+
+#ACT {You stagger, and fall to your knees!} {stand}
+#ACT {%0 does an acrobatic maneuver in battle, tripping you.} {st}
+#ACT {You are knocked down} {stand}
+#ACT {sends you sprawling.}  {#IF {$docast} {stand;$tocast} {stand}}
+
+#NOP =========================================
+#NOP  Speedwalker
+#NOP =========================================
+
+#alias {.%0} 
+{ 
+        #var cnt {}; 
+
+        #parse {%0} {char} 
+        { 
+                #if {"$char" >= "0" && "$char" <= "9"} 
+                { 
+                        #var cnt $cnt$char 
+                }; 
+                #elseif {"$cnt" == ""} 
+                {                      
+                        #send $char 
+                }; 
+                #else 
+                {    
+                        #$cnt #send $char; 
+                        #var cnt {} 
+                } 
+        }      
+} 
+
+#NOP =========================================
+#NOP  Couple Toggles
+#NOP =========================================
+
+#ALIAS tloot {
+    #IF {$Aloot == 1} {
+                #VAR Aloot 0;
+                #echo {%c%h} {red} { AUTO LOOTER off }
+                } {
+                #VAR Aloot 1;
+                #echo {%c%h} {green} { AUTO LOOTER on }
+                }
+}
+
+#ALIAS tsearch {
+        #IF {$asearch == 1} {
+                #VAR asearch 0;
+                #ECHO {%c%h} {red} { AUTO SEARCH off }
+                } {
+                #VAR asearch 1;
+                #ECHO {%c%h} {green} { AUTO SEARCH on }
+        }
+}
+
+#ALIAS tdoors {
+	#IF {$tdoor == 1} {
+                #VAR tdoor 0;
+                #ECHO {%c%h} {red} { AUTO OPEN DOORS off }
+                } {
+                #VAR tdoor 1;
+                #ECHO {%c%h} {green} { AUTO OPEN DOORS on }
+        }
+}
+
+
+#ALIAS tflee {
+    #IF {$aflee == 1} {
+                #VAR aflee 0;
+                #ECHO {%c%h} {red} { AUTO FLEE off }
+                } {
+                #VAR aflee 1;
+                #ECHO {%c%h} {green} { AUTO FLEE on }
+        }
+}
+
+#ALIAS tafk {
+    #IF {$imafk == 1} {
+				tog afk;
+                #VAR imafk 0;
+                #ECHO {%c%h} {red} { AFK off };
+		#SYSTEM cat afkcomms.txt;
+		#system rm afkcomms.txt
+                } {
+				tog afk;
+                #VAR imafk 1;
+                #ECHO {%c%h} {green} { AFK on };
+		#line log afkcomms.txt {<100>...<090>}
+        }
+}
+
+#ALIAS tgroup {
+        #IF {$Agroup == 1} {
+                #VAR Agroup 0;
+                #echo {%c%h} {red} { AUTO GROUP off }
+                } {
+                #VAR Agroup 1;
+                #echo {%c%h} {green} { AUTO GROUP on }
+                }
+}
+
+#alias {tpoison} {
+        #if {$auto_poison == 1} {
+                #var auto_poison 0;
+                #echo {%c%h} {red} { AUTO POISON off }
+                } {
+                #var auto_poison 1;
+                #echo {%c%h} {green} { AUTO POISON on }
+                }
+}
+
+#alias {tbash} {
+	#if {$autobash == 1} {
+		#var autobash 0;
+		#echo {%c%h} {red} { AUTOBASH off }
+		} {
+		#var autobash 1;
+		#echo {%c%h} {green} { AUTOBASH on }
+		}
+}
+
+#ACT {%0 has just given you %1 consent.} {
+	#IF {$Agroup == 1} {
+		#var thetime {@gettime{}};
+		group %0;
+		gsay -- grouped %0 at $thetime EST --;
+		#IF {"$myname" ==  "Eln"} {radd %0};
+	}
+}
+
+#NOP =========================================
+#NOP  Character Loading
+#NOP =========================================
+
+#alias lrogue {#READ rogue.tt}
+#alias lench {#READ enchanter.tt}
+#alias lnec {#READ necro.tt}
+#alias lill {#READ illusionist.tt}
+#alias lsham {#READ shaman.tt}
+#alias lwarr {#READ warrior.tt}
+
+#alias connect {#session toril torilmud.org 9999}
+#alias mirror {#session mirrormud torilmud.org 6000}
+
+#NOP =========================================
+#NOP  Global Macros
+#NOP =========================================
+
+#MACRO {\C-f} {flee}
+#MACRO {\C-l} {get all corpse}
+#MACRO {\C-a} {#buffer lock}
+
+#MACRO {\eOp} {scan}
+#MACRO {\eOr} {s;#var ld s}
+#MACRO {\eOs} {d;#var ld d}
+#MACRO {\eOt} {w;#var ld w}
+#MACRO {\eOu} {look room}
+#MACRO {\eOv} {e;#var ld e}
+#MACRO {\eOx} {n;#var ld n}
+#MACRO {\eOy} {u;#var ld u}
+#MACRO {\eOq} {#send {look \}}
+
+#ALIAS s {#send s;#var ld s}
+#ALIAS w {#send w;#var ld w}
+#ALIAS n {#send n;#var ld n}
+#ALIAS e {#send e;#var ld e}
+#ALIAS u {#send u;#var ld u}
+#ALIAS d {#send d;#var ld d}
+
+#NOP =========================================
+#NOP  Global Aliases
+#NOP =========================================
+
+#ALIAS {stat} {tell kegor stat %0}
+#ALIAS {find} {tell kegor find %1}
+#ALIAS {whois} {tell kegor who %1}
+#ALIAS {'} {gsay %0}
+#ALIAS {`} {#var enemy %1;con $enemy}
+#ALIAS {aa} {assist $tank}
+#ALIAS {f} {forget %0}
+#ALIAS {sskin} {innate scale}
+#ALIAS {wi} {wiz &cL%0&N}
+#ALIAS {vm} {innate viper}
+#ALIAS {pri} {prioritize %0}
+#ALIAS {ffl} {say freezing flesh}
+#ALIAS {def} {say defender of asgard}
+#ALIAS {ber} {say berserker fury}
+#ALIAS {pm} {say Protect me}
+#ALIAS {fm} {say flesh mends}
+#ALIAS {rel} {say Release}
+#ALIAS {pp} {put %1 $pbag}
+#ALIAS {p} {put %1 $bag}
+#ALIAS {p2} {put %1 $bag2}
+#ALIAS {gp} {get %1 $pbag}
+#ALIAS {g} {get %1 $bag}
+#ALIAS {g2} {get %1 $bag2}
+#ALIAS {ggs} {#grep group-says}
+#ALIAS {ggcc} {#grep GCC:}
+#ALIAS {gacc} {#grep ASSOC:}
+#ALIAS {gl} {#grep learned something}
+#ALIAS {gpet} {#grep petition}
+#ALIAS {gt} {#grep tells you}
+#ALIAS {ke} {#var enemy %1;kill $enemy}
+#ALIAS {lib} {look in $bag}
+#ALIAS {lib2} {look in $bag2}
+#ALIAS {tank} {#var tank @upfirst{%1};#echo {%c%h} {blue} { TANK is $tank }}
+#ALIAS {w1} {#var w1 %1}
+#ALIAS {w2} {#var w2 %1}
+#ALIAS {wes} {who evil sort}
+#ALIAS {wgs} {who good sort}
+#ALIAS {wig} {who ingroup s}
+#ALIAS {wns} {who neutral sort}
+#ALIAS {srm} {rest;mem}
+#ALIAS {srp} {rest;pray}
+
+#ALIAS {imafk} {
+	#VAR wentafk {@gettime{}};
+	#IF {$imafk} {#var afkmessage {%0 - Away since $wentafk EST}} {#var afkmessage {%0 - Away since $wentafk EST};tafk;}
+}
+#ALIAS {imback} {tafk}
+
+#ALIAS {lic} {#IF {"%1" == ""} {#var licl 1} {#var licl %1};#loop {1} {$licl} {cnt} {exa $cnt.corpse}}
+#ALIAS {lip} {#IF {"%1" == ""} {#var lipl 1} {#var lipl %1};#loop {1} {$lipl} {cnt} {l in $cnt.portal}}
+#ALIAS {lipc} {#IF {"%1" == ""} {#var lipcl 1} {#var lipcl %1};#loop {1} {$lipcl} {cnt} {exa $cnt.pcorpse}}
+#ALIAS {loot} {#IF {"%1" == ""} {#var lootl 1} {#var lootl %1};#loop {1} {$lootl} {cnt} {get all $cnt.corpse}}
+
+#ALIAS po {
+	#IF {"%1" == "w"} {emote points to the room to the west.};
+	#IF {"%1" == "e"} {emote points to the room to the east.};
+	#IF {"%1" == "s"} {emote points to the room to the south.};
+	#IF {"%1" == "n"} {emote points to the room to the north.};
+	#IF {"%1" == "u"} {emote points to the room above.};
+	#IF {"%1" == "d"} {emote points to the room below.};
+}
+
+#alias gl {glance %1}
+
+#alias {of} 
+{ 
+    #send {order followers \}; 
+    %0 
+} 
+
+#alias {o %* %*}
+{ 
+    #send {order %1 \}; 
+    %2 
+}
+
+#alias {ofce} {of %1 $enemy}
+#alias {off} {of flee}
+#alias {ofbe} {of bash $enemy}
+#alias {ofb} {of bash}
+#alias {ofke} {of kill $enemy}
+#alias {rm} {of rescue $myname}
+#alias {r} {of rescue %1}
+#alias {rn} {fols name %1 %2}
+
+#NOP =========================================
+#NOP  Global Functions
+#NOP =========================================
+
+#FUNCTION {gettime} {#FORMAT {time} {%t} {%r};#FORMAT {test} {%t} {$time};#VAR result {$test}}
+#FUNCTION {lcase} {#format {result} {%l} {%0}}
+#FUNCTION {upfirst} {#format {result} {%n} {%1}}
+#FUNCTION {getlen} {#format {result} {%L} {%1}}
+#FUNCTION {isvar} {#if {"$%0" == "?%0"} {#var result 0} {#var result 1}}
+#function {rightalign} { 
+  #format {colwidth} {%C}; 
+  #format {stringlength} {%L} {{%0}}; 
+  #math   {padding} {$colwidth - $stringlength}; 
+  #format {result} {%+${padding}s%s} {{} {%0}} 
+} 
+
+#NOP =========================================
+#NOP  Config Options
+#NOP =========================================
+
+#PATHDIR          {n}                     {s}                          {1}
+#PATHDIR          {e}                     {w}                          {2}
+#PATHDIR          {ne}                    {sw}                         {3}
+#PATHDIR          {s}                     {n}                          {4}
+#PATHDIR          {se}                    {nw}                         {6}
+#PATHDIR          {w}                     {e}                          {8}
+#PATHDIR          {nw}                    {se}                         {9}
+#PATHDIR          {sw}                    {ne}                         {12}
+#PATHDIR          {u}                     {d}                          {16}
+#PATHDIR          {d}                     {u}                          {32}
+
+#NOP =========================================
+#NOP  Global Subs
+#NOP =========================================
+
+#SUB {~You %1single hit.} {You %1<100>single hit<098>.}
+#SUB {~You %1two hits.} {You %1<030>two hits<098>.}
+#SUB {~You %1three hits.} {You %1<010>three hits<098>.}
+#SUB {~You %1four hits.} {You %1<110>four hits<098>.}
+#SUB {~You %1five hits.} {You %1<130>five hits<098>.}
+#SUB {~You %1six hits.} {You %1<120>six hits<098>.}
+#SUB {~You %1seven hits.} {You %1<150>seven hits<098>.}
+#SUB {~You %1eight hits.} {You %1<180>eight hits<098>.}
+
+#NOP =========================================
+#NOP  Communication Logging
+#NOP =========================================
+
+#ACT {%w group-%3s %0} {
+   #IF {"$stgsay" == "1"} {
+	#IF {"@lcase{%0}" == "%*haste%*"}	
+		{
+		#var thetime {@gettime{}};
+		delaffect %1 haste;sg;
+   	    #line log comms.txt {<100>$thetime <090>%1 : <110>%0<090>}
+		};
+	#ELSEIF {"@lcase{%0}" == "%*$myname%*}
+		{
+		#var thetime {@gettime{}};
+		#line log comms.txt {<100>$thetime <090>%1 : <150>%0<090>}
+		}
+	#ELSEIF {"@lcase{%0}" == "%*blur%*"} 
+		{
+		#var thetime {@gettime{}};
+		delaffect %1 blur;sg;
+        #line log comms.txt {<100>$thetime <090>%1 : <140>%0<090>}
+		};
+	#ELSEIF {"@lcase{%0}" == "%*vit%*"} 
+        {
+        #var thetime {@gettime{}};
+        delaffect %1 vit;sg;
+        #line log comms.txt {<100>$thetime <090>%1 : <040>%0<090>}
+        };
+	#ELSEIF {"@lcase{%0}" == "%*globe%*"} 
+        {
+        #var thetime {@gettime{}};
+        delaffect %1 globe;sg;
+        #line log comms.txt {<100>$thetime <090>%1 : <010>%0<090>}
+        };
+	#ELSEIF {"@lcase{%0}" == "%*stone%*"} 
+		{
+		#var thetime {@gettime{}};
+		delaffect %1 stone;sg;
+   	    #line log comms.txt {<100>$thetime <090>%1 : <100>%0<090>}
+		};
+	#ELSEIF {"@lcase{%0}" == "%*scale%*" || "@lcase{%0}" == "%*dscale%*"}
+		{
+		#var thetime {@gettime{}};
+		delaffect %1 scale;sg;
+    	#line log comms.txt {<100>$thetime <090>%1 : <130>%0<090>}
+		};
+	#ELSEIF {"@lcase{%0}" == "%*displace%*"}
+		{
+		#var thetime {@gettime{}};
+    	delaffect %1 disp;sg;
+    	#line log comms.txt {<100>$thetime <090>%1 : <050>%0<090>}
+    	};
+	#ELSE {
+		#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 : <030>%0<090>}
+	} 
+   } {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 : <030>%0<090>}};
+}
+
+#ACT {%1 group-say %1} {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <120>-\> <090>: <030>%1<090>}}
+
+#ACT {%1 tells you %2} {
+	#IF {$imafk == 0} {
+		#IF {"%1" == "Kegor"} {
+			#var thetime {@gettime{}};#line log comms.txt {<100>$thetime KEGOR <090>: <060>%2<090>}
+		} {
+			#IF {"%1" != "%* %*"} {
+			#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 <100>: <170>%2<090>}}
+		}
+	} {
+		repl $afkmessage;
+		#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 <100>: <170>%2<090>};
+		#var thetime {@gettime{}};#line log afkcomms.txt {<100>$thetime <090>%1 <100>: <170>%2<090>}
+	}
+}
+
+#ACT {You tell %1 %2} {
+	#IF {$imafk == 0} {
+		#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>You <170>-\> <060>%1 <090>: <160>%2<090>}
+	}
+}
+
+#ACT {%1 says %2} {#IF {"%1" != "%* %*"}
+	{#var thetime {@gettime{}};#line log chat.txt {<100>$thetime <090>%1 : %2}}} 
+
+#ACT {%1 responds to your petition with %2} {#IF {"%1" != "%* %*"}
+	{#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 : <010>%2<090>}}}
+
+#ACT {%1 GCC: %2} {#IF {"%1" != "%* %*"}
+	{#var thetime {@gettime{}};#line log chat.txt {<100>$thetime <090>%1 : <100>%2<090>}}}
+
+#ACT {%*You have learned something new about %0!} {
+	#var thetime {@gettime{}};
+	#line log other.txt {<100>$thetime <020>LEARNED<090> <120>: <070>%0<090>}
+}
+
+#ACT {You have learned something new about %0!} {
+    #var thetime {@gettime{}};
+    #line log other.txt {<100>$thetime <020>LEARNED<090> : <120>%0<090>}
+}
+
+#ACT {%1 OOC: %2} {#IF {"%1" != "%* %*"}
+{#var thetime {@gettime{}};#line log chat.txt {<100>$thetime <090>%1 : <120>%2<090>}
+}}
+
+#ACT {%w ASSOC: %2} {
+#var thetime {@gettime{}};#line log chat.txt {<100>$thetime <090>%1 : <050>%2<090>}
+}
+
+#ACT {%w ASSOC:: %2} {
+#var thetime {@gettime{}};#line log chat.txt {<100>$thetime <090>%1 : <050>%2<090>}
+}

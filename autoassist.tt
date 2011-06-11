@@ -1,0 +1,25 @@
+#VAR autoassist {0}
+
+#ALIAS {tassist} {
+        #IF {$autoassist == 1} {
+                #VAR autoassist 0;
+                #echo {%c%h} {red} { AUTO ASSIST off }
+                } {
+                #VAR autoassist 1;
+		#VAR assist 1;
+                #echo {%c%h} {green} { AUTO ASSIST on }
+                }
+}
+
+#ACT {You can't see who is fighting $tank.} {#DELAY {15} aa}
+#ACT {You stumble and miss your attack!} {#IF {$autoassist == 1} {aa}}
+
+#ACT {$tank sends %0 sprawling with a powerful bash.} {
+	#IF {$autoassist == 1 && $assist == 1} {#var assist 0;aa}
+} 
+
+#ACT {$tank attacks %0, landing} {
+	#IF {$autoassist == 1 && $assist == 1} {#VAR assist 0;aa}
+}
+
+#showme __ AUTOASSIST.tt

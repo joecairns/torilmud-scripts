@@ -1,0 +1,103 @@
+#VAR travel 0
+
+#FUNCTION fixnew
+{
+     #IF {"%1" == "-N"}  {#VAR result north};
+     #IF {"%1" == "-E"}  {#VAR result east};
+     #IF {"%1" == "-S"}  {#VAR result south};
+     #IF {"%1" == "-W"}  {#VAR result west};
+     #IF {"%1" == "-U"}  {#VAR result up};
+     #IF {"%1" == "-D"}  {#VAR result down}
+}
+
+#FUNCTION revdir
+{
+     #IF {"%1" == "north"} {#VAR result -S};
+     #IF {"%1" == "east"}  {#VAR result -W};
+     #IF {"%1" == "south"} {#VAR result -N};
+     #IF {"%1" == "west"}  {#VAR result -E};
+     #IF {"%1" == "up"}    {#VAR result -D};
+     #IF {"%1" == "down"}  {#VAR result -U}
+}
+ 
+#FUNCTION longdir
+{
+     #IF {"%1" == "n"} {#VAR result north};
+     #IF {"%1" == "e"} {#VAR result east};
+     #IF {"%1" == "s"} {#VAR result south};
+     #IF {"%1" == "w"} {#VAR result west};
+     #IF {"%1" == "u"} {#VAR result up};
+     #IF {"%1" == "d"} {#VAR result down}
+}
+ 
+#FUNCTION shortdir
+{
+     #IF {"%1" == "north"} {#VAR result n};
+     #IF {"%1" == "east"}  {#VAR result e};
+     #IF {"%1" == "south"} {#VAR result s};
+     #IF {"%1" == "west"}  {#VAR result w};
+     #IF {"%1" == "up"}    {#VAR result u};
+     #IF {"%1" == "down"}  {#VAR result d}
+}
+ 
+#FUNCTION finddir
+{
+     #IF {"%1" == "%2"}
+     {
+          #VAR result %3
+     }
+     {
+          #VAR result %2
+     }
+}
+
+#ALIAS go {
+     #IF {$travel}
+     {
+          #VAR travel 0;
+          #SHOWME <100>[_ <070>You <010>stop <110>traveling<100>. _]
+     }
+     {
+          #VAR travel 1;
+          #VAR lastdir @longdir{%1};
+          #VAR lastdir @revdir{$lastdir}; 
+          #SHOWME <100>.. <170>T<070>raveling <140>%1<100>;
+          %0
+     }
+}
+
+#ACT {Exits: %0}
+{
+     #IF {$travel}
+     {
+          #IF {"%0" != "%* %*"}
+          {
+               #VAR travel 0;
+               #SHOWME <100>[_ <110>D<010>ead <070>End <100>_]
+          };      
+
+          #IF {"%0" == "%* %* %*"}
+          {
+               #VAR travel 0;
+               #SHOWME <100>[_ <170>C<070>rossroads <120>R<020>eached <100>_]
+          };
+
+          #IF {$travel}
+          {
+               #VAR newdir @finddir{$lastdir %0};
+               #VAR newdir @fixnew{$newdir};
+	       #SHOWME <100>.. <170>T<070>raveling <140>$newdir<100>;
+
+               #VAR lastdir @revdir{$newdir};
+
+               @shortdir{$newdir}
+          }
+     };
+}
+
+#ACT {You need to board a ship to travel the oceans.} {
+	#IF {$travel} {go}}
+
+#ACT {Alas, you cannot go that way} {#if {$travel} {go}}
+
+#SHOWME __ TRAVEL.tt

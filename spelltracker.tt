@@ -1,0 +1,175 @@
+#NOP =========================================
+#NOP  Spell Tracker
+#NOP =========================================
+
+#var has_globe 0;#var has_stone 0;#var has_blur 0;#var has_scale 0;#var has_displace 0;#var do_glance 1;#var nla none;
+
+#ACT {%w is in an excellent condition. (%2)} { #var %1_hpercent 100;#var nla %1 }
+#ACT {%w has a few scratches. (%2)} { #var %1_hpercent 95;#var nla %1 }
+#ACT {%w has some small wounds and bruises. (%2)} { #var %1_hpercent 85;#var nla %1 }
+#ACT {%w has quite a few wounds. (%2)} { #var %1_hpercent 65;#var nla %1 }
+#ACT {%w has some big nasty wounds and scratches. (%2)} { #var %1_hpercent 35;#var nla %1 }
+#ACT {%w looks pretty hurt. (%2)} { #var %1_hpercent 20;#var nla %1 }
+#ACT {%w is in awful condition. (%2)} { #var %1_hpercent 5;#var nla %1 }
+
+#ACT {%1 body seems to be made of stone!} {#var has_stone 1}
+#ACT {%1 body is covered in dragon scales!} {#var has_scale 1}
+#ACT {%1 form is blurred and difficult to make out!} {#var has_blur 1}
+#ACT {%1 encased in a shimmering globe!} {#var has_globe 1}
+#ACT {%1 form is displaced, and difficult to track!} {#var has_displace 1}
+
+#MACRO {\C-g} {group;#delay {1} {sg}}
+#alias {group} {#send group %1;#delay {1} {sg}}
+
+#ACT {<%1h/%2H %3v/%4V >} {
+	#if {"$nla" == "none"} {#nop} {
+		#if {$has_scale == 1} {setaffect $nla scale} {delaffect $nla scale};
+		#if {$has_stone == 1} {setaffect $nla stone} {delaffect $nla stone};
+		#if {$has_blur == 1} {setaffect $nla blur} {delaffect $nla blur};
+		#if {$has_globe == 1} {setaffect $nla globe} {delaffect $nla globe};
+		#if {$has_displace == 1} {setaffect $nla disp} {delaffect $nla disp};
+	};
+	#var has_stone 0;#var has_blur 0;#var has_displace 0;#var has_scale 0;#var has_globe 0;#var nla none;#nop;
+}
+
+#ACT {%1/%2 move %3/%4 hit - %0} {
+        #IF {"%0" != "%* %*"} {#var %0_maxhp %4;#var %0_curhp %3};
+        #MATH {%0_hpercent} {${%0_curhp} * 100 / ${%0_maxhp}};
+}
+
+#ALIAS {setaffect} 
+{ 
+    #var %1_affects[%2] 1;
+} 
+
+#ALIAS {delaffect} 
+{ 
+    #var %1_affects[%2] 0;
+}
+
+#FUNCTION {affect_list} 
+{ 
+    #if {${%1_hpercent} >= 100} {#var result {<020>ex<100> _ <070>%1}};
+    #if {${%1_hpercent} < 100 && ${%1_hpercent} >= 90} {#var result {<030>fs<100> _ <070>%1}};
+    #if {${%1_hpercent} < 90 && ${%1_hpercent} >= 75} {#var result {<130>sw<100> _ <070>%1}};
+    #if {${%1_hpercent} < 75 && ${%1_hpercent} >= 50} {#var result {<150>fw<100> _ <070>%1}};
+    #if {${%1_hpercent} < 50 && ${%1_hpercent} >= 30} {#var result {<050>nw<100> _ <070>%1}};
+    #if {${%1_hpercent} < 30 && ${%1_hpercent} >= 15} {#var result {<110>ph<100> _ <070>%1}};
+    #if {${%1_hpercent} < 15 && ${%1_hpercent} >= 0} {#var result {<010>aw<100> _ <070>%1}};
+    #if {${%1_affects[scale]}} {#var result $result <130>Ds<088>};
+    #if {${%1_affects[stone]}} {#var result $result <108>Ss<088>}; 
+    #if {${%1_affects[blur]}} {#var result $result <148>Bl<088>}; 
+    #if {${%1_affects[haste]}} {#var result $result <118>Hst<088>};
+    #if {${%1_affects[globe]}} {#var result $result <018>Glb<088>};
+    #if {${%1_affects[disp]}} {#var result $result <058>Dsp<088>};
+    #if {${%1_affects[sskin]}} {#var result $result <068>Sskn<088>};
+	#if {${%1_affects[vit]}} {#var result $result <140>Vit<088>};
+} 
+
+#FUNCTION {get_affect}
+{
+    #unvar myspells;
+	#var myspells  ;
+    #if {${%1_affects[scale]}} {#var myspells $myspells <130>Ds<088>;};
+    #if {${%1_affects[stone]}} {#var myspells $myspells <108>Ss<088>};
+    #if {${%1_affects[blur]}} {#var myspells $myspells <148>Bl<088>};
+    #if {${%1_affects[haste]}} {#var myspells $myspells <118>Hst<088>};
+    #if {${%1_affects[globe]}} {#var myspells $myspells <018>Glb<088>};
+    #if {${%1_affects[disp]}} {#var myspells $myspells <058>Dsp<088>};
+    #if {${%1_affects[sskin]}} {#var myspells $myspells <068>Sskn<088>};
+    #if {${%1_affects[vit]}} {#var myspells $myspells <140>Vit<088>};
+	#var result $myspells;
+}
+
+#alias {sg} 
+{ 
+#list tankglanceList len tgindex;
+#list rogueglanceList len rgindex;
+#list otherglanceList len ogindex;
+
+#line log spells.txt {<100> [<140>$tgindex<100>] <040>tanks};
+#line log spells.txt {<100>---------------------------------------<090>};
+#if {$tgindex == 0} {#nop} {#loop {1} {&tankglanceList[]} {cnt} {#line log spells.txt { <090>@affect_list{$tankglanceList[$cnt]}}}};
+
+#line log spells.txt {<090> };
+#line log spells.txt {<100> [<110>$rgindex<100>] <010>hitters};
+#line log spells.txt {<100>---------------------------------------<090>};
+#if {$rgindex == 0} {#nop} {#loop {1} {&rogueglanceList[]} {cnt} {#line log spells.txt { <090>@affect_list{$rogueglanceList[$cnt]}}}};
+
+#line log spells.txt {<090> };
+#line log spells.txt {<100> [<160>$ogindex<100>] <060>casters};
+#line log spells.txt {<100>---------------------------------------<090>};
+#if {$ogindex == 0} {#nop} {#loop {1} {&otherglanceList[]} {cnt} {#line log spells.txt { <090>@affect_list{$otherglanceList[$cnt]}}}};
+#line log spells.txt { };
+
+#math totalplayers {15 - ($tgindex + $rgindex + $ogindex)};
+
+#IF {$totalplayers <= 0} {#nop} {#loop 1 $totalplayers cnt {#line log spells.txt { <100>.<090>}}}
+} 
+
+#ACT {You concentrate and harden your body into thick scales.} {setaffect $myname sskin;sg}
+#ACT {Your scales become soft once more.} {delaffect $myname sskin;sg}
+
+#ACT {%w's skin transforms into hard-plated dragon scales.} {setaffect %1 scale;sg}
+#ACT {%w's form becomes blurred and difficult to make out!} {setaffect %1 blur;sg}
+#ACT {%w's skin seems to turn to stone.} {setaffect %1 stone;sg}
+#ACT {%w begins to shimmer.} {setaffect %1 globe;sg}
+#ACT {%w starts to move with uncanny speed!} {setaffect %1 haste;sg;#tick {%1_haste} {delaffect %1 haste;#untick %1_haste;sg} {280}}
+#ACT {%w's form is displaced.} {setaffect %1 disp;sg}
+
+#ACT {You feel your skin harden to stone.} {setaffect $myname stone;sg}
+#ACT {Your form begins to blur!} {setaffect $myname blur;sg}
+#ACT {You begin to shimmer.} {setaffect $myname globe;sg}
+#ACT {Your form is displaced!} {setaffect $myname disp;sg}
+#ACT {You feel your skin transform into dragon scales.} {setaffect $myname scale;sg}
+#ACT {You feel vitalized.} {setaffect $myname vit;sg}
+
+#ACT {Your dragon scales melt back into your regular flesh.} {delaffect $myname scale;sg}
+#ACT {Your flesh loses its stony texture.} {delaffect $myname stone;sg}
+#ACT {Your form stops blurring.} {delaffect $myname blur;sg}
+#ACT {Your displaced form snaps back to your physical location!} {delaffect $myname disp;sg}
+#ACT {Your image is no longer displaced.} {delaffect $myname disp;sg}
+#ACT {Your globe shimmers, and fades into the air.} {delaffect $myname globe;sg}
+#ACT {Your vitality drains away.} {delaffect $myname vit;sg}
+
+#ALIAS sadd {#list tocastlist ins -1 %0;#show <100>...<090> Added <130>%0 <090>to cast queue}
+#ALIAS sadd2 {#list tocastlist ins 1 %0;#show <100>...<090> Added <130>%0 <090>to cast queue}
+#ALIAS sdel {#list tocastlist fnd %0 tocastdelidx;#list tocastlist del {$tocastdelidx}}
+
+#VAR tocastidx 1
+#VAR spell_run 0
+
+#ALIAS srun {
+	#var spell_run 1;
+	#list tocastlist len tcindex;
+	#list tocastlist get $tocastidx nextspell;
+	$nextspell
+}
+
+#ALIAS sut {
+	#list tocastlist clear;
+	#if {$spell_run == 1} {#nop} {
+	#loop {1} {&tankglanceList[]} {cnt} {
+		#if {"%1" == "g"} {
+		#if {${$tankglanceList[$cnt]_affects[globe]} == 0} {sadd globe $tankglanceList[$cnt]};
+		} { 
+		#if {${$tankglanceList[$cnt]_affects[blur]} == 0} {sadd2 bl $tankglanceList[$cnt]};
+                #if {${$tankglanceList[$cnt]_affects[scale]} == 0} {sadd ds $tankglanceList[$cnt]};
+		}
+	};
+	srun;
+	}
+}
+
+#MACRO {\C-s} {sut}
+
+#ALIAS su {
+	#list tocastlist clear;
+	#if {$spell_run == 1} {#nop} {
+	#if {${@upfirst{%1}_affects[blur]} == 0} {sadd bl %1};
+	#if {${@upfirst{%1}_affects[stone]} == 0} {sadd ss %1};
+	#if {${@upfirst{%1}_affects[haste]} == 0} {sadd hst %1};
+	#if {${@upfirst{%1}_affects[globe]} == 0} {sadd globe %1};
+	srun;
+	}
+}

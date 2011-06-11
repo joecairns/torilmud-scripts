@@ -1,0 +1,78 @@
+#var toscribe 1
+
+#ALIAS scradd {#list toscribelist ins -1 %0;#show <100>...<090> Added <130>%0 <090>to scribe list}
+#ALIAS scrclr {#list toscribelist clr}
+
+#act {~You finish scribing %*} {
+		#math toscribe {$toscribe + 1};	
+		#list toscribelist len toscribeidx;
+                #IF {$toscribe <= $toscribeidx} {
+                #delay {4} {scribe $toscribelist[$toscribe]};
+                } {#ECHO {Finished scribing book.};#var toscribe 1}
+}
+
+#ALIAS scrun {
+        scribe $toscribelist[$toscribe]
+}
+
+#alias lenchsb {
+scradd magic missile;
+scradd chill touch;
+scradd burning hands;
+scradd lightning bolt;
+scradd cone of cold;
+scradd fireball;
+scradd missile shield;
+scradd dimension door;
+scradd clairvoyance;
+scradd ray of enfeeblement;
+scradd fumble;
+scradd stumble;
+scradd enervate;
+scradd teleport;
+scradd charm person;
+scradd infravision;
+scradd minor creation;
+scradd erase;
+scradd farsee;
+scradd detect invisibility;
+scradd detect magic;
+scradd mass invisibility;
+scradd enchant weapon;
+scradd dispel invisible;
+scradd invisibility;
+scradd locate object;
+scradd stone skin;
+scradd sleep;
+scradd dispel magic;
+scradd strength;
+scradd dexterity;
+scradd haste;
+scradd major paralysis;
+scradd slowness;
+scradd levitate;
+scradd fly;
+scradd identify;
+scradd prismatic spray;
+scradd fireshield;
+scradd faerie fire;
+scradd power word blind;
+scradd feeblemind;
+scradd coldshield;
+scradd globe of invulnerability;
+scradd mage flame;
+scradd blur;
+scradd constriction;
+scradd repulsion;
+scradd airy water;
+scradd blink;
+scradd reduce;
+scradd enlarge;
+scradd solid fog;
+scradd energy shield;
+scradd aura of the griffon;
+scradd breach;
+scradd chromatic orb;
+scradd blacklight burst;
+scradd needle swarm;
+}

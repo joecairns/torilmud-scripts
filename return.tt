@@ -1,0 +1,29 @@
+#VAR fleetodir 0
+
+#ACT {You flee %1ward!} {
+     #var fled %1;
+     #if {"$fled" == "north"} {#var rfled s};
+     #if {"$fled" == "east"}  {#var rfled w};
+     #if {"$fled" == "south"} {#var rfled n};
+     #if {"$fled" == "west"}  {#var rfled e};
+     #if {"$fled" == "up"}    {#var rfled d};
+     #if {"$fled" == "down"}  {#var rfled u};
+     #IF {$doret == 1} {ret};
+     #IF {$expmode == 1} {srm;#VAR inmem 1};
+     #if {$fleetodir == 1} {#IF {"$fled" != "$fdir"} {ret;$fdir;#VAR fleetodir 0} {#VAR fleetodir 0}}
+}
+
+#alias {fd} {
+	flee;
+	#VAR fleetodir 1;
+	#if {"%1" == "n"} {#var fdir north};
+	#if {"%1" == "s"} {#var fdir south};
+	#if {"%1" == "e"} {#var fdir east};
+	#if {"%1" == "w"} {#var fdir west};
+	#if {"%1" == "u"} {#var fdir up};
+	#if {"%1" == "d"} {#var fdir down}
+}
+
+#alias ret {#send $rfled}
+
+#showme __ RETURN.tt

@@ -1,0 +1,120 @@
+#VAR getglancelist 0
+
+#ALIAS ggl {
+	gcleara;
+	#VAR getglancelist 1;
+	wig;
+}
+
+#ACT {[%1 %2] %w } {
+#IF {$getglancelist == 1} {
+	#IF {"%2" == "War" || "%2" == "Pal" || "%2" == "A-P"} {gaddt %3};
+	#IF {"%2" == "Rog" || "%2" == "Bar" || "%2" == "Ran" || "%2" == "Ctr" || "%2" == "Dir"} {gaddr %3};
+	#IF {"%2" == "Enc" || "%2" == "Cle" || "%2" == "Sha" || "%2" == "Nec" || "%2" == "Dru" || "%2" == "Ill" || "%2" == "Inv" || "%2" == "Ele" || "%2" == "Lic" || "%2" == "Psi"} {gaddo %3}
+}
+}
+
+#ACT {Total players online:} {#VAR getglancelist 0}
+
+#ALIAS gaddt {
+    #tab @lcase{%1};#list tankglanceList ins -1 @upfirst{%1};
+    #show <100>...<090> Added <140>@upfirst{%1}<090> to Tank glance list.;
+    sg;
+}
+
+#ALIAS gaddr {
+    #tab @lcase{%1};#list rogueglanceList ins -1 @upfirst{%1};
+    #show <100>...<090> Added <110>@upfirst{%1}<090> to Rogue glance list.;
+    sg;
+}
+
+#ALIAS gaddo {
+    #tab @lcase{%1};#list otherglanceList ins -1 @upfirst{%1};
+    #show <100>...<090> Added <160>@upfirst{%1}<090> to Other glance list.;
+    sg;
+}
+
+#ALIAS gcleart {
+    #list tankglanceList clr;#var tgindex 0;
+    #show <100>...<090> Tank glance list <130>cleared<090>.;
+    sg;
+}
+
+#ALIAS gclearr {
+    #list rogueglanceList clr;#var rgindex 0;
+    #show <100>...<090> Rogue glance list <130>cleared<090>.;
+    sg;
+}
+
+#ALIAS gclearo {
+    #list otherglanceList clr;#var ogindex 0;
+    #show <100>...<090> glance list <130>cleared<090>.;
+    sg;
+}
+
+#ALIAS gcleara {
+    #list tankglanceList clr;#var gindex 0;
+    #list rogueglanceList clr;#var rgindex 0;    
+    #list otherglanceList clr;#var ogindex 0;
+    #show <100>...<090> glance list <130>cleared<090>.;
+    sg;
+}
+
+#ALIAS gdelt {
+    #list tankglanceList fnd {@upfirst{%1}} tgdelindex;#list tankglanceList del {$tgdelindex};
+    #show <100>...<090> Removed <110>@upfirst{%1}<090> from Tank glance list.;
+    sg;
+}
+
+#ALIAS gdelr {
+    #list rogueglanceList fnd {@upfirst{%1}} rgdelindex;#list rogueglanceList del {$rgdelindex};
+    #show <100>...<090> Removed <110>@upfirst{%1}<090> from Rogue glance list.;
+    sg;
+}
+
+#ALIAS gdelo {
+    #list otherglanceList fnd {@upfirst{%1}} ogdelindex;#list otherglanceList del {$ogdelindex};
+    #show <100>...<090> Removed <110>@upfirst{%1}<090> from Other glance list.;
+    sg;
+}
+
+#ALIAS gllist 
+{
+    #list tankglanceList len tgindex;
+    #list rogueglanceList len rgindex;
+    #list otherglanceList len ogindex;
+    #if {$tgindex == 0 && $rgindex == 0 && $ogindex == 0} 
+	{
+		#echo {%c%p} {red} {== NO Glance LIST ========}
+	} {
+        #echo {%c%p} {light black} {== Glance LIST ============};
+        #showme;
+        #IF {$tgindex != 0} {#loop {1} {&tankglanceList[]} {cnt} {#showme <040>..T -<090> $tankglanceList[$cnt]}};
+	#IF {$rgindex != 0} {#loop {1} {&rogueglanceList[]} {cnt} {#showme <010>..H -<090> $rogueglanceList[$cnt]}};
+	#IF {$ogindex != 0} {#loop {1} {&otherglanceList[]} {cnt} {#showme <060>..O -<090> $otherglanceList[$cnt]}}
+    };
+    #echo {%c%p} {light black} {---------------------------};
+}
+
+#ALIAS glt {
+    #loop {1} {&tankglanceList[]} {cnt} {glance $tankglanceList[$cnt]};
+#delay {2} {sg};
+}
+
+#ALIAS glr {
+    #loop {1} {&rogueglanceList[]} {cnt} {glance $rogueglanceList[$cnt]};
+#delay {2} {sg};
+}
+
+#ALIAS glo {
+    #loop {1} {&otherglanceList[]} {cnt} {glance $otherglanceList[$cnt]};
+#delay {2} {sg};
+}
+
+#ALIAS gla {glt;glr;glo }
+
+#MACRO {\C-t} {glt}
+#MACRO {\C-r} {glr}
+#MACRO {\C-o} {glo}
+
+#showme __ GLANCE.tt

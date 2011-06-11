@@ -1,0 +1,87 @@
+#var queue 0
+
+#function {inlist}
+{
+	#list RescueList fnd {%1} result;
+}
+
+#ALIAS grl {
+		rclear;
+        #VAR getrescuelist 1;
+        who ingroup s;
+}
+
+#ACT {[%1 %2] %3 } {
+#IF {$getrescuelist == 1} {
+        #IF {"%2" == "War" || "%2" == "Pal" || "%2" == "A-P"} {#tab @lcase{%3}};
+        #IF {"%2" == "Rog" || "%2" == "Bar" || "%2" == "Ran" || "%2" == "Ctr" || "%2" == "Dir"} {radd %3;#tab @lcase{%3}};
+        #IF {"%2" == "Enc" || "%2" == "Cle" || "%2" == "Sha" || "%2" == "Nec" || "%2" == "Dru" || "%2" == "Ill" || "%2" == "Inv" || "%2" == "Ele" || "%2" == "Lic" || "%2" == "Psi"} {radd %3;#tab @lcase{%3}}
+}
+}
+
+#ACT {Total players online:} {#VAR getrescuelist 0}
+
+#action {%0 %1 here, fighting %2.} {#if {$aResc == 1} {#if {@inlist{%2} != 0} {ratt %2}}}
+
+#action {%0 attacks %1,} {#if {$aResc == 1} {#if {@inlist{%1} != 0} {ratt %1}}}
+
+#unact {burns|pummels|smashes|bites|crushes|hits|slashes %1} {#if {@inlist{%1} != 0} {ratt %1}}
+
+#action {%0 switches targets..} {#if {$aResc == 1} {look}}
+
+#action {Upon being struck, a mirror image of %1 shatters into a million particles of light!} {#if {$aResc == 1} {#if {@inlist{%1} != 0} {ratt %1}}}
+
+#action {%0 sends %1 sprawling with a powerful bash.} {#if {$aResc == 1} {#if {@inlist{%1} != 0} {ratt %1}}}
+
+#action {But nobody is fighting} {#var queue 0}
+#action {rescues} {#if {$aResc == 1} {rr}}
+#action {T: %0 TC:} {#if {$aResc == 1} {#if {@inlist{%0} != 0} {ratt %0}}}
+#action {Who do you want to rescue?} {rr}
+#action {Banzai!} {rr}
+#action {You fail} {#if {$aResc == 1} {ratt $Rescuee;rr}}
+
+#alias {radd} {
+	#if {@inlist{@upfirst{%1}} != 0} {#show <100>%1 <110>already in rescue list<090>} {
+		#list RescueList ins -1 @upfirst{%1};
+		#show <100>...<090> Added <140>@upfirst{%1}<090> to rescue list.; 
+	}
+}
+#alias {rclear} {#list RescueList clr;#var rindex 0;#show <100>...<090> Rescue List <170>CLEARED<090>}
+#alias {rdel} {#list RescueList fnd {@upfirst{%1}} rdelindex;#list RescueList del {$rdelindex};#show <100>...<090> Removed <140>%1<090> from rescue list.;}
+
+#alias {ratt} {#if {$queue == 0} {rescue %1;#var Rescuee %1;#var queue 1};#show <100>... <090>attempting resc on %1}
+#alias {rr} {#var queue 0}
+
+#alias {rlist} {
+	#list RescueList len rindex;
+	
+	#if {$rindex == 0} {#echo {%c%p} {red} {== NO RESCUE LIST ========}} {
+	#echo {%c%p} {light black} {== RESCUE LIST ============};	
+	#showme;
+	#loop {1} {$rindex} {cnt}
+	{
+		#show {.. $RescueList[$cnt]}
+	};
+	#echo {%c%p} {light black} {---------------------------}
+}}
+
+#alias {ra} {
+	#list RescueList len rindex;
+	
+	#loop {1} {$rindex} {cnt}
+	{
+		rescue $RescueList[$cnt]
+	};
+}
+
+#alias {tresc} {
+        #if {$aResc == 1} {
+                #var aResc 0;
+                #echo {%c%h} {red} { AUTO RESCUE off }
+                } {
+                #var aResc 1;
+                #echo {%c%h} {green} { AUTO RESCUE on }
+                }
+}
+
+#showme __ RESCUE.tt

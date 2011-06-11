@@ -1,0 +1,166 @@
+#VAR {bag} {silk}
+#VAR {bag2} {gut}
+#VAR {book} {spellbook}
+#VAR {stgsay} {1}
+
+#SUB {You have finished memorizing %1.} {<100>[<070>_<110>+<010>( <070>%1 <010>)<110>+<070>_<100>]<090>}
+
+#ALIAS {scrib} {rem $h1;rem $h2;g quill;hold $book; hold quill;rest}
+#ALIAS {dscrib} {rem quill;rem $book;p quill;hold $h1;hold $h2;st}
+
+#ALIAS tdie {
+        #IF {$adie == 1} {
+                #VAR adie 0;
+                #ECHO {%c%h} {red} { AUTO OBLIVION off }
+                } {
+                #VAR adie 1;
+                #ECHO {%c%h} {green} { AUTO OBLIVION on }
+        }
+}
+
+#ACT {%0 EC: awful} {#IF {$adie == 1} {#var adie 0;#var dietickeron 1;#tick dieticker {say die} {2}}}
+
+#NOP =========================================
+#NOP  Docast, repeats single spell
+#NOP =========================================
+
+#ALIAS dc {
+        #var docast 1;
+        #var tocast %0;
+        $tocast;
+}
+
+#ALIAS dco {#var docast 0;#unvar tocast}
+#ALIAS dca {#var docast 0;abort;#unvar tocast}
+
+#ACT {You complete your spell...} {
+	#IF {"$castarg" == "%*"} {#unvar castarg};
+	#VAR lastspell 0;
+	#IF {$spell_run == 1} {
+                #math tocastidx {$tocastidx + 1};
+                #list tocastlist len tcindex;
+                #IF {$tocastidx <= $tcindex} {
+                #list tocastlist get $tocastidx nextspell;
+                $nextspell;
+                } {#ECHO {Finished spell run.};#var spell_run 0;#list tocastlist clear;#var tocastidx 1;}};
+	#IF {$docast == 1} {
+                $tocast;
+        };
+}
+
+#ACT {Your studies are complete.} {
+	st;
+	#IF {"$castarg" == "%*"} {#unvar castarg};
+}
+
+#ACT {You abort your spell} {
+	#IF {"$castarg" == "%*"} {#unvar castarg};
+        #IF {$spell_run == 1} {
+                #var spell_run 0;#list tocastlist clear;#var tocastidx 1;
+        };
+        #ECHO {%c%h} {red} { SPELL ABORTED }
+}
+
+#ACT {You don't have that spell memorized.} {
+	#IF {"$castarg" == "%*"} {#unvar castarg};
+        #IF {$docast == 1} {
+                #unvar tocast;
+                #var docast 0;
+        };
+        #IF {$spell_run == 1} {
+        #math tocastidx {$tocastidx + 1};
+        #list tocastlist len tcindex;
+        #IF {$tocastidx <= $tcindex} {
+        #list tocastlist get $tocastidx nextspell;
+        $nextspell;
+        } {#var spell_run 0;#list tocastlist clear;#var tocastidx 1}
+    }
+}
+
+#ACT {Nobody here by that name.} {
+	#IF {"$castarg" == "%*"} {#unvar castarg};
+        #IF {$spell_run == 1} {
+        #math tocastidx {$tocastidx + 1};
+        #list tocastlist len tcindex;
+        #IF {$tocastidx <= $tcindex} {
+        #list tocastlist get $tocastidx nextspell;
+        $nextspell;
+        } {#var spell_run 0;#list tocastlist clear;#var tocastidx 1}
+    }
+
+}
+
+#ACT {You can't do this sitting!} {
+        st;
+	#var castingvit 0;
+	#IF {"$castarg" == "%*"} {#unvar castarg};
+        #IF {$spell_run == 1} {
+        #math tocastidx {$tocastidx + 1};
+        #list tocastlist len tcindex;
+        #IF {$tocastidx <= $tcindex} {
+        #list tocastlist get $tocastidx nextspell;
+        $nextspell;
+        } {#var spell_run 0;#list tocastlist clear;#var tocastidx 1}
+    }
+}
+
+#ACT {Impossible! You can't concentrate enough!} {
+	#IF {"$castarg" == "%*"} {#unvar castarg};
+        #IF {$spell_run == 1} {
+        #math tocastidx {$tocastidx + 1};
+        #list tocastlist len tcindex;
+        #IF {$tocastidx <= $tcindex} {
+        #list tocastlist get $tocastidx nextspell;
+        #delay {3} {$nextspell};
+        } {#var spell_run 0;#list tocastlist clear;#var tocastidx 1}
+    }
+}
+
+#NOP =========================================
+#NOP  Spell Aliases
+#NOP =========================================
+
+#ALIAS {hst} {c 'haste' %1;#var castarg %1}
+#ALIAS {dm} {c 'detect magic' %1;#var castarg %1}
+#ALIAS {mm} {c 'magic missile' %1;#var castarg %1}
+#ALIAS {mf} {c 'mage flame' %1;#var castarg %1}
+#ALIAS {mc} {c 'minor crea' %1;#var castarg %1}
+#ALIAS {di} {c 'detect invis' %1;#var castarg %1}
+#ALIAS {dd} {c 'dimension door' %1;#var castarg %1}
+#ALIAS {feeb} {c 'feeblemind' %1;#var castarg %1}
+#ALIAS {globe} {c 'globe' %1;#var castarg %1}
+#ALIAS {chil} {c 'chill touch' %1;#var castarg %1}
+#ALIAS {tele} {c 'teleport' %1;#var castarg %1}
+#ALIAS {invis} {c 'invisib' %1;#var castarg %1}
+#ALIAS {dispel} {c 'dispel magic' %1;#var castarg %1}
+#ALIAS {cone} {c 'cone of cold' %1;#var castarg %1}
+#ALIAS {ray} {c 'ray of enfeeb' %1;#var castarg %1}
+#ALIAS {sleep} {c 'sleep' %1;#var castarg %1}
+#ALIAS {lev} {c 'levitate' %1;#var castarg %1}
+#ALIAS {csh} {c 'coldshi';#var castarg %1}
+#ALIAS {sb} {c 'soul bind' %1;#var castarg %1;}
+#ALIAS {pfu} {c 'protection from undead' %1;#var castarg %1;}
+#ALIAS {command} {c 'command undead' %1;#var castarg %1;}
+#ALIAS {h} {c 'heal undead' %1;#var castarg %1;}
+#ALIAS {snap} {c 'snapping teeth' %1;#var castarg %1;}
+#ALIAS {nerve} {c 'nerve dance' %1;#var castarg %1;}
+#ALIAS {pu} {c 'protect undead' %1;#var castarg %1;}
+#ALIAS {belt} {c 'beltyn' %1;#var castarg %1;}
+#ALIAS {glam} {c 'corpse glam' %1;#var castarg %1;}
+#ALIAS {shack} {c 'soul shackl';#var castarg %1;}
+#ALIAS {abi} {c 'abi dal' %1;#var castarg %1}
+#ALIAS {wail} {c 'banshee';#var castarg %1}
+#ALIAS {shat} {c 'boneshat' %1;#var castarg %1}
+#ALIAS {rain} {c 'rain of blood';}
+#ALIAS {spec} {c 'spectral han';#var castarg %1;}
+#ALIAS {rot} {c 'rot';}
+#ALIAS {touch} {c 'lich touch' %1;#var castarg %1;}
+#ALIAS {emb} {c 'embalm' %1;#var castarg %1;}
+#ALIAS {pres} {c 'preserv' %1;#var castarg %1;}
+#ALIAS {sip} {c 'siphon undead' %1;#var castarg %1;}
+#ALIAS {cont} {c 'contag' %1;#var castarg %1;}
+#ALIAS {pact} {c 'death pact'}
+#ALIAS {tomb} {c 'ice tomb' %1;#var castarg %1;}
+#ALIAS {drain} {c 'life drain' %1;#var castarg %1;}
+
+#showme __ NECRO.tt

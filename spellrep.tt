@@ -1,0 +1,27 @@
+#var spellrep 1
+
+#ALIAS tspells {
+        #IF {$spellrep == 1} {
+                #VAR spellrep 0;
+                #echo {%c%h} {red} { REPORT SPELLS off }
+                } {
+                #VAR spellrep 1;
+                #echo {%c%h} {green} { REPORT SPELLS on }
+                }
+}
+
+#ACT {Your flesh loses its stony texture.} {#IF {$spellrep == 1} {gsay ! stone_skin}}
+#ACT {Your image is no longer displaced.} {#IF {$spellrep == 1} {gsay ! displacement}}
+#ACT {Your vitality drains away.} {#IF {$spellrep == 1} {gsay ! vitality}}
+#ACT {The world speeds up around you.} {#IF {$spellrep == 1} {gsay ! haste}}
+#ACT {Invisible things vanish again.} {#IF {$spellrep == 1} {gsay ! detect_invis}}
+#ACT {Your dragon scales melt back into your regular flesh.} {#IF {$spellrep == 1} {gsay ! dragonscales}}
+#ACT {Your form stops blurring.} {#IF {$spellrep == 1} {gsay ! blur}}
+#ACT {Your displaced form snaps back to your physical location!} {#IF {$spellrep == 1} {gsay ! displacement}}
+#ACT {Your body returns to its normal size.} {#IF {$spellrep == 1} {gsay ! enlarge/reduce}}
+#ACT {The elemental ward protecting you shudders and disappears.} {#IF {$spellrep == 1} {gsay ! elemental ward}}
+#ACT {Your globe shimmers, and fades into the air.} {#IF {$spellrep == 1} {gsay ! globe of invulnerability}}
+#ACT {You feel less wooden.} {#IF {$spellrep == 1} {gsay ! barkskin}}
+#ACT {Your body shimmers and sheds its elemental form, returning to normal.} {#IF {$spellrep == 1} {gsay ! elemental form}}
+
+#showme __ SPELLREP.tt

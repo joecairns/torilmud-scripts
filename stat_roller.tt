@@ -1,0 +1,51 @@
+#var score 0
+#var stop 0
+#var keepalive 0
+
+#act {Rerolling this character.} {#echo $score;#var score 0}
+
+#act {Strength:        heroic} {#math {score} {$score+2}}
+#act {Strength:        perfect} {#math {score} {$score+2}}
+#act {Strength:        mighty} {#math {score} {$score+1}}
+
+#act {Power:           perfect} {#math {score} {$score+2}}
+#act {Power:           heroic} {#math {score} {$score+2}}
+#act {Power:           mighty} {#math {score} {$score+1}}
+
+#act {Dexterity:       heroic} {#math {score} {$score+2}}
+#act {Dexterity:       perfect} {#math {score} {$score+2}}
+#act {Dexterity:       mighty} {#math {score} {$score+1}}
+
+#act {Intelligence:    heroic} {#math {score} {$score+2}}
+#act {Intelligence:    perfect} {#math {score} {$score+2}}
+#act {Intelligence:    mighty} {#math {score} {$score+1}}
+
+#act {Agility:         heroic} {#math {score} {$score+2}}
+#act {Agility:         perfect} {#math {score} {$score+2}}
+#act {Agility:         mighty} {#math {score} {$score+1}}
+
+#act {Wisdom:          heroic} {#math {score} {$score+2}}
+#act {Wisdom:          perfect} {#math {score} {$score+2}}
+#act {Wisdom:          mighty} {#math {score} {$score+1}}
+
+#act {Constitution:    heroic} {#math {score} {$score+2}}
+#act {Constitution:    perfect} {#math {score} {$score+2}}
+#act {Constitution:    mighty} {#math {score} {$score+1}}
+
+#act {Charisma:        heroic} {#math {score} {$score+2}}
+#act {Charisma:        perfect} {#math {score} {$score+2}}
+#act {Charisma:        mighty} {#math {score} {$score+1}}
+
+#act {Enter 'y' to reroll, 'n' to accept these stats, '?' to view help, or two attributes to swap:} {
+	#if {$score <= 6 && $stop == 0} {y}
+	#if {$score > 6} {#var stop 1;#math {keepalive} {$keepalive+1};rundelay}
+}
+
+#alias {rundelay} {
+	#if {$keepalive == 1} {?}
+	#bell
+}
+
+#act {STR: Reflects your character's physical power.} {#delay {20} rundelay}
+
+

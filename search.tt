@@ -1,0 +1,30 @@
+#VAR dosearch 0
+
+#ALIAS srch {
+	#VAR dosearch 1;
+	#VAR srchtarg %1;
+	#ECHO {.. searching <140>$srchtarg<090>};
+	#IF {"$srchtarg" == "room"} 
+		{
+			#tick {srchin} {search} {5};
+		} {
+			#tick {srchin} {search $srchtarg} {5};
+		}
+}
+
+#ACT {You search exhaustively} {
+	#IF {$dosearch == 1} {
+		#VAR dosearch 0;
+		#untick srchin;
+	}
+}
+
+#ACT {You find %0!} {
+	#IF {$dosearch == 1} {
+		#untick srchin;
+		#IF {$asearch == 1} {loot};
+		#VAR dosearch 0;
+	}
+}
+
+#showme __ SEARCH.tt

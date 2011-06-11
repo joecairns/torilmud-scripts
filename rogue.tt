@@ -1,0 +1,267 @@
+#VAR bag {silk}
+#VAR bag2 {chest}
+#VAR w1 {dragon}
+#VAR w2 {khanjari}
+#VAR poison {jar}
+#VAR garotte {wire}
+#VAR pick {picks}
+#VAR about {pauldron}
+
+#MACRO {\eOq} {be}
+#MACRO {\eOw} {te}
+
+#ALIAS flyon {rem $about;p $about;g wings;wear wings}
+#ALIAS flyoff {rem wings;p wings;g $about;wear $about}
+
+#ACT {Your scales become soft once more.} {
+#VAR thetime {@gettime{}};
+#line log other.txt {<100>$thetime <060>scale<160>skin <070>Down <100>!!}}
+
+#ACT {Your senses dull and your blood is cooled.} {
+#VAR thetime {@gettime{}};
+#line log other.txt {<100>$thetime <110>viper<010>mind <070>Down <100>!!}}
+
+#ACT {You gain the mindset of a ferocious viper!} {
+#VAR thetime {@gettime{}};
+#line log other.txt {<100>$thetime <110>viper<010>mind <170>UP <070>!!}}
+
+#ACT {You concentrate and harden your body into thick scales.} {
+#VAR thetime {@gettime{}};
+#line log other.txt {<100>$thetime <060>scale<160>skin <170>UP <070>!!}}
+
+#ACT {As your poison takes effect, %0 appears to go blind!} {gsay blind --> %0}
+
+#NOP =========================================
+#NOP  Auto Hide
+#NOP =========================================
+
+#VAR Ahide 0
+
+#ACT {You flee %1ward!} {#IF {$Ahide == 1} {hide}}
+
+#ALIAS thide {
+    #IF {$Ahide == 1} {
+                #VAR Ahide 0;
+                #echo {%c%h} {red} { AUTO HIDE off }
+                } {
+                #VAR Ahide 1;
+                #echo {%c%h} {green} { AUTO HIDE on }
+                }
+}
+
+
+#NOP =========================================
+#NOP  Dragging
+#NOP =========================================
+
+#VAR Adrag {0}
+
+#ALIAS tdrag {
+    #IF {$Adrag == 1} {
+                #VAR Adrag 0;
+                #echo {%c%h} {red} { AUTO DRAG off }
+                } {
+                #VAR Adrag 1;
+                #echo {%c%h} {green} { AUTO DRAG on }
+                }
+}
+
+#ALIAS sd {#var todrag %0}
+#ALIAS dn {drag $todrag n}
+#ALIAS ds {drag $todrag s}
+#ALIAS de {drag $todrag e}
+#ALIAS dw {drag $todrag w}
+#ALIAS du {drag $todrag u}
+#ALIAS dd {drag $todrag d}
+
+#ALIAS det {detecttrap %1}
+#ALIAS dis {disarmtrap %1}
+
+#NOP =========================================
+#NOP  Hidden Stuff
+#NOP =========================================
+
+#VAR hidden {0}
+
+#UNALIAS '
+#ALIAS {'} {#IF {$hidden == 1} {gsay $myname - %0} {gsay %0}}
+
+#ACT {You stop trying to hide.} {#var hidden 0}
+#ACT {You attempt to hide yourself.} {#var hidden 1}
+
+#NOP =========================================
+#NOP  Shielded Mob
+#NOP =========================================
+
+#ALIAS rmw {rem $w1;rem $w2}
+#ALIAS ww {wield $w1;wield $w2}
+#ACT {You begin to shimmer.} {#IF {$burned == 1} {ww;#var $burned 0}}
+#ACT {You are %1 as you hit} {rmw;#var burned 1}
+
+#NOP =========================================
+#NOP  Assasinate
+#NOP =========================================
+
+#ALIAS ae {
+#var enemy %1;
+assa $enemy;
+}
+
+#ACT {Assassination requires intense preparation.} {}
+#ACT {With practiced ease and lightning reflexes, you} {
+#LINE LOG other.txt {<100>$thetime <010>Assassination <090>SUCCESS<090>};
+#tick {assasstimer} {#var thetime {@gettime{}};#LINE LOG other.txt {<100>$thetime <010>ASSASSINATE<170> Ready<090>};#untick assasstimer} {1440}
+}
+
+#ACT {Your assassination attempt goes wide of the mark.} {
+#LINE LOG other.txt {<100>$thetime <010>Assassination <110>FAILURE<090>};
+#tick {assasstimer} {#var thetime {@gettime{}};#LINE LOG other.txt {<100>$thetime <010>ASSASSINATE<170> Ready<090>};#untick assasstimer} {1440}
+}
+
+#NOP =========================================
+#NOP  Pick Locks
+#NOP =========================================
+
+#VAR picks_in_hand {0}
+
+#ALIAS tpicks {
+    #IF {$picks_in_hand == 1} {
+        #var picks_in_hand 0;
+        rem $pick;
+        p $pick;
+        wield $w2
+    } {
+        #var picks_in_hand 1;
+        rem $w2;
+        g $pick;
+        hold $pick
+    }
+}
+
+#ACT {Damn!  You broke your} {#VAR picks_in_hand 0}
+#ACT {The lock quickly yields to your skills and pops open.} {tpicks}
+
+#NOP =========================================
+#NOP  Garrote
+#NOP =========================================
+
+#VAR gar_in_hand {0}
+
+#ALIAS tgar {
+    #IF {$gar_in_hand == 1} {
+        #var gar_in_hand 0;
+        rem $garotte;
+        p $garotte;
+        wield $w1;
+        wield $w2
+    } {
+        #var gar_in_hand 1;
+        rem $w1;
+        rem $w2;
+        g $garotte;
+        wield $garotte
+    }
+}
+
+#ACT {does a nifty move, flipping you onto your back!} {stand}
+#ACT {Your a garroting wire breaks!} {g $garotte;wield $garotte}
+
+#NOP =========================================
+#NOP  Item Said Procs
+#NOP =========================================
+
+#ALIAS in {say crescent moon}
+#ALIAS disp {say fell stars}
+#ALIAS globe {say deeply defend}
+#ALIAS haste {say accelerate}
+
+#NOP =========================================
+#NOP  Poisons
+#NOP =========================================
+
+#VAR Apoison {0}
+
+#ALIAS tpoison {
+        #IF {$Apoison == 1} {
+                #VAR Apoison 0;
+                #echo {%c%h} {red} { AUTO POISON off }
+                } {
+                #VAR Apoison 1;
+                #echo {%c%h} {green} { AUTO POISON on }
+                }
+}
+
+#ALIAS poi {#var poison %1;#ECHO {Poison is $poison}}
+#ALIAS ap {g $poison;apply $poison $w1;apply $poison $w2;p $poison}
+
+#NOP =========================================
+#NOP  Target Kill, Circle Kill
+#NOP =========================================
+
+#VAR Acircl {0}
+
+#ALIAS te {#VAR enemy %1;trip $enemy}
+#ALIAS be {#VAR enemy %1;backstab $enemy}
+#ALIAS ce {#VAR enemy %1;circle $enemy}
+#ALIAS ge {#VAR enemy %1;gar $enemy}
+
+#ALIAS eskn {esc n;s;be}
+#ALIAS eske {esc e;w;be}
+#ALIAS esks {esc s;n;be}
+#ALIAS eskw {esc w;e;be}
+#ALIAS esku {esc u;d;be}
+#ALIAS eskd {esc d;u;be}
+
+#ALIAS escn {esc n;s;ce}
+#ALIAS esce {esc e;w;ce}
+#ALIAS escs {esc s;n;ce}
+#ALIAS escw {esc w;e;ce}
+#ALIAS escu {esc u;d;ce}
+#ALIAS escd {esc d;u;ce}
+
+#ALIAS tcirc {
+        #IF {$Acircl == 1} {
+                #VAR Acircl 0;
+                #echo {%c%h} {red} { AUTO CIRCLE off }
+                } {
+                #VAR Acircl 1;
+                #echo {%c%h} {green} { AUTO CIRCLE on }
+                }
+}
+
+#NOP =========================================
+#NOP  Auto Trip
+#NOP =========================================
+
+#VAR Atrip {0}
+
+#ALIAS ttrip {
+	#IF {$Atrip == 1} {
+		#VAR Atrip 0;
+		#echo {%c%h} {red} { AUTO TRIP off }
+		} {
+		#VAR Atrip 1;
+		#echo {%c%h} {green} { AUTO TRIP on }
+		}
+}
+
+#ACT {%0 clambers to %1 feet.} {
+	#IF {$Atrip == 1} {trip} }
+#ACT {%0 avoids your bash,} {
+	#IF {$Atrip == 1} {st;trip} {st} }
+#ACT {%0 rises to [his|her|its] feet.} {
+	#IF {$Atrip == 1} {trip}}
+#ACT {%0 staggers about, but manages to get to his feet.} {
+	#IF {$Atrip == 1} {trip} }
+#ACT {throw yourself head first directly into the ground} {
+	st;#IF {$Atrip == 1} {trip} }
+#ACT {only to sprawl completely THROUGH} {
+	st;#IF {$Atrip == 1} {trip} }
+#ACT {And just for the attempt, you fall down.} {
+	st;#IF {$Atrip == 1} {trip} }
+#ACT {for you to trip! You go crashing to the ground.} {
+	st;#IF {$Atrip == 1} {trip} }
+#ACT {and you go down as well.} {
+	st;#IF {$Atrip == 1} {trip} }
+
+#showme __ ROGUE.tt
