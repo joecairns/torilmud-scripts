@@ -1,2 +1,5 @@
 My Tintin++ scripts (tintin.sourceforge.net) for the Torilmud.org mud.
 
+Everything starts with loading toril.tt
+
+Class scripts are loaded from there.
