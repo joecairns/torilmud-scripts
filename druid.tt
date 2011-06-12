@@ -1,0 +1,183 @@
+#MACRO {\C-g} {group;#delay {1} {sg}}
+#alias {group} {#send group %0;#delay {1} {sg}}
+#MACRO {\C-w} {word}
+
+#var bag {silk}
+#var bag2 {chest}
+#var stgsay {1}
+
+#SUB {You have finished praying for %1.} { <100>.<020>( <030>_<100>_ <070>%1 <100>_<030>_ <020>)<100>.<090>}
+
+#NOP ****************************
+#NOP *** Vitlist Stuff       ****
+#NOP ****************************
+
+#ALIAS vadd {#list myvits ins -1 @upfirst{%0};#show <100>...<090> Added <140>@upfirst{%0} <090>to my vit list.}
+#ALIAS vdel {#list myvits fnd @upfirst{%0} tovitdelidx;#list myvits del {$tovitdelidx};#show <100>...<090>Removed <140>@upfirst{%0} <090>from my vit list.}
+#ALIAS vclear {#list myvits clr;#var vlindex 0;#show <100>... <070>Vit List Cleared <140>!<090>}
+#ALIAS vlist {
+	#list myvits len vlindex;
+	#if {$vlindex == 0} {
+		#echo {%c%p} {red} {== NO VIT LIST ========}
+	} {
+		#showme;
+		#echo {%c%p} {light blue} {== MY VIT LIST ============};
+		#showme;
+		#loop {1} {&myvits[]} {cnt} {#showme <100>..<140>V<100>: <090>$myvits[$cnt]}};
+}
+#ALIAS sayvits {#loop {1} {&myvits[]} {cnt} {#if {$cnt == 1} {#var myvitlist $myvits[$cnt]} {#var myvitlist $myvitlist, $myvits[$cnt]}};say I am vitting: $myvitlist}
+#ALIAS gsayvits {#loop {1} {&myvits[]} {cnt} {#if {$cnt == 1} {#var myvitlist $myvits[$cnt]} {#var myvitlist $myvitlist, $myvits[$cnt]}};gsay I am vitting: $myvitlist}
+#ALIAS dovits {
+	#loop {1} {&myvits[]} {cnt} {
+		#if {${$myvits[$cnt]_affects[vit]} == 0} {sadd vit $myvits[$cnt]};
+	}
+	srun;
+}
+
+#NOP ************************
+#NOP ** More Spellup     ****
+#NOP ************************
+
+#VAR tocastidx 1
+#VAR spell_run 0
+
+#ALIAS srun {
+        #var spell_run 1;
+        #list tocastlist len tcindex;
+        #list tocastlist get $tocastidx nextspell;
+        $nextspell
+}
+
+#MACRO {\C-s} {sut}
+
+#ALIAS su {
+        #list tocastlist clear;
+        #if {$spell_run == 1} {#nop} {
+        #if {${@upfirst{%1}_affects[vit]} == 0} {sadd vit %1};
+        srun;
+        }
+}
+
+#NOP =========================================
+#NOP  Docast, repeats single spell
+#NOP =========================================
+
+#ALIAS dc {
+        #var docast 1;
+        #var tocast %0;
+        $tocast;
+}
+
+#ALIAS dco {#var docast 0;#unvar tocast}
+#ALIAS dca {#var docast 0;abort;#unvar tocast}
+
+#ACT {You complete your spell...} {
+	#IF {$castingvit == 1} {setaffect @upfirst{$castarg} vit;sg;#var castingvit 0;};
+	#IF {"$castarg" == "%*"} {#unvar castarg};
+	#VAR lastspell 0;
+	#IF {$spell_run == 1} {
+                #math tocastidx {$tocastidx + 1};
+                #list tocastlist len tcindex;
+                #IF {$tocastidx <= $tcindex} {
+                #list tocastlist get $tocastidx nextspell;
+                $nextspell;
+                } {#ECHO {Finished spell run.};#var spell_run 0;#list tocastlist clear;#var tocastidx 1;}};
+	#IF {$docast == 1} {
+                $tocast;
+        };
+}
+
+#ACT {Your prayers are complete.} {
+	st;
+	#IF {"$castarg" == "%*"} {#unvar castarg};
+}
+
+#ACT {You abort your prayer before it's done!} {
+	#var castingvit 0;
+	#IF {"$castarg" == "%*"} {#unvar castarg};
+        #IF {$spell_run == 1} {
+                #var spell_run 0;#list tocastlist clear;#var tocastidx 1;
+        };
+        #ECHO {%c%h} {red} { SPELL ABORTED }
+}
+
+#ACT {You don't have that spell memorized.} {
+	#var castingvit 0;
+	#IF {"$castarg" == "%*"} {#unvar castarg};
+        #IF {$docast == 1} {
+                #unvar tocast;
+                #var docast 0;
+        };
+        #IF {$spell_run == 1} {
+        #math tocastidx {$tocastidx + 1};
+        #list tocastlist len tcindex;
+        #IF {$tocastidx <= $tcindex} {
+        #list tocastlist get $tocastidx nextspell;
+        $nextspell;
+        } {#var spell_run 0;#list tocastlist clear;#var tocastidx 1}
+    }
+}
+
+#ACT {Nobody here by that name.} {
+	#var castingvit 0;
+	#IF {"$castarg" == "%*"} {#unvar castarg};
+        #IF {$spell_run == 1} {
+        #math tocastidx {$tocastidx + 1};
+        #list tocastlist len tcindex;
+        #IF {$tocastidx <= $tcindex} {
+        #list tocastlist get $tocastidx nextspell;
+        $nextspell;
+        } {#var spell_run 0;#list tocastlist clear;#var tocastidx 1}
+    }
+
+}
+
+#ACT {You can't do this sitting!} {
+        st;
+	#var castingvit 0;
+	#IF {"$castarg" == "%*"} {#unvar castarg};
+        #IF {$spell_run == 1} {
+        #math tocastidx {$tocastidx + 1};
+        #list tocastlist len tcindex;
+        #IF {$tocastidx <= $tcindex} {
+        #list tocastlist get $tocastidx nextspell;
+        $nextspell;
+        } {#var spell_run 0;#list tocastlist clear;#var tocastidx 1}
+    }
+}
+
+#ACT {Impossible! You can't concentrate enough!} {
+	#var castingvit 0;
+	#IF {"$castarg" == "%*"} {#unvar castarg};
+        #IF {$spell_run == 1} {
+        #math tocastidx {$tocastidx + 1};
+        #list tocastlist len tcindex;
+        #IF {$tocastidx <= $tcindex} {
+        #list tocastlist get $tocastidx nextspell;
+        #delay {3} {$nextspell};
+        } {#var spell_run 0;#list tocastlist clear;#var tocastidx 1}
+    }
+}
+
+#NOP =========================================
+#NOP  Spell Aliases
+#NOP =========================================
+
+#ALIAS word {c 'word of rec';}
+#ALIAS pres {c 'preserv' %1;#var castarg %1}
+#ALIAS dm {c 'detect mag' %1;#var castarg %1}
+#ALIAS arm {c 'armor' %1;#var castarg %1}
+#ALIAS cc {c 'cure crit' %1;#var castarg %1}
+#ALIAS rc {c 'remove curse' %1;#var castarg %1}
+#ALIAS vig {c 'vigor crit' %1;#var castarg %1}
+#ALIAS cs {c 'cure serious' %1;#var castarg %1}
+#ALIAS blind {c 'blind' %1;#var castarg %1}
+#ALIAS h {c 'heal' %1;#var castarg %1}
+#ALIAS vit {c 'vit' %1;#var castarg %1;#var castingvit 1;#var lastvitarg}
+#ALIAS sum {tell %1 summoning you;c 'summon' %1;#var castarg %1}
+#ALIAS quake {c 'earthquak'}
+#ALIAS wb {c 'water brea' %1;#var castarg %1}
+#ALIAS di {c 'detect invis' %1;#var castarg %1}
+#ALIAS rp {c 'remove pois' %1;#var castarg %1}
+
+#SHOWME __ DRUID.tt
