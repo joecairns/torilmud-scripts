@@ -2,7 +2,7 @@
 #NOP  Spell Tracker
 #NOP =========================================
 
-#var has_globe 0;#var has_stone 0;#var has_blur 0;#var has_scale 0;#var has_displace 0;#var do_glance 1;#var nla none;
+#var has_globe 0;#var has_stone 0;#var has_blur 0;#var has_scale 0;#var has_displace 0;#var do_glance 1;#var nla none;#var has_mirror 0;
 
 #ACT {%w is in an excellent condition. (%2)} { #var %1_hpercent 100;#var nla %1 }
 #ACT {%w has a few scratches. (%2)} { #var %1_hpercent 95;#var nla %1 }
@@ -15,6 +15,7 @@
 #ACT {%1 body seems to be made of stone!} {#var has_stone 1}
 #ACT {%1 body is covered in dragon scales!} {#var has_scale 1}
 #ACT {%1 form is blurred and difficult to make out!} {#var has_blur 1}
+#ACT {%1 is surrounded by a cluster of mirror images.} {#var has_mirror 1}
 #ACT {%1 encased in a shimmering globe!} {#var has_globe 1}
 #ACT {%1 form is displaced, and difficult to track!} {#var has_displace 1}
 
@@ -25,11 +26,12 @@
 	#if {"$nla" == "none"} {#nop} {
 		#if {$has_scale == 1} {setaffect $nla scale} {delaffect $nla scale};
 		#if {$has_stone == 1} {setaffect $nla stone} {delaffect $nla stone};
+		#if {$has_mirror == 1} {setaffect $nla mirror} {delaffect $nla mirror};
 		#if {$has_blur == 1} {setaffect $nla blur} {delaffect $nla blur};
 		#if {$has_globe == 1} {setaffect $nla globe} {delaffect $nla globe};
 		#if {$has_displace == 1} {setaffect $nla disp} {delaffect $nla disp};
 	};
-	#var has_stone 0;#var has_blur 0;#var has_displace 0;#var has_scale 0;#var has_globe 0;#var nla none;#nop;
+	#var has_stone 0;#var has_blur 0;#var has_displace 0;#var has_scale 0;#var has_mirror 0;#var has_globe 0;#var nla none;#nop;
 }
 
 #ACT {%1/%2 move %3/%4 hit - %0} {
@@ -57,13 +59,20 @@
     #if {${%1_hpercent} < 30 && ${%1_hpercent} >= 15} {#var result {<110>ph<100> _ <070>%1}};
     #if {${%1_hpercent} < 15 && ${%1_hpercent} >= 0} {#var result {<010>aw<100> _ <070>%1}};
     #if {${%1_affects[scale]}} {#var result $result <130>Ds<088>};
-    #if {${%1_affects[stone]}} {#var result $result <108>Ss<088>}; 
-    #if {${%1_affects[blur]}} {#var result $result <148>Bl<088>}; 
-    #if {${%1_affects[haste]}} {#var result $result <118>Hst<088>};
-    #if {${%1_affects[globe]}} {#var result $result <018>Glb<088>};
-    #if {${%1_affects[disp]}} {#var result $result <058>Dsp<088>};
-    #if {${%1_affects[sskin]}} {#var result $result <068>Sskn<088>};
+    #if {${%1_affects[stone]}} {#var result $result <100>Ss<088>}; 
+    #if {${%1_affects[blur]}} {#var result $result <140>Bl<088>}; 
+    #if {${%1_affects[haste]}} {#var result $result <110>Hst<088>};
+    #if {${%1_affects[bark]}} {#var result $result <030>Barka088>};
+	#if {${%1_affects[mirror]}} {#var result $result <150>Mi<050>r<150>r<088>};
+	#if {${%1_affects[misl]}} {#var result $result <070>M<100>i<070>sl<088>};
+    #if {${%1_affects[globe]}} {#var result $result <010>Glb<088>};
+    #if {${%1_affects[disp]}} {#var result $result <050>Dsp<088>};
+	#if {${%1_affects[seq]}} {#var result $result <160>Seq<088>};
+    #if {${%1_affects[sskin]}} {#var result $result <060>S<020>s<160>k<020>n<088>};
+	#if {${%1_affects[vmind]}} {#var result $result <020>V<100>m<070>i<100>nd<088>};
 	#if {${%1_affects[vit]}} {#var result $result <140>Vit<088>};
+	#if {${%1_affects[pu]}} {#var result $result <100>Pu<088>};
+	#if {${%1_affects[arm]}} {#var result $result <070>A<170>rm<070>o<170>r<088>};
 } 
 
 #FUNCTION {get_affect}
@@ -71,13 +80,21 @@
     #unvar myspells;
 	#var myspells  ;
     #if {${%1_affects[scale]}} {#var myspells $myspells <130>Ds<088>;};
-    #if {${%1_affects[stone]}} {#var myspells $myspells <108>Ss<088>};
-    #if {${%1_affects[blur]}} {#var myspells $myspells <148>Bl<088>};
-    #if {${%1_affects[haste]}} {#var myspells $myspells <118>Hst<088>};
-    #if {${%1_affects[globe]}} {#var myspells $myspells <018>Glb<088>};
-    #if {${%1_affects[disp]}} {#var myspells $myspells <058>Dsp<088>};
-    #if {${%1_affects[sskin]}} {#var myspells $myspells <068>Sskn<088>};
+    #if {${%1_affects[stone]}} {#var myspells $myspells <100>Ss<088>};
+	#if {${%1_affects[mirror]}} {#var myspells $myspells <150>Mi<050>r<150>r<088>};
+	#if {${%1_affects[misl]}} {#var myspells $myspells <070>M<100>i<070>sl<088>};
+    #if {${%1_affects[blur]}} {#var myspells $myspells <140>Bl<088>};
+    #if {${%1_affects[haste]}} {#var myspells $myspells <110>Hst<088>};
+    #if {${%1_affects[bark]}} {#var myspells $myspells <030>Bark<088>};
+	#if {${%1_affects[seq]}} {#var myspells $myspells <160>Seq<088>};
+	#if {${%1_affects[wrath]}} {#var myspells $myspells <110>W<010>rath<088>};
+    #if {${%1_affects[globe]}} {#var myspells $myspells <010>Glb<088>};
+    #if {${%1_affects[disp]}} {#var myspells $myspells <050>Dsp<088>};
+    #if {${%1_affects[sskin]}} {#var myspells $myspells <060>S<020>s<160>k<020>n<088>};
+	#if {${%1_affects[vmind]}} {#var myspells $myspells <020>V<100>m<070>i<100>nd<088>};
     #if {${%1_affects[vit]}} {#var myspells $myspells <140>Vit<088>};
+    #if {${%1_affects[pu]}} {#var myspells $myspells <100>Pu<088>};
+	#if {${%1_affects[arm]}} {#var myspells $myspells <070>A<170>rm<070>o<170>r<088>};
 	#var result $myspells;
 }
 
@@ -116,21 +133,45 @@
 #ACT {%w begins to shimmer.} {setaffect %1 globe;sg}
 #ACT {%w starts to move with uncanny speed!} {setaffect %1 haste;sg;#tick {%1_haste} {delaffect %1 haste;#untick %1_haste;sg} {280}}
 #ACT {%w's form is displaced.} {setaffect %1 disp;sg}
+#ACT {%w's skin gains the texture and toughness of bark.} {setaffect %1 bark;sg}
 
+#ACT {Your skin gains the texture and toughness of bark.} {setaffect $myname bark;sg}
+#ACT {A sphere of swirling shadows envelops you...} {setaffect $myname misl;sg}
 #ACT {You feel your skin harden to stone.} {setaffect $myname stone;sg}
 #ACT {Your form begins to blur!} {setaffect $myname blur;sg}
 #ACT {You begin to shimmer.} {setaffect $myname globe;sg}
 #ACT {Your form is displaced!} {setaffect $myname disp;sg}
+#ACT {Several mirror images of you pop into existence at your side!} {setaffect $myname mirror;sg}
 #ACT {You feel your skin transform into dragon scales.} {setaffect $myname scale;sg}
 #ACT {You feel vitalized.} {setaffect $myname vit;sg}
+#ACT {You feel cut off from the rest of the world...} {setaffect $myname seq;sg}
+#ACT {You feel protected by powers from beyond the grave.} {setaffect $myname pu;sg}
+#ACT {A magical energy shield envelops you!} {setaffect $myname arm;sg}
+#ACT {Bands of magic armor wrap around you!} {setaffect $myname arm;sg}
+#ACT {Bands of shadowy scalemail wrap around you!} {setaffect $myname arm;sg}
 
-#ACT {Your dragon scales melt back into your regular flesh.} {delaffect $myname scale;sg}
-#ACT {Your flesh loses its stony texture.} {delaffect $myname stone;sg}
-#ACT {Your form stops blurring.} {delaffect $myname blur;sg}
-#ACT {Your displaced form snaps back to your physical location!} {delaffect $myname disp;sg}
-#ACT {Your image is no longer displaced.} {delaffect $myname disp;sg}
-#ACT {Your globe shimmers, and fades into the air.} {delaffect $myname globe;sg}
-#ACT {Your vitality drains away.} {delaffect $myname vit;sg}
+#ACT {You feel your god smile upon your destructive soul.} {setaffect $myname wrath}
+#ACT {You gain the mindset of a ferocious viper!} {setaffect $myname vmind;sg}
+
+#ALIAS {ccon} { #IF {$condcall == 1} { gsay %0 no more !} }
+
+#ACT {Your shadowy scale armor dissipates into nothingness.} {delaffect $myname arm;sg;ccon ARMOR}
+#ACT {Your magic armor fades away.} {delaffect $myname arm;sg;ccon ARMOR}
+#ACT {Your magical shield shudders and vanishes.} {delaffect $myname arm;sg;ccon ARMOR}
+#ACT {Your senses dull and your blood is cooled.} {delaffect $myname vmind;sg}
+#ACT {You feel less wooden.} {delaffect $myname bark;sg;ccon BARKSKIN}
+#ACT {You feel less destructive.} {delaffect $myname wrath}
+#ACT {The power of darkness fades from your body!} {delaffect $myname pu;sg}
+#ACT {The shadows swirling around you dissipate rapidly.} {delaffect $myname misl;sg}
+#ACT {You no longer feel cut off from the rest of the world...} {delaffect $myname seq;sg;ccon SEQUESTERED}
+#ACT {Your dragon scales melt back into your regular flesh.} {delaffect $myname scale;sg;ccon DRAGONSCALES}
+#ACT {Your flesh loses its stony texture.} {delaffect $myname stone;sg;ccon STONESKIN}
+#ACT {Your form stops blurring.} {delaffect $myname blur;sg;ccon BLURRY}
+#ACT {All of your mirror images have been destroyed!} {delaffect $myname mirror;sg}
+#ACT {Your displaced form snaps back to your physical location!} {delaffect $myname disp;sg;ccon DISPLACED}
+#ACT {Your image is no longer displaced.} {delaffect $myname disp;sg;ccon DISPLACED}
+#ACT {Your globe shimmers, and fades into the air.} {delaffect $myname globe;sg;ccon GLOBED}
+#ACT {Your vitality drains away.} {delaffect $myname vit;sg;VITALIZED}
 
 #ALIAS sadd {#list tocastlist ins -1 %0;#show <100>...<090> Added <130>%0 <090>to cast queue}
 #ALIAS sadd2 {#list tocastlist ins 1 %0;#show <100>...<090> Added <130>%0 <090>to cast queue}

@@ -3,6 +3,7 @@
 #VAR w1 {dragon}
 #VAR w2 {khanjari}
 #VAR poison {jar}
+#VAR condcall {1}
 #VAR garotte {wire}
 #VAR pick {picks}
 #VAR about {pauldron}

@@ -79,6 +79,7 @@
 		#IF {"%1" == "{Eln|Mung|Rrama}"} {lwarr;#var loaded 1};
 		#IF {"%1" == "Nil"} {lsham;#var loaded 1};
 		#IF {"%1" == "{Rrifus|Belo}"} {lrogue;#var loaded 1};
+		#IF {"%1" == "Borus"} {ldruid;#var loaded 1};
 	}
 }
 #MACRO {\t} {#cursor TAB FORWARD}
@@ -251,6 +252,7 @@
 #alias lill {#READ illusionist.tt}
 #alias lsham {#READ shaman.tt}
 #alias lwarr {#READ warrior.tt}
+#alias ldruid {#READ druid.tt}
 
 #alias connect {#session toril torilmud.org 9999}
 #alias mirror {#session mirrormud torilmud.org 6000}
@@ -261,17 +263,22 @@
 
 #MACRO {\C-f} {flee}
 #MACRO {\C-l} {get all corpse}
-#MACRO {\C-a} {#buffer lock}
+#MACRO {\C-p} {#buffer lock}
 
 #MACRO {\eOp} {scan}
 #MACRO {\eOr} {s;#var ld s}
 #MACRO {\eOs} {d;#var ld d}
+#MACRO {\eOw} {d;#var ld d}
 #MACRO {\eOt} {w;#var ld w}
-#MACRO {\eOu} {look room}
+#MACRO {\eOu} {s;#var ld s}
 #MACRO {\eOv} {e;#var ld e}
 #MACRO {\eOx} {n;#var ld n}
 #MACRO {\eOy} {u;#var ld u}
+#MACRO {\eOy} {u;#var ld u}
 #MACRO {\eOq} {#send {look \}}
+#MACRO {\eOl} {#send l}
+
+#macro {\e[23^} {scan}
 
 #ALIAS s {#send s;#var ld s}
 #ALIAS w {#send w;#var ld w}
@@ -284,6 +291,7 @@
 #NOP  Global Aliases
 #NOP =========================================
 
+#ALIAS {kpfix} {#showme {\e>}}
 #ALIAS {stat} {tell kegor stat %0}
 #ALIAS {find} {tell kegor find %1}
 #ALIAS {whois} {tell kegor who %1}

@@ -7,6 +7,7 @@
 #VAR {autobash} {0}
 #VAR {aResc} {1}
 #VAR {auto_loot} {0}
+#VAR {condcall} {1}
 #VAR {cPrac} {1}
 #VAR {poison} {jar}
 #VAR {weapon} {avenger}
