@@ -159,6 +159,10 @@
     }
 }
 
+#ALIAS cs {shapechange %1}
+#ALIAS liw {look in well}
+#ALIAS ew {ent well}
+
 #NOP =========================================
 #NOP  Spell Aliases
 #NOP =========================================
@@ -168,6 +172,7 @@
 #ALIAS dm {c 'detect mag' %1;#var castarg %1}
 #ALIAS arm {c 'armor' %1;#var castarg %1}
 #ALIAS cc {c 'cure crit' %1;#var castarg %1}
+#ALIAS dispel {c 'dispel magic' %1;#var castarg %1}
 #ALIAS rc {c 'remove curse' %1;#var castarg %1}
 #ALIAS vig {c 'vigor crit' %1;#var castarg %1}
 #ALIAS b {c 'barkskin' %1;#var castarg %1}
@@ -181,12 +186,18 @@
 #ALIAS ff {c 'faerie fir' %1;#var castarg %1}
 #ALIAS dd {c 'dust devil' %1;#var castarg %1}
 #ALIAS tvp {c 'transport via plants' %1;#var castarg %1}
+#ALIAS ss {c 'spiked stone' %1;#var castarg %1}
 #ALIAS sun {c 'sunray'}
 #ALIAS harm {c 'harm' %1;#var castarg %1}
 #ALIAS sil {c 'suffoc' %1;#var castarg %1}
-#ALIAS ss {c 'sticks to' %1;#var castarg %1}
 #ALIAS gb {c 'goodb';}
+#ALIAS rtm {c 'rock to mud'}
 #ALIAS di {c 'detect invis' %1;#var castarg %1}
+#ALIAS v {c 'vital' %1;#var castarg %1}
+#ALIAS fb {c 'flame blade' %1;#var castarg %1}
+#ALIAS mw {say moonwell to %1, comin right up;#if {"%1" == "{vt|scornubel|wd|tentowns|zk|dk|gh|bg|ix|cp|moonshaes}"} {c 'moonwell' %1} {tell %1 moonwell -> you;c 'moonwell' %1};#var castarg %1;}
+#ALIAS mws {c 'moonwell' %1}
+#ALIAS cyc {c 'cyclone'}
 #ALIAS rp {c 'remove pois' %1;#var castarg %1}
 
 #SHOWME __ DRUID.tt

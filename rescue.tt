@@ -49,7 +49,7 @@
 #alias {rclear} {#list RescueList clr;#var rindex 0;#show <100>...<090> Rescue List <170>CLEARED<090>}
 #alias {rdel} {#list RescueList fnd {@upfirst{%1}} rdelindex;#list RescueList del {$rdelindex};#show <100>...<090> Removed <140>%1<090> from rescue list.;}
 
-#alias {ratt} {#if {$queue == 0} {#show <100>... <090>attempting resc on %1;rescue %1;#var Rescuee %1;#var queue 1};}
+#alias {ratt} {#if {$queue == 0} {#show <100>... <090>attempting resc on %1;rescue %1;#var Rescuee %1;#var queue 0};}
 #alias {rr} {#var queue 0}
 
 #alias {rlist} {

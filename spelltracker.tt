@@ -144,6 +144,7 @@
 #ACT {Several mirror images of you pop into existence at your side!} {setaffect $myname mirror;sg}
 #ACT {You feel your skin transform into dragon scales.} {setaffect $myname scale;sg}
 #ACT {You feel vitalized.} {setaffect $myname vit;sg}
+#ACT {You feel your heart start to race REALLY FAST!} {setaffect $myname haste;sg}
 #ACT {You feel cut off from the rest of the world...} {setaffect $myname seq;sg}
 #ACT {You feel protected by powers from beyond the grave.} {setaffect $myname pu;sg}
 #ACT {A magical energy shield envelops you!} {setaffect $myname arm;sg}
@@ -164,6 +165,7 @@
 #ACT {The power of darkness fades from your body!} {delaffect $myname pu;sg}
 #ACT {The shadows swirling around you dissipate rapidly.} {delaffect $myname misl;sg}
 #ACT {You no longer feel cut off from the rest of the world...} {delaffect $myname seq;sg;ccon SEQUESTERED}
+#ACT {The world speeds up around you.} {delaffect $myname haste;sg;ccon HASTED}
 #ACT {Your dragon scales melt back into your regular flesh.} {delaffect $myname scale;sg;ccon DRAGONSCALES}
 #ACT {Your flesh loses its stony texture.} {delaffect $myname stone;sg;ccon STONESKIN}
 #ACT {Your form stops blurring.} {delaffect $myname blur;sg;ccon BLURRY}
@@ -171,7 +173,7 @@
 #ACT {Your displaced form snaps back to your physical location!} {delaffect $myname disp;sg;ccon DISPLACED}
 #ACT {Your image is no longer displaced.} {delaffect $myname disp;sg;ccon DISPLACED}
 #ACT {Your globe shimmers, and fades into the air.} {delaffect $myname globe;sg;ccon GLOBED}
-#ACT {Your vitality drains away.} {delaffect $myname vit;sg;VITALIZED}
+#ACT {Your vitality drains away.} {delaffect $myname vit;sg;ccon VITALIZED}
 
 #ALIAS sadd {#list tocastlist ins -1 %0;#show <100>...<090> Added <130>%0 <090>to cast queue}
 #ALIAS sadd2 {#list tocastlist ins 1 %0;#show <100>...<090> Added <130>%0 <090>to cast queue}

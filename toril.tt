@@ -59,6 +59,7 @@
 #NOP  Global Actions
 #NOP =========================================
 
+#ACT {%0 suddenly looks speechless!} {gsay %0 SILENCED}
 #ACT {(Head) %0 - %1} {#var gleader %1}
 #ACT {< P: %1 >} {#var incombat 0;#nop;}
 #ACT {< T: %1 TC:} {#var incombat 1;#nop;}
@@ -93,6 +94,7 @@
     #IF {$Aloot == 1} {loot;p all.coin};
     #IF {$Apoison == 1} {ap};
 	#IF {$dietickeron == 1} {#untick dieticker;#var adie 1};
+	#IF {$aResc == 1} {rr};
     #VAR ccph 0;
     #VAR ccawf 0
 }
@@ -210,6 +212,16 @@
                 } {
                 #VAR Agroup 1;
                 #echo {%c%h} {green} { AUTO GROUP on }
+                }
+}
+
+#ALIAS tcond {
+        #IF {$condcall == 1} {
+                #VAR condcall 0;
+                #echo {%c%h} {red} { COND CALLER off }
+                } {
+                #VAR condcall 1;
+                #echo {%c%h} {green} { COND CALLER on }
                 }
 }
 
