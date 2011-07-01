@@ -15,6 +15,7 @@
 #VAR Acircl 0
 #VAR Aloot 0
 #VAR stonetank 0
+#VAR petitioned 0
 #VAR blurtank 0
 #VAR expmode 0
 #VAR docast 0
@@ -51,9 +52,9 @@
 #NOP =========================================
 
 #unprompt %*
-#prompt {< %1h/%2H %3v/%4V >} {  <100>$myname <020>%1<100>/<020>%2<120> h <100>- <060>%3<100>/<060>%4<090><160> v<090> <100>(@get_affect{$myname} <100>)<090>} {3}
+#prompt {< %1h/%2H %3v/%4V >} {  <100>$myname <020>%1<100>/<020>%2<120> h <100>- <060>%3<100>/<060>%4<090><160> v<090> <100>(@get_affect{$myname} <100>)<090>} {2}
 #nop #prompt {<%0P: %1 >} { %0p: %1} {2}
-#prompt {~^\e[32m<%1> \e[0m} { %1} {2}
+#nop #prompt {~^\e[32m<%1> \e[0m} { %1} {2}
 
 #NOP =========================================
 #NOP  Global Actions
@@ -66,15 +67,16 @@
 #ACT {Autosaving} {save}
 #ACT {PANIC!  You couldn't escape!}  {#IF {$aflee == 1} {flee}}
 #ACT {The %1 seems to be closed.}  {#IF {$auto_path == 1 || $auto_map == 1} {#map undo};#IF {$tdoor == 1} {open %1 $ld}}
-#ACT {the Sojourner's Home Welcomes You!} {#tick {scorestart} {#CR;1;score;#untick scorestart;#split 0 4;} {1}}
-#ACT {Reconnecting.} {#tick {scorestart} {score;#untick scorestart;#split 0 4;} {1}}
-#ACT {Disconnecting previous link.} {#tick {scorestart} {score;#untick scorestart;#split 0 4;} {1}}
+#ACT {the Sojourner's Home Welcomes You!} {#tick {scorestart} {#CR;1;score;#untick scorestart;#split 0 3;} {1}}
+#ACT {Reconnecting.} {#tick {scorestart} {score;#untick scorestart;#split 0 3;} {1}}
+#ACT {Disconnecting previous link.} {#tick {scorestart} {score;#untick scorestart;#split 0 3;} {1}}
 #ACT {Let the journey begin anew, for the final time.} {#showme \e[2J;n}
 #ACT {Please enter your term} {#CR}
 #ACT {Score information for %1} {
 	#var myname %1;
 	#IF {$loaded} {} {
 		#IF {"%1" == "{Rrema|Hibboble}"} {lench;#var loaded 1};
+		#IF {"%1" == "Ssikez"} {lelem;#var loaded 1};
 		#IF {"%1" == "Kirros"} {lill;#var loaded 1};
 		#IF {"%1" == "Elner"} {lnec;#var loaded 1};
 		#IF {"%1" == "{Eln|Mung|Rrama}"} {lwarr;#var loaded 1};
@@ -260,6 +262,7 @@
 
 #alias lrogue {#READ rogue.tt}
 #alias lench {#READ enchanter.tt}
+#alias lelem {#READ elementalist.tt}
 #alias lnec {#READ necro.tt}
 #alias lill {#READ illusionist.tt}
 #alias lsham {#READ shaman.tt}
@@ -501,7 +504,10 @@
 		} {
 			#IF {"%1" != "%* %*"} {
 			#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 <100>: <170>%2<090>}}
-		}
+		};
+		#IF {"%1" == "{Silvanus|Gruumsh|Thard|Shevarash|Marthammor|Dugmaren}"} {
+			#IF {$petitioned == 0} {#system petition.php;#var petitioned 1};
+		};
 	} {
 		repl $afkmessage;
 		#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 <100>: <170>%2<090>};
@@ -518,8 +524,10 @@
 #ACT {%1 says %2} {#IF {"%1" != "%* %*"}
 	{#var thetime {@gettime{}};#line log chat.txt {<100>$thetime <090>%1 : %2}}} 
 
-#ACT {%1 responds to your petition with %2} {#IF {"%1" != "%* %*"}
-	{#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 : <010>%2<090>}}}
+#ACT {%1 responds to your petition with %2} {#IF {"%1" != "%* %*"} {
+	#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 : <010>%2<090>};
+	#if {$petitioned == 0} {#system petition.php;#var petitioned 1};
+	};}
 
 #ACT {%1 GCC: %2} {#IF {"%1" != "%* %*"}
 	{#var thetime {@gettime{}};#line log chat.txt {<100>$thetime <090>%1 : <100>%2<090>}}}

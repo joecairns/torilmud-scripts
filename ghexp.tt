@@ -1,9 +1,10 @@
 #var ghexp 1
+#var toqueue 0
 #tick {lfm} {look} {60}
 
 #act {A gigantic eight legged insect is entangled in it's own web.} {#if {$ghexp == 1} {ce spider;#var ghexp 0}}
 #act {An enormous crocodile stares upwards, cackling with mouth ajar.} {#if {$ghexp == 1} {ce crocodile;#var ghexp 0}}
 #act {A stately looking wizard is chained here to the bottom of the pit.} {#if {$ghexp == 1} {ce wizard;#var ghexp 0}}
-#act {A tiny globe of light can't seem to muster the energy to escape.} {#if {$ghexp == 1} {ce globe;#var ghe    xp 0}}
+#act {A tiny globe of light can't seem to muster the energy to escape.} {#if {$ghexp == 1} {ce globe;#var ghexp 0}}
 
 #act {Your blood freezes} {#if {$ghexp == 0} {#var ghexp 1}}

@@ -8,7 +8,7 @@
 
 #SUB {You have finished praying for %1.} { <100>[<070>[ <050>_<150>_ <070>%1 <150>_<050>_ <070>]<100>]<090>}
 
-#ALIAS totem {g totem;rem mace;hold totem;use totem;#delay {2} {order followers rep};rem totem;p totem;wield mace}
+#ALIAS totem {g totem;rem $w1;hold totem;use totem;#delay {2} {order followers rep};rem totem;p totem;wield $w1}
 
 #NOP ****************************
 #NOP *** Vitlist Stuff       ****
