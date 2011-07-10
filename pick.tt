@@ -1,3 +1,0 @@
-#ACT {You failed to pick the lock.} {#DELAY {3} {pick crate}}
-#ACT {Your hands are still shaking from that last attempt, rest a bit.} {#DELAY {3} {pick crate}}
-
