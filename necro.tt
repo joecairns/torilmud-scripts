@@ -146,6 +146,7 @@
 #ALIAS {nerve} {c 'nerve dance' %1;#var castarg %1;}
 #ALIAS {pu} {c 'protect undead' %1;#var castarg %1;}
 #ALIAS {belt} {c 'beltyn' %1;#var castarg %1;}
+#ALIAS {rejuv} {c 'rejuv maj' %1;#var castarg %1;}
 #ALIAS {glam} {c 'corpse glam' %1;#var castarg %1;}
 #ALIAS {shack} {c 'soul shackl';#var castarg %1;}
 #ALIAS {abi} {c 'abi dal' %1;#var castarg %1}

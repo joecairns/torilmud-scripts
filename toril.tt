@@ -13,6 +13,7 @@
 #VAR asearch 0
 #VAR imafk 0
 #VAR Acircl 0
+#VAR smscontrol 0
 #VAR Aloot 0
 #VAR stonetank 0
 #VAR petitioned 0
@@ -76,7 +77,7 @@
 	#var myname %1;
 	#IF {$loaded} {} {
 		#IF {"%1" == "{Rrema|Hibboble}"} {lench;#var loaded 1};
-		#IF {"%1" == "Ssikez"} {lelem;#var loaded 1};
+		#IF {"%1" == "Rrana"} {lelem;#var loaded 1};
 		#IF {"%1" == "Kirros"} {lill;#var loaded 1};
 		#IF {"%1" == "Elner"} {lnec;#var loaded 1};
 		#IF {"%1" == "{Eln|Mung|Rrama}"} {lwarr;#var loaded 1};
@@ -158,6 +159,24 @@
                 } {
                 #VAR Aloot 1;
                 #echo {%c%h} {green} { AUTO LOOTER on }
+                }
+}
+
+#ALIAS tsms {
+    #IF {$smscontrol == 1} {
+                #VAR smscontrol 0;
+                #echo {%c%h} {red} { SMS CONTROL off };
+				#untick smscontroller;
+                } {
+                #VAR smscontrol 1;
+                #echo {%c%h} {green} { SMS CONTROL on };
+					#tick {smscontroller} {
+						#script {smsobject} {cat ~/tt/ttsms/data.txt};
+						#if {"$smsobject" != ""} {$smsobject[1]};
+						#system {rm ~/tt/ttsms/data.txt};
+						#system {touch ~/tt/ttsms/data.txt};
+						#system {chmod 777 ~/tt/ttsms/data.txt};
+					} {15};
                 }
 }
 
@@ -310,6 +329,7 @@
 #ALIAS {stat} {tell kegor stat %0}
 #ALIAS {find} {tell kegor find %1}
 #ALIAS {whois} {tell kegor who %1}
+#ALIAS {inv} {#send inventory}
 #ALIAS {'} {gsay %0}
 #ALIAS {`} {#var enemy %1;con $enemy}
 #ALIAS {aa} {assist $tank}
@@ -440,7 +460,7 @@
 #NOP  Communication Logging
 #NOP =========================================
 
-#ACT {%w group-%3s %0} {
+#ACT {%w group-%3s '%0'$} {
    #IF {"$stgsay" == "1"} {
 	#IF {"@lcase{%0}" == "%*haste%*"}	
 		{
@@ -495,18 +515,18 @@
    } {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 : <030>%0<090>}};
 }
 
-#ACT {%1 group-say %1} {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <120>-\> <090>: <030>%1<090>}}
+#ACT {%1 group-say '%1'$} {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <120>-\> <090>: <030>%1<090>}}
 
-#ACT {%1 tells you %2} {
+#ACT {%1 tells you '%2'$} {
 	#IF {$imafk == 0} {
 		#IF {"%1" == "Kegor"} {
-			#var thetime {@gettime{}};#line log comms.txt {<100>$thetime KEGOR <090>: <060>%2<090>}
+			#var thetime {@gettime{}};#line log comms.txt {<100>$thetime KEGOR <090>: <060>%2<090>};
+			#IF {$smscontrol == 1} {#system dosms -p 15617040453 -t "%2";};
 		} {
 			#IF {"%1" != "%* %*"} {
-			#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 <100>: <170>%2<090>}}
-		};
-		#IF {"%1" == "{Silvanus|Gruumsh|Thard|Shevarash|Marthammor|Dugmaren}"} {
-			#IF {$petitioned == 0} {#system petition.php;#var petitioned 1};
+				#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 <100>: <170>%2<090>}
+			};
+			#IF {$smscontrol == 1} {#system dosms -p 15617040453 -t "%1 tell: %2";};
 		};
 	} {
 		repl $afkmessage;
@@ -515,21 +535,25 @@
 	}
 }
 
-#ACT {You tell %1 %2} {
+#ACT {You tell %1 '%2'$} {
 	#IF {$imafk == 0} {
 		#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>You <170>-\> <060>%1 <090>: <160>%2<090>}
 	}
 }
 
-#ACT {%1 says %2} {#IF {"%1" != "%* %*"}
-	{#var thetime {@gettime{}};#line log chat.txt {<100>$thetime <090>%1 : %2}}} 
+#ACT {%1 says '%2'$} {#IF {"%1" != "%* %*"}
+	{#var thetime {@gettime{}};#line log chat.txt {<100>$thetime <090>%1 : %2}};
+	#IF {$smscontrol == 1} {
+		#system dosms -p 15617040453 -t "%1 just said %2";
+	};
+} 
 
-#ACT {%1 responds to your petition with %2} {#IF {"%1" != "%* %*"} {
+#ACT {%1 responds to your petition with '%2'$} {#IF {"%1" != "%* %*"} {
 	#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 : <010>%2<090>};
-	#if {$petitioned == 0} {#system petition.php;#var petitioned 1};
+	#system dosms -p 15617040453 -t "%1 petitioned %2";
 	};}
 
-#ACT {%1 GCC: %2} {#IF {"%1" != "%* %*"}
+#ACT {%1 GCC: '%2'$} {#IF {"%1" != "%* %*"}
 	{#var thetime {@gettime{}};#line log chat.txt {<100>$thetime <090>%1 : <100>%2<090>}}}
 
 #ACT {%*You have learned something new about %0!} {
@@ -542,14 +566,14 @@
     #line log other.txt {<100>$thetime <020>LEARNED<090> : <120>%0<090>}
 }
 
-#ACT {%1 OOC: %2} {#IF {"%1" != "%* %*"}
+#ACT {%1 OOC: '%2'$} {#IF {"%1" != "%* %*"}
 {#var thetime {@gettime{}};#line log chat.txt {<100>$thetime <090>%1 : <120>%2<090>}
 }}
 
-#ACT {%w ASSOC: %2} {
+#ACT {%w ASSOC: '%2'$} {
 #var thetime {@gettime{}};#line log chat.txt {<100>$thetime <090>%1 : <050>%2<090>}
 }
 
-#ACT {%w ASSOC:: %2} {
+#ACT {%w ASSOC:: '%2'$} {
 #var thetime {@gettime{}};#line log chat.txt {<100>$thetime <090>%1 : <050>%2<090>}
 }

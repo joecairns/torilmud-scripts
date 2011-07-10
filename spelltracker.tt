@@ -3,6 +3,7 @@
 #NOP =========================================
 
 #var has_globe 0;#var has_stone 0;#var has_blur 0;#var has_scale 0;#var has_displace 0;#var do_glance 1;#var nla none;#var has_mirror 0;
+#var has_eleemb 0;
 
 #ACT {%w is in an excellent condition. (%2)} { #var %1_hpercent 100;#var nla %1 }
 #ACT {%w has a few scratches. (%2)} { #var %1_hpercent 95;#var nla %1 }
@@ -15,6 +16,9 @@
 #ACT {%1 body seems to be made of stone!} {#var has_stone 1}
 #ACT {%1 body is covered in dragon scales!} {#var has_scale 1}
 #ACT {%1 form is blurred and difficult to make out!} {#var has_blur 1}
+#ACT {%1 is consumed with elemental water!} {#var has_eleemb 1}
+#NOP #ACT {%1 } {#var has_eleemb 1}
+#NOP #ACT {%1 } {#var has_eleemb 1}
 #ACT {%1 is surrounded by a cluster of mirror images.} {#var has_mirror 1}
 #ACT {%1 encased in a shimmering globe!} {#var has_globe 1}
 #ACT {%1 form is displaced, and difficult to track!} {#var has_displace 1}
@@ -58,6 +62,8 @@
     #if {${%1_hpercent} < 50 && ${%1_hpercent} >= 30} {#var result {<050>nw<100> _ <070>%1}};
     #if {${%1_hpercent} < 30 && ${%1_hpercent} >= 15} {#var result {<110>ph<100> _ <070>%1}};
     #if {${%1_hpercent} < 15 && ${%1_hpercent} >= 0} {#var result {<010>aw<100> _ <070>%1}};
+	#if {${%1_affects[eleemb]}} {#var result $result <100>Emb<130>o<030>d<100>y<088>};
+	#if {${%1_affects[emaint]}} {#var result $result <100>Ema<160>i<060>n<100>t<088>};
     #if {${%1_affects[scale]}} {#var result $result <130>Ds<088>};
     #if {${%1_affects[stone]}} {#var result $result <100>Ss<088>}; 
     #if {${%1_affects[blur]}} {#var result $result <140>Bl<088>}; 
@@ -79,7 +85,9 @@
 {
     #unvar myspells;
 	#var myspells  ;
-    #if {${%1_affects[scale]}} {#var myspells $myspells <130>Ds<088>;};
+	#if {${%1_affects[eleemb]}} {#var myspells $myspells <100>Emb<130>o<030>d<100>y<088>};
+	#if {${%1_affects[emaint]}} {#var myspells $myspells <100>Ema<160>i<060>n<100>t<088>};
+    #if {${%1_affects[scale]}} {#var myspells $myspells <130>Ds<088>};
     #if {${%1_affects[stone]}} {#var myspells $myspells <100>Ss<088>};
 	#if {${%1_affects[mirror]}} {#var myspells $myspells <150>Mi<050>r<150>r<088>};
 	#if {${%1_affects[misl]}} {#var myspells $myspells <070>M<100>i<070>sl<088>};
@@ -124,14 +132,22 @@
 #IF {$totalplayers <= 0} {#nop} {#loop 1 $totalplayers cnt {#line log spells.txt { <100>.<090>}}}
 } 
 
+#NOP temporarily remove SG for file size issues
+#UNALIAS sg
+#ALIAS sg {#NOP}
+#NOP ....
+
 #ACT {You concentrate and harden your body into thick scales.} {setaffect $myname sskin;sg}
 #ACT {Your scales become soft once more.} {delaffect $myname sskin;sg}
 
 #ACT {%w's skin transforms into hard-plated dragon scales.} {setaffect %1 scale;sg}
 #ACT {%w's form becomes blurred and difficult to make out!} {setaffect %1 blur;sg}
 #ACT {%w's skin seems to turn to stone.} {setaffect %1 stone;sg}
-#ACT {%w begins to shimmer.} {setaffect %1 globe;sg}
-#ACT {%w starts to move with uncanny speed!} {setaffect %1 haste;sg;#tick {%1_haste} {delaffect %1 haste;#untick %1_haste;sg} {280}}
+#ACT {%w begins to shimmer.} {setaffect %1 globe;sg;
+#tick {%1_globe30} {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <120>-\> <090>: <070>%1's <010>GLOBE <100>expires <070>in <170>30 <100>seconds.<090>};#untick %1_globe30} {210}; 
+#tick {%1_globe10} {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <120>-\> <090>: <170>%1's <010>GLOBE <110>expires <070>in <170>10 <110>seconds.<090>};#untick %1_globe10} {230}; 
+}
+#ACT {%w starts to move with uncanny speed!} {setaffect %1 haste;sg;#tick {%1_haste} {delaffect %1 haste;#untick %1_haste;sg} {324}}
 #ACT {%w's form is displaced.} {setaffect %1 disp;sg}
 #ACT {%w's skin gains the texture and toughness of bark.} {setaffect %1 bark;sg}
 
@@ -139,7 +155,10 @@
 #ACT {A sphere of swirling shadows envelops you...} {setaffect $myname misl;sg}
 #ACT {You feel your skin harden to stone.} {setaffect $myname stone;sg}
 #ACT {Your form begins to blur!} {setaffect $myname blur;sg}
-#ACT {You begin to shimmer.} {setaffect $myname globe;sg}
+#ACT {You begin to shimmer.} {setaffect $myname globe;sg;
+#tick {my_globe30} {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <120>-\> <090>: <070>Your <010>GLOBE <100>expires <070>in <170>30 <100>seconds.<090>};#untick my_globe30} {210}; 
+#tick {my_globe10} {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <120>-\> <090>: <170>Your <010>GLOBE <110>expires <070>in <170>10 <110>seconds.<090>};#untick my_globe10} {230}; 
+}
 #ACT {Your form is displaced!} {setaffect $myname disp;sg}
 #ACT {Several mirror images of you pop into existence at your side!} {setaffect $myname mirror;sg}
 #ACT {You feel your skin transform into dragon scales.} {setaffect $myname scale;sg}
@@ -153,6 +172,12 @@
 
 #ACT {You feel your god smile upon your destructive soul.} {setaffect $myname wrath}
 #ACT {You gain the mindset of a ferocious viper!} {setaffect $myname vmind;sg}
+
+#ACT {Your body begins to flow and liquefy as you are transformed into a water elemental!} {setaffect $myname eleemb;setaffect $myname emaint;sg}
+#ACT {Your form begins to harden and solidify as you are transformed into an earth elemental.} {setaffect $myname eleemb;setaffect $myname emaint;sg}
+#ACT {Your form begins to swirl and waver as you are transformed into an air elemental.} {setaffect $myname eleemb;setaffect $myname emaint;sg}
+#ACT {Your body shimmers and sheds its elemental form, returning to normal.} {delaffect $myname eleemb;sg}
+#ACT {Your elemental embodiment enchantment fades, and you feel able to focus again.} {delaffect $myname emaint;sg}
 
 #ALIAS {ccon} { #IF {$condcall == 1} { gsay %0 no more !} }
 

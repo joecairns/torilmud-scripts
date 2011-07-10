@@ -1,6 +1,7 @@
 #VAR {bag} {silk}
 #VAR {bag2} {chest}
 #VAR {book} {book}
+#VAR {temp} {1}
 #VAR {stgsay} {1}
 
 #SUB {You have finished memorizing %1.} {<100>[<030>+ <060>_<160>_ <070>%1 <160>_<060>_<030> +<100>]<090>}
@@ -8,7 +9,6 @@
 #ALIAS {dopri} {prior blur;prior dragonscale}
 #ALIAS {scrib} {rem $h1;rem $h2;g quill;hold $book; hold quill;rest}
 #ALIAS {dscrib} {rem quill;rem $book;p quill;hold $h1;hold $h2;st}
-
 
 #NOP =========================================
 #NOP  Docast, repeats single spell
@@ -146,70 +146,45 @@
 #NOP =========================================
 
 #ALIAS {pwb} {c 'power word blind' %1;#var pwbtarg %1;#var castarg %1}
-#ACT {^%0 is temporarily blinded by your word!} {gsay %0 ($pwbtarg) is temporarily blind!}
-#ACT {^%0 won't be seeing much in the near future..} {gsay %0 ($pwbtarg) is permanently blind! bahahah!}
+#ACT {^%0 is temporarily blinded by your word!} {gsay %0 ($pwbtarg) is temporarily blinded!}
+#ACT {^%0 won't be seeing much in the near future..} {gsay %0 ($pwbtarg) is blind forever! bwaahahaha!}
 #ALIAS {hst} {hs %1;#var castarg %1}
 
 #ALIAS {gate} {c 'gate' %1;#var castarg %1}
 #ALIAS {relo} {c 'relocate' %1;#var castarg %1}
-#ALIAS {para} {c 'major para' %1;#var castarg %1}
 #ALIAS {dm} {c 'detect magic' %1;#var castarg %1}
-#ALIAS {mm} {c 'magic missile' %1;#var castarg %1}
-#ALIAS {mshield} {c 'missile shield' %1;#var castarg %1}
 #ALIAS {mf} {c 'mage flame' %1;#var castarg %1}
 #ALIAS {mc} {c 'minor crea' %1;#var castarg %1}
 #ALIAS {di} {c 'detect invis' %1;#var castarg %1}
-#ALIAS {ff} {c 'faerie fire' %1;#var castarg %1}
 #ALIAS {dd} {c 'dimension door' %1;#var castarg %1}
-#ALIAS {cons} {c 'constrict' %1;#var castarg %1}
-#ALIAS {breach} {c 'breach' %1;#var castarg %1}
-#ALIAS {blink} {c 'blink' %1;#var castarg %1}
 #ALIAS {clair} {c 'clair' %1;#var castarg %1}
-#ALIAS {ident} {c 'identify' %1;#var castarg %1}
-#ALIAS {fly} {c 'fly' %1;#var castarg %1}
-#ALIAS {fog} {c 'solid fog' %1}
-#ALIAS {red} {c 'reduce' %1;#var castarg %1}
-#ALIAS {prism} {c 'prismatic spray' %1}
 #ALIAS {feeb} {c 'feeblemind' %1;#var castarg %1}
-#ALIAS {need} {c 'needle' %1;#var castarg %1}
-#ALIAS {esh} {c 'energy shield' %1;#var castarg %1}
 #ALIAS {loc} {c 'locate object' %0;#var castarg %1}
-#ALIAS {ds} {#send ds %1;#var castarg %1}
 #ALIAS {ss} {c 'stone' %1;#var castarg %1}
-#ALIAS {bl} {c 'blur' %1;#var castarg %1}
-#ALIAS {globe} {gi %1;#var castarg %1}
-#ALIAS {chrom} {c 'chromatic orb' %1;#var castarg %1}
-#ALIAS {chil} {c 'chill touch' %1;#var castarg %1}
-#ALIAS {tele} {c 'teleport' %1}
+#ALIAS {tele} {c 'teleport'}
 #ALIAS {invis} {c 'invisib' %1;#var castarg %1}
 #ALIAS {dispel} {c 'dispel magic' %1;#var castarg %1}
 #ALIAS {cone} {c 'cone of cold' %1;#var castarg %1}
 #ALIAS {ray} {c 'ray of enfeeb' %1;#var castarg %1}
-#ALIAS {slow} {c 'slownes' %1;#var castarg %1}
-#ALIAS {charm} {c 'charm person' %1;#var castarg %1}
 #ALIAS {sleep} {c 'sleep' %1;#var castarg %1}
 #ALIAS {lev} {c 'levitate' %1;#var castarg %1}
 #ALIAS {csh} {c 'coldshi';#var castarg %1}
-#ALIAS {bb} {c 'blackligh'}
-#ALIAS {ts} {c 'time stop'}
-#ALIAS {griff} {c 'aura of the griff'}
-#ALIAS {ener} {c 'enervate' %1;#var castarg %1}
+#ALIAS {es} {c 'earth stones' %1;#var castarg %1}
+#ALIAS {eb} {#send eb %1;#var castarg %1}
+#ALIAS {aemb} {#send eae %1;#var castarg %1}
+#ALIAS {wemb} {#send ewe %1;#var castarg %1}
+#ALIAS {femb} {c 'elemental fire embod' %1;#var castarg %1}
+#ALIAS {eemb} {c 'elemental earth embod' %1;#var castarg %1}
+#ALIAS {dust} {c 'glitterdust'}
+#ALIAS {kin} {c 'summon elemen kin' %1;#var castarg %1}
+#ALIAS {ele} {c 'conjure elemental' %1;#var castarg %1}
+#ALIAS {sil} {c 'ice ton' %1;#var castarg %1}
+#ALIAS {lb} {c 'lava burst'}
+#ALIAS {tl} {c 'thunder lance' %1;#var castarg %1}
+#ALIAS {ffog} {c 'fire fog' %1;#var castarg %1}
+#ALIAS {efog} {c 'earth fog' %1;#var castarg %1}
+#ALIAS {ward} {c 'elemental ward' %1;#var castarg %1}
 
-#ALIAS {dmem} {prior power word blind;prior globe of invul;prior fly;prior constrict;prior reduce;prior enlarge;prior levi;prior dispel magic;prior detect magic;prior detect invis;prior invis;prior haste;prior minor creat;prior blur;prior dragonscales;prior time stop;prior gate;prior relo}
-
-#ALIAS {gfr} {f relo;mem gate}
-#ALIAS {rfg} {f gate;mem relo}
-#ALIAS {dfg} {f aura of the griff;mem dragonscale}
-#ALIAS {gfd} {f dragonscale;mem aura of the griff}
-#ALIAS {pfb} {f power word blind;mem prism}
-#ALIAS {bfp} {f prism;mem power word blind}
 #ALIAS {sskin} {innate scale}
-
-#ALIAS {sss} {ss me}
-#ALIAS {dss} {ds me}
-#ALIAS {bls} {bl me}
-
-#alias pb {prior blur}
-#alias pd {prior dragonscales}
 
 #showme __ ELEMENTALIST.tt

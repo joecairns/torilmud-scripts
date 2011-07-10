@@ -177,7 +177,7 @@
 #ALIAS {ds} {#send ds %1;#var castarg %1}
 #ALIAS {ss} {c 'stone' %1;#var castarg %1}
 #ALIAS {bl} {c 'blur' %1;#var castarg %1}
-#ALIAS {globe} {gi %1;#var castarg %1}
+#ALIAS {globe} {gi %1;#var castarg %1;}
 #ALIAS {chrom} {c 'chromatic orb' %1;#var castarg %1}
 #ALIAS {chil} {c 'chill touch' %1;#var castarg %1}
 #ALIAS {tele} {c 'teleport' %1}
