@@ -1,5 +1,5 @@
-#VAR {bag} {silk}
-#VAR {bag2} {chest}
+#VAR {bag} {hole}
+#VAR {bag2} {gut}
 #VAR {book} {book}
 #VAR {stgsay} {1}
 

@@ -14,22 +14,6 @@
 #ALIAS flyon {rem $about;p $about;g wings;wear wings}
 #ALIAS flyoff {rem wings;p wings;g $about;wear $about}
 
-#ACT {Your scales become soft once more.} {
-#VAR thetime {@gettime{}};
-#line log other.txt {<100>$thetime <060>scale<160>skin <070>Down <100>!!}}
-
-#ACT {Your senses dull and your blood is cooled.} {
-#VAR thetime {@gettime{}};
-#line log other.txt {<100>$thetime <110>viper<010>mind <070>Down <100>!!}}
-
-#ACT {You gain the mindset of a ferocious viper!} {
-#VAR thetime {@gettime{}};
-#line log other.txt {<100>$thetime <110>viper<010>mind <170>UP <070>!!}}
-
-#ACT {You concentrate and harden your body into thick scales.} {
-#VAR thetime {@gettime{}};
-#line log other.txt {<100>$thetime <060>scale<160>skin <170>UP <070>!!}}
-
 #ACT {As your poison takes effect, %0 appears to go blind!} {gsay blind --> %0}
 
 #NOP =========================================

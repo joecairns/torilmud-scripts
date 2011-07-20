@@ -80,7 +80,7 @@
 		#IF {"%1" == "Rrana"} {lelem;#var loaded 1};
 		#IF {"%1" == "Kirros"} {lill;#var loaded 1};
 		#IF {"%1" == "Elner"} {lnec;#var loaded 1};
-		#IF {"%1" == "{Eln|Mung|Rrama}"} {lwarr;#var loaded 1};
+		#IF {"%1" == "{Eln|Mung|Hiyos}"} {lwarr;#var loaded 1};
 		#IF {"%1" == "Nil"} {lsham;#var loaded 1};
 		#IF {"%1" == "{Rrifus|Belo}"} {lrogue;#var loaded 1};
 		#IF {"%1" == "Borus"} {ldruid;#var loaded 1};

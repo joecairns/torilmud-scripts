@@ -1,6 +1,7 @@
 #READ autoassist.tt
 #READ rescue.tt
 
+#VAR autoassist 0
 #VAR {bag} {silk}
 #VAR {bag2} {chest}
 #VAR {myname} {Eln}
