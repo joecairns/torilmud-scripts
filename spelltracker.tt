@@ -132,10 +132,6 @@
 #IF {$totalplayers <= 0} {#nop} {#loop 1 $totalplayers cnt {#line log spells.txt { <100>.<090>}}}
 } 
 
-#NOP temporarily remove SG for file size issues
-#UNALIAS sg
-#ALIAS sg {#NOP}
-#NOP ....
 
 #ACT {You concentrate and harden your body into thick scales.} {setaffect $myname sskin;sg}
 #ACT {Your scales become soft once more.} {delaffect $myname sskin;sg}

@@ -1,7 +1,7 @@
 #VAR bag {silk}
 #VAR bag2 {chest}
-#VAR w1 {dragon}
-#VAR w2 {khanjari}
+#VAR w1 {khanjari}
+#VAR w2 {bane}
 #VAR poison {jar}
 #VAR condcall {1}
 #VAR garotte {wire}
