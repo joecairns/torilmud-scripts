@@ -1,12 +1,12 @@
-#VAR bag {silk}
-#VAR bag2 {chest}
+#VAR bag {hole}
+#VAR bag2 {goufa}
 #VAR w1 {khanjari}
 #VAR w2 {bane}
 #VAR poison {jar}
 #VAR condcall {1}
 #VAR garotte {wire}
-#VAR pick {picks}
-#VAR about {pauldron}
+#VAR pick {string}
+#VAR about {flies}
 
 #MACRO {\eOq} {be}
 #MACRO {\eOw} {te}
@@ -156,8 +156,9 @@ assa $enemy;
 #NOP =========================================
 
 #ALIAS in {say crescent moon}
-#ALIAS disp {say fell stars}
-#ALIAS globe {say deeply defend}
+#ALIAS ds {say fell stars}
+#ALIAS bl {say blend}
+#ALIAS glb {say deeply defend}
 #ALIAS haste {say accelerate}
 
 #NOP =========================================

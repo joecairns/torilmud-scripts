@@ -1,6 +1,6 @@
-#VAR {bag} {silk}
-#VAR {bag2} {gut}
-#VAR {book} {spellbook}
+#VAR {bag} {hole}
+#VAR {bag2} {silk}
+#VAR {book} {skull}
 #VAR {stgsay} {1}
 
 #SUB {You have finished memorizing %1.} {<100>[<070>_<110>+<010>( <070>%1 <010>)<110>+<070>_<100>]<090>}

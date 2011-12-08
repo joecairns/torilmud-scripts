@@ -68,6 +68,7 @@
     #if {${%1_affects[stone]}} {#var result $result <100>Ss<088>}; 
     #if {${%1_affects[blur]}} {#var result $result <140>Bl<088>}; 
     #if {${%1_affects[haste]}} {#var result $result <110>Hst<088>};
+	#if {${%1_affects[fass]}} {#var result $result <010>F<110>A<088>};
     #if {${%1_affects[bark]}} {#var result $result <030>Barka088>};
 	#if {${%1_affects[mirror]}} {#var result $result <150>Mi<050>r<150>r<088>};
 	#if {${%1_affects[misl]}} {#var result $result <070>M<100>i<070>sl<088>};
@@ -93,6 +94,7 @@
 	#if {${%1_affects[misl]}} {#var myspells $myspells <070>M<100>i<070>sl<088>};
     #if {${%1_affects[blur]}} {#var myspells $myspells <140>Bl<088>};
     #if {${%1_affects[haste]}} {#var myspells $myspells <110>Hst<088>};
+	#if {${%1_affects[fass]}} {#var myspells $myspells <010>F<110>A<088>};
     #if {${%1_affects[bark]}} {#var myspells $myspells <030>Bark<088>};
 	#if {${%1_affects[seq]}} {#var myspells $myspells <160>Seq<088>};
 	#if {${%1_affects[wrath]}} {#var myspells $myspells <110>W<010>rath<088>};
@@ -132,9 +134,11 @@
 #IF {$totalplayers <= 0} {#nop} {#loop 1 $totalplayers cnt {#line log spells.txt { <100>.<090>}}}
 } 
 
-
 #ACT {You concentrate and harden your body into thick scales.} {setaffect $myname sskin;sg}
 #ACT {Your scales become soft once more.} {delaffect $myname sskin;sg}
+
+#ACT {You attack %* with monstrous fury!} {delaffect $myname fass;sg;#tick {fassup} {setaffect $myname fass;sg;#untick fassup} {90}}
+#ACT {You assault %* with furious rage, striking %w down!} {delaffect $myname fass;sg;#tick {fassup} {setaffect $myname fass;sg;#untick fassup} {90}}
 
 #ACT {%w's skin transforms into hard-plated dragon scales.} {setaffect %1 scale;sg}
 #ACT {%w's form becomes blurred and difficult to make out!} {setaffect %1 blur;sg}

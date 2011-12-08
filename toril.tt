@@ -18,6 +18,11 @@
 #VAR stonetank 0
 #VAR petitioned 0
 #VAR blurtank 0
+#VAR currtells 0
+#VAR curracc 0
+#VAR currgs 0
+#VAR currpet 0
+#VAR currlrn 0
 #VAR expmode 0
 #VAR docast 0
 #VAR checkcast 0
@@ -53,8 +58,27 @@
 #NOP =========================================
 
 #unprompt %*
-#prompt {< %1h/%2H %3v/%4V >} {  <100>$myname <020>%1<100>/<020>%2<120> h <100>- <060>%3<100>/<060>%4<090><160> v<090> <100>(@get_affect{$myname} <100>)<090>} {2}
-#nop #prompt {<%0P: %1 >} { %0p: %1 } {1}
+#ACT {< %1h/%2H %3v/%4V >} {
+	#MATH {myhper} {%1 * 100 / %2};
+    #IF {$myhper > 100} { #var currhealth {<120>%1};
+        #var chgr {<120>||||||||||||||||};};
+    #IF {$myhper == 100 } { #var currhealth {<020>%1};
+        #var chgr {<020>||||||||||||||};};
+    #IF {$myhper < 100 && $myhper >= 90} { #var currhealth {<030>%1};
+        #var chgr {<030>||||||||||||};};
+    #IF {$myhper < 90 && $myhper >= 75} { #var currhealth {<130>%1};
+        #var chgr {<130>||||||||||};};
+    #IF {$myhper < 75 && $myhper >= 50} { #var currhealth {<150>%1};
+        #var chgr {<150>||||||||};};
+    #IF {$myhper < 50 && $myhper >= 30} { #var currhealth {<050>%1};
+        #var chgr {<050>||||||};};
+    #IF {$myhper < 30 && $myhper >= 15} { #var currhealth {<110>%1};
+        #var chgr {<110>||||};};
+    #IF {$myhper < 15 && $myhper >= 0} { #var currhealth {<010>%1};
+        #var chgr {<010>||} };
+}
+#prompt {< %1h/%2H %3v/%4V >} {  <100>$myname $currhealth<100>/<020>%2<120> <060>%3<100>/<060>%4<090> <100>[@get_affect{$myname} <100>] [ <170>t<100>:<070>$currtells <100>] $chgr} {2}
+#nop #prompt {< P: %1 >} { %0p: %1 } {1}
 #nop #prompt {~^\e[32m<%1> \e[0m} { %1} {1}
 
 #NOP =========================================
@@ -81,10 +105,13 @@
 		#IF {"%1" == "Elner"} {lnec;#var loaded 1};
 		#IF {"%1" == "{Eln|Mung|Hiyos}"} {lwarr;#var loaded 1};
 		#IF {"%1" == "Nil"} {lsham;#var loaded 1};
-		#IF {"%1" == "{Rrifus|Belo}"} {lrogue;#var loaded 1};
+		#IF {"%1" == "{Siggol|Rrifus|Belo}"} {lrogue;#var loaded 1};
+		#IF {"%1" == "Siggol"} {setaffect $myname fass;sg};
 		#IF {"%1" == "Borus"} {ldruid;#var loaded 1};
-	}
+		#nop #send assoc chat mung thepasswrd;
+	};
 }
+#ACT {You rejoin the land of the living...} {#nop #send assoc chat mung thepasswrd;}
 #MACRO {\t} {#cursor TAB FORWARD}
 
 #ACT {You receive your share of experience.}  {
@@ -332,6 +359,7 @@
 #ALIAS {`} {#var enemy %1;con $enemy}
 #ALIAS {aa} {assist $tank}
 #ALIAS {f} {forget %0}
+#ALIAS {clr} {#var currtells 0; #var curracc 0; #var currgs 0; #var currlrn 0;}
 #ALIAS {sskin} {innate scale}
 #ALIAS {wi} {wiz &cL%0&N}
 #ALIAS {vm} {innate viper}
@@ -355,12 +383,12 @@
 #ALIAS {gp} {get %1 $pbag}
 #ALIAS {g} {get %1 $bag}
 #ALIAS {g2} {get %1 $bag2}
-#ALIAS {ggs} {#grep group-says}
+#ALIAS {ggs} {#var currgs 0;#grep group-says}
 #ALIAS {ggcc} {#grep GCC:}
-#ALIAS {gacc} {#grep ASSOC:}
-#ALIAS {gl} {#grep learned something}
-#ALIAS {gpet} {#grep petition}
-#ALIAS {gt} {#grep tells you}
+#ALIAS {gacc} {#var curracc 0;#grep ASSOC:}
+#ALIAS {glrn} {#var currlrn 0;#grep learned something}
+#ALIAS {gpet} {#var currpet 0;#grep petition}
+#ALIAS {gt} {#var currtells 0;#grep tells you}
 #ALIAS {ke} {#var enemy %1;kill $enemy}
 #ALIAS {lib} {look in $bag}
 #ALIAS {lib2} {look in $bag2}
@@ -518,6 +546,7 @@
 		#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 : <030>%0<090>}
 	} 
    } {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 : <030>%0<090>}};
+	#math currgs {$currgs + 1};
 }
 
 #ACT {%1 group-say '%1'$} {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <120>-\> <090>: <030>%1<090>}}
@@ -537,7 +566,8 @@
 		repl $afkmessage;
 		#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 <100>: <170>%2<090>};
 		#var thetime {@gettime{}};#line log afkcomms.txt {<100>$thetime <090>%1 <100>: <170>%2<090>}
-	}
+	};
+	#math currtells {$currtells + 1};
 }
 
 #ACT {You tell %1 '%2'$} {
@@ -563,12 +593,14 @@
 
 #ACT {%*You have learned something new about %0!} {
 	#var thetime {@gettime{}};
-	#line log other.txt {<100>$thetime <020>LEARNED<090> <120>: <070>%0<090>}
+	#line log other.txt {<100>$thetime <020>LEARNED<090> <120>: <070>%0<090>};
+	#math currlrn {$currlrn + 1}
 }
 
 #ACT {You have learned something new about %0!} {
     #var thetime {@gettime{}};
-    #line log other.txt {<100>$thetime <020>LEARNED<090> : <120>%0<090>}
+    #line log other.txt {<100>$thetime <020>LEARNED<090> : <120>%0<090>};
+	#math currlrn {$currlrn + 1}
 }
 
 #ACT {%1 OOC: '%2'$} {#IF {"%1" != "%* %*"}
@@ -580,5 +612,6 @@
 }
 
 #ACT {%w ASSOC:: '%2'$} {
-#var thetime {@gettime{}};#line log chat.txt {<100>$thetime <090>%1 : <050>%2<090>}
+#var thetime {@gettime{}};#line log chat.txt {<100>$thetime <090>%1 : <050>%2<090>};
+#math curracc {$curracc + 1}
 }
