@@ -372,10 +372,10 @@
 #ALIAS {rel} {say Release}
 #ALIAS {glb} {say deeply defend}
 #ALIAS {ds} {say fell stars}
-#ALIAS {b1} {say Dragonpoison}
-#ALIAS {b2} {say Dragonslow}
-#ALIAS {b3} {say Dragonblind}
-#ALIAS {b4} {say Dragonstrike}
+#ALIAS {d1} {say Dragonpoison}
+#ALIAS {d2} {say Dragonslow}
+#ALIAS {d3} {say Dragonblind}
+#ALIAS {d4} {say Dragonstrike}
 #ALIAS {bb} {b1;b2;b3;b4}
 #ALIAS {pp} {put %1 $pbag}
 #ALIAS {p} {put %1 $bag}

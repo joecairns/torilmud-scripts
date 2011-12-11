@@ -81,7 +81,7 @@
 #ALIAS rmw {rem $w1;rem $w2}
 #ALIAS ww {wield $w1;wield $w2}
 #ACT {You begin to shimmer.} {#IF {$burned == 1} {ww;#var $burned 0}}
-#ACT {You are %1 as you hit} {rmw;#var burned 1}
+#ACT {You are %1 as you hit} {glb;rmw;#var burned 1}
 
 #NOP =========================================
 #NOP  Assasinate
