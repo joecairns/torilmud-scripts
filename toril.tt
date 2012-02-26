@@ -58,7 +58,7 @@
 #NOP =========================================
 
 #unprompt %*
-#ACT {< %1h/%2H %3v/%4V >} {
+#NOP #ACT {< %1h/%2H %3v/%4V >} {
 	#MATH {myhper} {%1 * 100 / %2};
     #IF {$myhper > 100} { #var currhealth {<120>%1};
         #var chgr {<120>||||||||||||||||};};
@@ -77,7 +77,7 @@
     #IF {$myhper < 15 && $myhper >= 0} { #var currhealth {<010>%1};
         #var chgr {<010>||} };
 }
-#prompt {< %1h/%2H %3v/%4V >} {  <100>$myname $currhealth<100>/<020>%2<120> <060>%3<100>/<060>%4<090> <100>[@get_affect{$myname} <100>] [ <170>t<100>:<070>$currtells <100>] $chgr} {2}
+#nop #prompt {< %1h/%2H %5 %3v/%4V >} {  <100>$myname $currhealth<100>/<020>%2<120> <160>%5 <060>%3<100>/<060>%4<090> <100>[@get_affect{$myname} <100>] <170>t<100>:<090>$currtells $chgr} {2}
 #nop #prompt {< P: %1 >} { %0p: %1 } {1}
 #nop #prompt {~^\e[32m<%1> \e[0m} { %1} {1}
 
@@ -92,9 +92,9 @@
 #ACT {Autosaving} {save}
 #ACT {PANIC!  You couldn't escape!}  {#IF {$aflee == 1} {flee}}
 #ACT {The %1 seems to be closed.}  {#IF {$auto_path == 1 || $auto_map == 1} {#map undo};#IF {$tdoor == 1} {open %1 $ld}}
-#ACT {Welcome to Toril!} {#tick {scorestart} {score;#untick scorestart;#split 0 3;} {1}}
-#ACT {Reconnecting.} {#tick {scorestart} {score;#untick scorestart;#split 0 3;} {1}}
-#ACT {Disconnecting previous link.} {#tick {scorestart} {score;#untick scorestart;#split 0 3;} {1}}
+#ACT {Welcome to Toril!} {#tick {scorestart} {score;#untick scorestart;#nop #split 0 3;} {1}}
+#ACT {Reconnecting.} {#tick {scorestart} {score;#untick scorestart;#nop #split 0 3;} {1}}
+#ACT {Disconnecting previous link.} {#tick {scorestart} {score;#untick scorestart;#nop #split 0 3;} {1}}
 #ACT {Please enter your term} {#CR}
 #ACT {Score information for %1} {
 	#var myname %1;
@@ -105,7 +105,7 @@
 		#IF {"%1" == "Elner"} {lnec;#var loaded 1};
 		#IF {"%1" == "{Eln|Mung|Hiyos}"} {lwarr;#var loaded 1};
 		#IF {"%1" == "Nil"} {lsham;#var loaded 1};
-		#IF {"%1" == "{Siggol|Rrifus|Belo}"} {lrogue;#var loaded 1};
+		#IF {"%1" == "{Siggol|Rrifus|Belor}"} {lrogue;#var loaded 1};
 		#IF {"%1" == "Siggol"} {setaffect $myname fass;sg};
 		#IF {"%1" == "Borus"} {ldruid;#var loaded 1};
 		#nop #send assoc chat mung thepasswrd;
@@ -351,9 +351,9 @@
 #NOP =========================================
 
 #ALIAS {kpfix} {#showme {\e>}}
-#ALIAS {stat} {tell kegor stat %0}
-#ALIAS {find} {tell kegor find %1}
-#ALIAS {whois} {tell kegor who %1}
+#ALIAS {stat} {tell nerun stat %0}
+#ALIAS {find} {tell nerun find %1}
+#ALIAS {whois} {tell nerun who %1}
 #ALIAS {inv} {#send inventory}
 #ALIAS {'} {gsay %0}
 #ALIAS {`} {#var enemy %1;con $enemy}
@@ -371,6 +371,9 @@
 #ALIAS {fm} {say flesh mends}
 #ALIAS {rel} {say Release}
 #ALIAS {glb} {say deeply defend}
+#ALIAS {hst} {quaff haste $bag}
+#ALIAS {amp} {quaff ampoule $bag}
+#ALIAS {vit} {quaff vit $bag}
 #ALIAS {ds} {say fell stars}
 #ALIAS {d1} {say Dragonpoison}
 #ALIAS {d2} {say Dragonslow}
@@ -397,6 +400,7 @@
 #ALIAS {w2} {#var w2 %1}
 #ALIAS {wes} {who evil sort}
 #ALIAS {wgs} {who good sort}
+#ALIAS {ws} {who sort}
 #ALIAS {wig} {who ingroup s}
 #ALIAS {wns} {who neutral sort}
 #ALIAS {srm} {rest;mem}
@@ -553,8 +557,8 @@
 
 #ACT {%1 tells you '%2'$} {
 	#IF {$imafk == 0} {
-		#IF {"%1" == "Kegor"} {
-			#var thetime {@gettime{}};#line log comms.txt {<100>$thetime KEGOR <090>: <060>%2<090>};
+		#IF {"%1" == "nerun"} {
+			#var thetime {@gettime{}};#line log comms.txt {<100>$thetime nerun <090>: <060>%2<090>};
 			#IF {$smscontrol == 1} {#system dosms -p 15617040453 -t "%2";};
 		} {
 			#IF {"%1" != "%* %*"} {

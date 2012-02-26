@@ -1,12 +1,12 @@
 #VAR bag {hole}
-#VAR bag2 {goufa}
-#VAR w1 {khanjari}
-#VAR w2 {bane}
+#VAR bag2 {eyes}
+#VAR w1 {glaive}
+#VAR w2 {protection}
 #VAR poison {jar}
 #VAR condcall {1}
-#VAR garotte {wire}
-#VAR pick {string}
-#VAR about {flies}
+#VAR garotte {mandolin}
+#VAR pick {squirming}
+#VAR about {cloak}
 
 #MACRO {\eOq} {be}
 #MACRO {\eOw} {te}
@@ -114,10 +114,10 @@ assa $enemy;
         #var picks_in_hand 0;
         rem $pick;
         p $pick;
-        wield $w2
+        wield $w1
     } {
         #var picks_in_hand 1;
-        rem $w2;
+        rem $w1;
         g $pick;
         hold $pick
     }
@@ -249,5 +249,23 @@ assa $enemy;
 	st;#IF {$Atrip == 1} {trip} }
 #ACT {and you go down as well.} {
 	st;#IF {$Atrip == 1} {trip} }
+
+#NOP =========================================
+#NOP  bard stuff
+#NOP =========================================
+
+#ALIAS pl {play 'song of %0'}
+#ALIAS si {sing 'song of %0'}
+#ALIAS stop {sing}
+#GAG {You are not using it.}
+
+#ALIAS lyre {stop;g lyre;rem horn;rem shield;rem bassoon;rem dagger;rem drum;hold lyre;pins}
+#ALIAS flute {stop;g bassoon;rem horn;rem shield;rem lyre;rem dagger;rem drum;hold bassoon;pins}
+#ALIAS horn {stop;g horn;rem shield;rem bassoon;rem lyre;rem dagger;rem drum;hold horn;pins}
+#ALIAS dagg {g protection;rem shield;rem bassoon;rem lyre;rem horn;rem drum;wield protection;pins}
+#ALIAS drum {stop;g drum;rem shield;rem bassoon;rem lyre;rem horn;rem dagger;hold drum;pins}
+#ALIAS pins {p horn;p lyre;p bassoon;p drum}
+
+#ALIAS offdis {play 'song of offensive disruption' room}
 
 #showme __ ROGUE.tt
