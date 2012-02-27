@@ -2,11 +2,11 @@
 #NOP  Global Variables
 #NOP =========================================
 
-#read travel.tt
-#read spelltracker.tt
-#read glance.tt
-#read return.tt
-#read search.tt
+#read /Users/joe/Documents/muds/Torilmud-Tintin/travel.tt
+#read /Users/joe/Documents/muds/Torilmud-Tintin/spelltracker.tt
+#read /Users/joe/Documents/muds/Torilmud-Tintin/glance.tt
+#read /Users/joe/Documents/muds/Torilmud-Tintin/return.tt
+#read /Users/joe/Documents/muds/Torilmud-Tintin/search.tt
 
 #VAR expmode 0
 #VAR autocast 0
