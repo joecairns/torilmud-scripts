@@ -1,0 +1,34 @@
+#NOP == TinTin can't read a C block comment on the first line.
+/* ********************************************************************************************
+   Basic stand triggers: Pretty simple, stand up after getting smacked down.
+
+   Author: Kindi
+   http://www.torilmud.com/phpBB3/viewtopic.php?f=4&t=22258&sid=b9568b560069f2c0561417834d468230
+
+   Tested for tt++ 2.00.8 by The Gnome
+* ****************************************************************************************** */
+#act {^%* does an acrobatic maneuver in battle, tripping you.$} {st}
+#act {%1 sends you sprawling.} {st}
+#act {The violent winds pick you up and toss you aside!} {st}
+#act {The powerful sweep sends you crashing to the ground!} {st}
+#act {You are knocked down on the ground!} {st}
+#act {You are knocked down on your knees!} {st}
+#act {You are knocked off of your feet.} {st}
+#act {You are knocked to the ground by the powerful winds!} {st}
+#act {You are slammed down on the ground!} {st}
+#act {You are unable to dodge the blow, and its force sends you crashing to the ground!} {st}
+#act {You fall and injure yourself!} {st}
+#act {You lose your balance and fall down!} {st}
+#act {You stagger about, then fall sprawling!} {st}
+#act {You stagger, and fall to your knees!} {st}
+#act {^and smashes you in the throat, %*, foiling the spell.} {st}
+#act {The explosive concussion knocks you to the ground!} {st}
+#act {^The shockwave sends you crashing to the ground!} {st}
+#act {^You are sent tumbling head over heals into the next room, finally coming to a} {st}
+#act {You crash to the ground beneath the powerful strike!} {st}
+#act {Your hasty hamstring causes you to slip and fall to the ground!} {st}
+#act {You simply bounce off %1's massive form.$} {st}
+#act {As %* avoids your bash, you topple over and fall to the ground.$} {st}
+#act {You try to bash %1, only to sprawl completely THROUGH %2.$} {st}
+
+#showme __ STAND.tt

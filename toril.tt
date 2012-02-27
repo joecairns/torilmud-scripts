@@ -7,6 +7,8 @@
 #read /Users/joe/Documents/muds/Torilmud-Tintin/glance.tt
 #read /Users/joe/Documents/muds/Torilmud-Tintin/return.tt
 #read /Users/joe/Documents/muds/Torilmud-Tintin/search.tt
+#read /Users/joe/Documents/muds/Torilmud-Tintin/stand.tt
+
 
 #VAR expmode 0
 #VAR autocast 0
@@ -128,7 +130,7 @@
     #VAR ccawf 0
 }
 
-#ACT {Casting: %0 *%1} { 
+#ACT {Casting: %0 *%1} {
         #IF {&{castarg}} {#NOP} {#if {$incombat == 1} {#var castarg fighting} {#var castarg room}};
         #UNSUB {Casting: %0 *%1};
         #IF {@getlen{%1} > 3} {
@@ -141,38 +143,40 @@
 
 #NOP =========================================
 #NOP  Stand up!
+#NOP  Old code replaced with more comprehensive stand.tt
 #NOP =========================================
 
-#ACT {You stagger, and fall to your knees!} {stand}
-#ACT {%0 does an acrobatic maneuver in battle, tripping you.} {st}
-#ACT {You are knocked down} {stand}
-#ACT {sends you sprawling.}  {#IF {$docast} {stand;$tocast} {stand}}
+#NOP #ACT {You stagger, and fall to your knees!} {stand}
+#NOP #ACT {%0 does an acrobatic maneuver in battle, tripping you.} {st}
+#NOP #ACT {You are knocked down} {stand}
+#NOP #ACT {sends you sprawling.}  {#IF {$docast} {stand;$tocast} {stand}}
+
 
 #NOP =========================================
 #NOP  Speedwalker
 #NOP =========================================
 
-#alias {.%0} 
-{ 
-        #var cnt {}; 
+#alias {.%0}
+{
+        #var cnt {};
 
-        #parse {%0} {char} 
-        { 
-                #if {"$char" >= "0" && "$char" <= "9"} 
-                { 
-                        #var cnt $cnt$char 
-                }; 
-                #elseif {"$cnt" == ""} 
-                {                      
-                        #send $char 
-                }; 
-                #else 
-                {    
-                        #$cnt #send $char; 
-                        #var cnt {} 
-                } 
-        }      
-} 
+        #parse {%0} {char}
+        {
+                #if {"$char" >= "0" && "$char" <= "9"}
+                {
+                        #var cnt $cnt$char
+                };
+                #elseif {"$cnt" == ""}
+                {
+                        #send $char
+                };
+                #else
+                {
+                        #$cnt #send $char;
+                        #var cnt {}
+                }
+        }
+}
 
 #NOP =========================================
 #NOP  Couple Toggles
@@ -308,14 +312,21 @@
 #alias lrogue {#READ rogue.tt}
 #alias lench {#READ enchanter.tt}
 #alias lelem {#READ elementalist.tt}
-#alias lnec {#READ necro.tt}
+#alias lnec {#READ /Users/joe/Documents/muds/Torilmud-Tintin/necro.tt}
 #alias lill {#READ illusionist.tt}
 #alias lsham {#READ shaman.tt}
 #alias lwarr {#READ warrior.tt}
 #alias ldruid {#READ druid.tt}
 
-#alias connect {#session toril torilmud.org 9999}
-#alias mirror {#session mirrormud torilmud.org 6000}
+#alias connect {
+  #session toril torilmud.org 9999;
+  #SPLIT {0} {0};
+}
+
+#alias mirror {
+  #session mirrormud torilmud.org 6000;
+  #SPLIT {0} {0};
+}
 
 #NOP =========================================
 #NOP  Global Macros
@@ -428,16 +439,16 @@
 
 #alias gl {glance %1}
 
-#alias {of} 
-{ 
-    #send {order followers \}; 
-    %0 
-} 
+#alias {of}
+{
+    #send {order followers \};
+    %0
+}
 
 #alias {o %* %*}
-{ 
-    #send {order %1 \}; 
-    %2 
+{
+    #send {order %1 \};
+    %2
 }
 
 #alias {ofce} {of %1 $enemy}
@@ -458,16 +469,36 @@
 #FUNCTION {upfirst} {#format {result} {%n} {%1}}
 #FUNCTION {getlen} {#format {result} {%L} {%1}}
 #FUNCTION {isvar} {#if {"$%0" == "?%0"} {#var result 0} {#var result 1}}
-#function {rightalign} { 
-  #format {colwidth} {%C}; 
-  #format {stringlength} {%L} {{%0}}; 
-  #math   {padding} {$colwidth - $stringlength}; 
-  #format {result} {%+${padding}s%s} {{} {%0}} 
-} 
+#function {rightalign} {
+  #format {colwidth} {%C};
+  #format {stringlength} {%L} {{%0}};
+  #math   {padding} {$colwidth - $stringlength};
+  #format {result} {%+${padding}s%s} {{} {%0}}
+}
 
 #NOP =========================================
 #NOP  Config Options
 #NOP =========================================
+
+#CONFIG           {256 COLORS}  {ON}
+#CONFIG           {AUTO TAB}  {5000}
+#CONFIG           {BUFFER SIZE}  {20000}
+#CONFIG           {CHARSET}  {ASCII}
+#CONFIG           {COMMAND COLOR}  {<078>}
+#CONFIG           {COMMAND ECHO}  {ON}
+#CONFIG           {CONNECT RETRY}  {15}
+#CONFIG           {HISTORY SIZE}  {1000}
+#CONFIG           {PACKET PATCH}  {0.00}
+#CONFIG           {REPEAT CHAR}  {!}
+#CONFIG           {REPEAT ENTER}  {OFF}
+#CONFIG           {SCROLL LOCK}  {ON}
+#CONFIG           {SPEEDWALK}  {OFF}
+#CONFIG           {TINTIN CHAR}  {#}
+#CONFIG           {VERBATIM}  {OFF}
+#CONFIG           {VERBATIM CHAR}  {\}
+#CONFIG           {VERBOSE}  {OFF}
+#CONFIG           {WORDWRAP}  {ON}
+
 
 #PATHDIR          {n}                     {s}                          {1}
 #PATHDIR          {e}                     {w}                          {2}
@@ -499,7 +530,7 @@
 
 #ACT {%w group-%3s '%0'$} {
    #IF {"$stgsay" == "1"} {
-	#IF {"@lcase{%0}" == "%*haste%*"}	
+	#IF {"@lcase{%0}" == "%*haste%*"}
 		{
 		#var thetime {@gettime{}};
 		delaffect %1 haste;sg;
@@ -510,25 +541,25 @@
 		#var thetime {@gettime{}};
 		#line log comms.txt {<100>$thetime <090>%1 : <150>%0<090>}
 		}
-	#ELSEIF {"@lcase{%0}" == "%*blur%*"} 
+	#ELSEIF {"@lcase{%0}" == "%*blur%*"}
 		{
 		#var thetime {@gettime{}};
 		delaffect %1 blur;sg;
         #line log comms.txt {<100>$thetime <090>%1 : <140>%0<090>}
 		};
-	#ELSEIF {"@lcase{%0}" == "%*vit%*"} 
+	#ELSEIF {"@lcase{%0}" == "%*vit%*"}
         {
         #var thetime {@gettime{}};
         delaffect %1 vit;sg;
         #line log comms.txt {<100>$thetime <090>%1 : <040>%0<090>}
         };
-	#ELSEIF {"@lcase{%0}" == "%*globe%*"} 
+	#ELSEIF {"@lcase{%0}" == "%*globe%*"}
         {
         #var thetime {@gettime{}};
         delaffect %1 globe;sg;
         #line log comms.txt {<100>$thetime <090>%1 : <010>%0<090>}
         };
-	#ELSEIF {"@lcase{%0}" == "%*stone%*"} 
+	#ELSEIF {"@lcase{%0}" == "%*stone%*"}
 		{
 		#var thetime {@gettime{}};
 		delaffect %1 stone;sg;
@@ -548,7 +579,7 @@
     	};
 	#ELSE {
 		#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 : <030>%0<090>}
-	} 
+	}
    } {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 : <030>%0<090>}};
 	#math currgs {$currgs + 1};
 }
@@ -585,7 +616,7 @@
 	#IF {$smscontrol == 1} {
 		#system dosms -p 15617040453 -t "%1 just said %2";
 	};
-} 
+}
 
 #ACT {%1 responds to your petition with '%2'$} {#IF {"%1" != "%* %*"} {
 	#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 : <010>%2<090>};
