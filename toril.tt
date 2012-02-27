@@ -102,7 +102,7 @@
 		#IF {"%1" == "{Rrema|Hibboble}"} {lench;#var loaded 1};
 		#IF {"%1" == "Rrana"} {lelem;#var loaded 1};
 		#IF {"%1" == "Kirros"} {lill;#var loaded 1};
-		#IF {"%1" == "Elner"} {lnec;#var loaded 1};
+		#IF {"%1" == "Elner|Vixes"} {lnec;#var loaded 1};
 		#IF {"%1" == "{Eln|Mung|Hiyos}"} {lwarr;#var loaded 1};
 		#IF {"%1" == "Nil"} {lsham;#var loaded 1};
 		#IF {"%1" == "{Siggol|Rrifus|Belor}"} {lrogue;#var loaded 1};
