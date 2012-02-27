@@ -43,18 +43,18 @@
         #MATH {%0_hpercent} {${%0_curhp} * 100 / ${%0_maxhp}};
 }
 
-#ALIAS {setaffect} 
-{ 
+#ALIAS {setaffect}
+{
     #var %1_affects[%2] 1;
-} 
+}
 
-#ALIAS {delaffect} 
-{ 
+#ALIAS {delaffect}
+{
     #var %1_affects[%2] 0;
 }
 
-#FUNCTION {affect_list} 
-{ 
+#FUNCTION {affect_list}
+{
     #if {${%1_hpercent} >= 100} {#var result {<020>ex<100> _ <070>%1}};
     #if {${%1_hpercent} < 100 && ${%1_hpercent} >= 90} {#var result {<030>fs<100> _ <070>%1}};
     #if {${%1_hpercent} < 90 && ${%1_hpercent} >= 75} {#var result {<130>sw<100> _ <070>%1}};
@@ -65,8 +65,8 @@
 	#if {${%1_affects[eleemb]}} {#var result $result <100>Emb<130>o<030>d<100>y<088>};
 	#if {${%1_affects[emaint]}} {#var result $result <100>Ema<160>i<060>n<100>t<088>};
     #if {${%1_affects[scale]}} {#var result $result <130>Ds<088>};
-    #if {${%1_affects[stone]}} {#var result $result <100>Ss<088>}; 
-    #if {${%1_affects[blur]}} {#var result $result <140>Bl<088>}; 
+    #if {${%1_affects[stone]}} {#var result $result <100>Ss<088>};
+    #if {${%1_affects[blur]}} {#var result $result <140>Bl<088>};
     #if {${%1_affects[haste]}} {#var result $result <110>Hst<088>};
 	#if {${%1_affects[fass]}} {#var result $result <010>F<110>A<088>};
     #if {${%1_affects[bark]}} {#var result $result <030>Bark<088>};
@@ -80,7 +80,7 @@
 	#if {${%1_affects[vit]}} {#var result $result <140>Vit<088>};
 	#if {${%1_affects[pu]}} {#var result $result <100>Pu<088>};
 	#if {${%1_affects[arm]}} {#var result $result <070>A<170>rm<070>o<170>r<088>};
-} 
+}
 
 #FUNCTION {get_affect}
 {
@@ -108,8 +108,8 @@
 	#var result $myspells;
 }
 
-#alias {sg} 
-{ 
+#alias {sg}
+{
 #list tankglanceList len tgindex;
 #list rogueglanceList len rgindex;
 #list otherglanceList len ogindex;
@@ -132,7 +132,7 @@
 #math totalplayers {15 - ($tgindex + $rgindex + $ogindex)};
 
 #IF {$totalplayers <= 0} {#nop} {#loop 1 $totalplayers cnt {#line log spells.txt { <100>.<090>}}}
-} 
+}
 
 #ACT {You concentrate and harden your body into thick scales.} {setaffect $myname sskin;sg}
 #ACT {Your scales become soft once more.} {delaffect $myname sskin;sg}
@@ -144,8 +144,8 @@
 #ACT {%w's form becomes blurred and difficult to make out!} {setaffect %1 blur;sg}
 #ACT {%w's skin seems to turn to stone.} {setaffect %1 stone;sg}
 #ACT {%w begins to shimmer.} {setaffect %1 globe;sg;
-#tick {%1_globe30} {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <120>-\> <090>: <070>%1's <010>GLOBE <100>expires <070>in <170>30 <100>seconds.<090>};#untick %1_globe30} {294}; 
-#tick {%1_globe10} {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <120>-\> <090>: <170>%1's <010>GLOBE <110>expires <070>in <170>10 <110>seconds.<090>};#untick %1_globe10} {314}; 
+#tick {%1_globe30} {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <120>-\> <090>: <070>%1's <010>GLOBE <100>expires <070>in <170>30 <100>seconds.<090>};#untick %1_globe30} {294};
+#tick {%1_globe10} {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <120>-\> <090>: <170>%1's <010>GLOBE <110>expires <070>in <170>10 <110>seconds.<090>};#untick %1_globe10} {314};
 }
 #ACT {%w starts to move with uncanny speed!} {setaffect %1 haste;sg;#tick {%1_haste} {delaffect %1 haste;#untick %1_haste;sg} {324}}
 #ACT {%w's form is displaced.} {setaffect %1 disp;sg}
@@ -156,8 +156,8 @@
 #ACT {You feel your skin harden to stone.} {setaffect $myname stone;sg}
 #ACT {Your form begins to blur!} {setaffect $myname blur;sg}
 #ACT {You begin to shimmer.} {setaffect $myname globe;sg;
-#tick {my_globe30} {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <120>-\> <090>: <070>Your <010>GLOBE <100>expires <070>in <170>30 <100>seconds.<090>};#untick my_globe30} {210}; 
-#tick {my_globe10} {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <120>-\> <090>: <170>Your <010>GLOBE <110>expires <070>in <170>10 <110>seconds.<090>};#untick my_globe10} {230}; 
+#tick {my_globe30} {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <120>-\> <090>: <070>Your <010>GLOBE <100>expires <070>in <170>30 <100>seconds.<090>};#untick my_globe30} {210};
+#tick {my_globe10} {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <120>-\> <090>: <170>Your <010>GLOBE <110>expires <070>in <170>10 <110>seconds.<090>};#untick my_globe10} {230};
 }
 #ACT {Your form is displaced!} {setaffect $myname disp;sg}
 #ACT {Several mirror images of you pop into existence at your side!} {setaffect $myname mirror;sg}
@@ -220,7 +220,7 @@
 	#loop {1} {&tankglanceList[]} {cnt} {
 		#if {"%1" == "g"} {
 		#if {${$tankglanceList[$cnt]_affects[globe]} == 0} {sadd globe $tankglanceList[$cnt]};
-		} { 
+		} {
 		#if {${$tankglanceList[$cnt]_affects[blur]} == 0} {sadd2 bl $tankglanceList[$cnt]};
                 #if {${$tankglanceList[$cnt]_affects[scale]} == 0} {sadd ds $tankglanceList[$cnt]};
 		}
@@ -241,3 +241,5 @@
 	srun;
 	}
 }
+
+#SHOWME __ SPELLTRACKER.tt
