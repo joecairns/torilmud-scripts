@@ -27,23 +27,31 @@
 #alias {dm} {dism}
 
 #action {Casting: %0 *%1} {
-        #if {&{castarg}} {#nop;} {#if {$incombat == 1} {#var castarg fighting} {#var castarg room}};
-        #UNSUB {Casting: %0 *%1};
-        #if {@getlen{%1} > 3} {
-                #sub {Casting: %0 *%1} {<070>cast <100>(<060>%0<070> <100>-> <160>$castarg<100>): <100>*%1};
-        };
-        #if {@getlen{%1} <= 3} {
-                #sub {Casting: %0 *%1} {<070>cast <100>(<060>%0<070> <100>-> <160>$castarg<100>): <140>*%1};
-        }
+  #if {&{castarg}} {
+    #nop;
+  } {
+    #if {$incombat == 1} {
+      #var castarg fighting;
+    } {
+      #var castarg room;
+    }
+  }
+
+  #unsub {Casting: %0 *%1};
+
+  #if {@getlen{%1} > 3} {
+    #sub {Casting: %0 *%1} {<070>cast <100>(<060>%0<070> <100>-> <160>$castarg<100>): <100>*%1};
+  };
+
+  #if {@getlen{%1} <= 3} {
+    #sub {Casting: %0 *%1} {<070>cast <100>(<060>%0<070> <100>-> <160>$castarg<100>): <140>*%1};
+  }
 }
 
 /*  ANTI STUFF */
-
 #alias {of} {order followers %0}
 #alias {off} {order followers flee}
-
 #alias {lt} {lifetap %1;}
-
 #action {You grin evilly as your hands glow} {
 #var thetime {@gettime{}};
 #line log other.txt {<100>$thetime <070>LIFETAP <070>: <010>USED<110>!};
@@ -58,19 +66,21 @@
 #action {You lose your balance and are dismounted.} {m}
 #action {Your mount charges %0 and knocks %1 off balance!} {}
 #action {Your mount misses %0 with its charge!} {}
-
 #action {%0 clambers to %1 feet.} {
-	#if {$autobash == 1} {bash} }
+  #if {$autobash == 1} {bash}
+}
 #action {%0 avoids your bash,} {
-	#if {$autobash == 1} {st;bash} {st} }
+	#if {$autobash == 1} {st;bash} {st}
+}
 #action {%0 rises to %1 feet.} {
-	#if {$autobash == 1} {bash} }
+	#if {$autobash == 1} {bash}
+}
 #action {%0 staggers about, but manages to get to %* feet.} {
-	#if {$autobash == 1} {bash} }
+	#if {$autobash == 1} {bash}
+}
 
 #alias be {#var enemy %1;bash $enemy}
 #alias ce {#var enemy %1;#send mc $enemy}
-
 #action {%0 throws you off-balance.} {st}
 
 #alias {arm} {c 'armor' %1;#var castarg %1}
