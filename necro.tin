@@ -164,4 +164,4 @@
 #alias {tomb} {c 'ice tomb' %1;#var castarg %1;}
 #alias {drain} {c 'life drain' %1;#var castarg %1;}
 
-#showme __ NECRO.tt
+#showme __ NECRO.tin

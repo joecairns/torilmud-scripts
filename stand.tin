@@ -31,4 +31,4 @@
 #action {As %* avoids your bash, you topple over and fall to the ground.$} {st}
 #action {You try to bash %1, only to sprawl completely THROUGH %2.$} {st}
 
-#showme __ STAND.tt
+#showme __ STAND.tin

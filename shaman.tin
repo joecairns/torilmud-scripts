@@ -210,4 +210,4 @@
 #alias ashield {c 'ancestral shield'}
 #alias rp {c 'remove pois' %1;#var castarg %1}
 
-#showme __ SHAMAN.tt
+#showme __ SHAMAN.tin

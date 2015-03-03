@@ -1,12 +1,11 @@
 #var {bag} {hole}
 #var {bag2} {gut}
 #var {book} {book}
-#var {temp} {1}
 #var {stgsay} {1}
 
-#sub {You have finished memorizing %1.} {<100>[<030>+ <060>_<160>_ <070>%1 <160>_<060>_<030> +<100>]<090>}
+#sub {You have finished memorizing %1.} {<100>.\\ <050>_<150>- <070>%1 <150>-<050>_ <100>/.<090>}
 
-#alias {dopri} {prior blur;prior dragonscale}
+#alias {dopri} {prior phantasmal tendr;prior displ}
 #alias {scrib} {rem $h1;rem $h2;g quill;hold $book; hold quill;rest}
 #alias {dscrib} {rem quill;rem $book;p quill;hold $h1;hold $h2;st}
 
@@ -145,46 +144,49 @@
 #nop  Spell Aliases
 #nop =========================================
 
-#alias {pwb} {c 'power word blind' %1;#var pwbtarg %1;#var castarg %1}
-#action {^%0 is temporarily blinded by your word!} {gsay %0 ($pwbtarg) is temporarily blinded!}
-#action {^%0 won't be seeing much in the near future..} {gsay %0 ($pwbtarg) is blind forever! bwaahahaha!}
-#alias {hst} {hs %1;#var castarg %1}
-
 #alias {gate} {c 'gate' %1;#var castarg %1}
-#alias {relo} {c 'relocate' %1;#var castarg %1}
 #alias {dm} {c 'detect magic' %1;#var castarg %1}
 #alias {mf} {c 'mage flame' %1;#var castarg %1}
 #alias {mc} {c 'minor crea' %1;#var castarg %1}
 #alias {di} {c 'detect invis' %1;#var castarg %1}
 #alias {dd} {c 'dimension door' %1;#var castarg %1}
-#alias {clair} {c 'clair' %1;#var castarg %1}
 #alias {feeb} {c 'feeblemind' %1;#var castarg %1}
-#alias {loc} {c 'locate object' %0;#var castarg %1}
-#alias {ss} {c 'stone' %1;#var castarg %1}
-#alias {tele} {c 'teleport'}
-#alias {invis} {c 'invisib' %1;#var castarg %1}
 #alias {dispel} {c 'dispel magic' %1;#var castarg %1}
-#alias {cone} {c 'cone of cold' %1;#var castarg %1}
-#alias {ray} {c 'ray of enfeeb' %1;#var castarg %1}
 #alias {sleep} {c 'sleep' %1;#var castarg %1}
 #alias {lev} {c 'levitate' %1;#var castarg %1}
-#alias {csh} {c 'coldshi';#var castarg %1}
-#alias {es} {c 'earth stones' %1;#var castarg %1}
-#alias {eb} {#send eb %1;#var castarg %1}
-#alias {aemb} {#send eae %1;#var castarg %1}
-#alias {wemb} {#send ewe %1;#var castarg %1}
-#alias {femb} {c 'elemental fire embod' %1;#var castarg %1}
-#alias {eemb} {c 'elemental earth embod' %1;#var castarg %1}
-#alias {dust} {c 'glitterdust'}
-#alias {kin} {c 'summon elemen kin' %1;#var castarg %1}
-#alias {ele} {c 'conjure elemental' %1;#var castarg %1}
-#alias {sil} {c 'ice ton' %1;#var castarg %1}
-#alias {lb} {c 'lava burst'}
-#alias {tl} {c 'thunder lance' %1;#var castarg %1}
-#alias {ffog} {c 'fire fog' %1;#var castarg %1}
-#alias {efog} {c 'earth fog' %1;#var castarg %1}
-#alias {ward} {c 'elemental ward' %1;#var castarg %1}
-
+#alias {pt} {c 'phantasmal tendr'}
+#alias {nm} {c 'nightmare' %1;#var castarg %1}
+#alias {swalk} {c 'shadow walk' %1;#var castarg %1}
+#alias {pk} {c 'phantasmal kil' %1;#var castarg %1}
+#alias {morph} {c 'massmor' %1;#var castarg %1}
+#alias {misl} {c 'mislead' %1;#var castarg %1}
+#alias {mi} {c 'mirror ima' %1;#var castarg %1}
+#alias {die} {c 'feign deat' %1;#var castarg %1}
+#alias {ph} {c 'phantom heal' %1;#var castarg %1}
+#alias {fold} {c 'dimensional fold' %1;#var castarg %1}
+#alias {rp} {c 'rainbow pat' %1;#var castarg %1}
+#alias {camo} {c 'camoufla' %1;#var castarg %1}
+#alias {flux} {c 'shadow flux' %1;#var castarg %1}
+#alias {glam} {c 'corpse glam' %1;#var castarg %1}
+#alias {chill} {c 'shadechill' %1;#var castarg %1}
+#alias {seq} {c 'sequester' %1;#var castarg %1}
+#alias {bla} {c 'phantasmal blad' %1;#var castarg %1}
+#alias {shade} {c 'summon shade' %1;#var castarg %1}
+#alias {nd} {c 'nondetect' %1;#var castarg %1}
+#alias {ds} {c 'displace' %1;#var castarg %1}
+#alias {clair} {c 'clairvoyance' %1;#var castarg %1}
+#alias {dop} {c 'dopple' %1;#var castarg %1}
+#alias {dd} {c 'dimension door' %1;#var castarg %1}
+#alias {ts} {c 'true sigh' %1;#var castarg %1}
+#alias {tele} {c 'teleport' %1;#var castarg %1}
+#alias {spook} {c 'spook' %1;#var castarg %1}
+#alias {ff} {c 'scarlet outline' %1;#var castarg %1}
+#alias {cs} {c 'change self' %1;#var castarg %1}
+#alias {pa} {c 'phantom armor' %1;#var castarg %1}
+#alias {invis} {c 'invis' %1;#var castarg %1}
+#alias {bolt} {c 'shadow bolt' %1;#var castarg %1}
+#alias {gfr} {f relo;mem gate}
+#alias {rfg} {f gate;mem relo}
 #alias {sskin} {innate scale}
 
-#showme __ ELEMENTALIST.tt
+#showme __ ILLUSIONIST.tin

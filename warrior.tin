@@ -1,6 +1,6 @@
-#read Documents/muds/Torilmud-Tintin/autoassist.tt
-#read Documents/muds/Torilmud-Tintin/rescue.tt
-#read Documents/muds/Torilmud-Tintin/auto_shieldpunch.tt
+#read Documents/muds/Torilmud-Tintin/autoassist.tin
+#read Documents/muds/Torilmud-Tintin/rescue.tin
+#read Documents/muds/Torilmud-Tintin/auto_shieldpunch.tin
 
 #var autoassist 0
 #var {bag} {sack}
@@ -90,4 +90,4 @@
 #alias {wither} {c 'wither' %1;#var castarg %1}
 #alias {hm} {c 'heal mount' nightmare;#var castarg nightmare}
 
-#showme __ WARRIOR.tt
+#showme __ WARRIOR.tin

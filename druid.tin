@@ -200,4 +200,4 @@
 #alias cyc {c 'cyclone'}
 #alias rp {c 'remove pois' %1;#var castarg %1}
 
-#showme __ DRUID.tt
+#showme __ DRUID.tin

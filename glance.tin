@@ -117,4 +117,4 @@
 #macro {\C-r} {glr}
 #macro {\C-o} {glo}
 
-#showme __ GLANCE.tt
+#showme __ GLANCE.tin

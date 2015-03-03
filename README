@@ -1,10 +1,10 @@
 My Tintin++ scripts (tintin.sourceforge.net) for the Torilmud.org mud.
 
-Everything starts with loading toril.tt
+Everything starts with loading toril.tin
 
 Class scripts are loaded from there.
 
-Spelltracker.tt - tracks spell buffs, good for chanting/illus/etc.. tail -f spells.txt, resize window to fit
-glance.tt - glance triggers, ggl to get group list and set up glances
+Spelltracker.tin - tracks spell buffs, good for chanting/illus/etc.. tail -f spells.txt, resize window to fit
+glance.tin - glance triggers, ggl to get group list and set up glances
 
 Use with tintin 1.99.9, havent tested with other versions

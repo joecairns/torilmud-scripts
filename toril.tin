@@ -1,9 +1,9 @@
-#read /Users/joe/Documents/muds/Torilmud-Tintin/travel.tt
-#read /Users/joe/Documents/muds/Torilmud-Tintin/spelltracker.tt
-#read /Users/joe/Documents/muds/Torilmud-Tintin/glance.tt
-#read /Users/joe/Documents/muds/Torilmud-Tintin/return.tt
-#read /Users/joe/Documents/muds/Torilmud-Tintin/search.tt
-#read /Users/joe/Documents/muds/Torilmud-Tintin/stand.tt
+#read /Users/joe/Documents/muds/Torilmud-Tintin/travel.tin
+#read /Users/joe/Documents/muds/Torilmud-Tintin/spelltracker.tin
+#read /Users/joe/Documents/muds/Torilmud-Tintin/glance.tin
+#read /Users/joe/Documents/muds/Torilmud-Tintin/return.tin
+#read /Users/joe/Documents/muds/Torilmud-Tintin/search.tin
+#read /Users/joe/Documents/muds/Torilmud-Tintin/stand.tin
 
 #config           {256 COLORS}  {ON}
 #config           {AUTO TAB}  {5000}
@@ -158,16 +158,16 @@
 #nop  Character Loading
 #nop =========================================
 
-#alias lrogue {#read rogue.tt}
-#alias lench {#read enchanter.tt}
-#alias lelem {#read elementalist.tt}
-#alias lnec {#read /Users/joe/Documents/muds/Torilmud-Tintin/necro.tt}
-#alias lill {#read illusionist.tt}
-#alias lsham {#read shaman.tt}
-#alias lwarr {#read /Users/joe/Documents/muds/Torilmud-Tintin/warrior.tt}
-#alias ldruid {#read druid.tt}
-#alias lchar {#read /Users/joe/Documents/muds/Torilmud-Tintin/$myname.tt}
-#alias lpsion {#read /Users/joe/Documents/muds/Torilmud-Tintin/psionicist.tt}
+#alias lrogue {#read rogue.tin}
+#alias lench {#read enchanter.tin}
+#alias lelem {#read elementalist.tin}
+#alias lnec {#read /Users/joe/Documents/muds/Torilmud-Tintin/necro.tin}
+#alias lill {#read illusionist.tin}
+#alias lsham {#read shaman.tin}
+#alias lwarr {#read /Users/joe/Documents/muds/Torilmud-Tintin/warrior.tin}
+#alias ldruid {#read druid.tin}
+#alias lchar {#read /Users/joe/Documents/muds/Torilmud-Tintin/$myname.tin}
+#alias lpsion {#read /Users/joe/Documents/muds/Torilmud-Tintin/psionicist.tin}
 
 
 #action {Score information for %1} {#var myname %1}

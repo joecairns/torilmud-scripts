@@ -100,4 +100,4 @@
 
 #action {Alas, you cannot go that way} {#if {$travel} {go}}
 
-#showme __ TRAVEL.tt
+#showme __ TRAVEL.tin
