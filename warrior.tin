@@ -1,6 +1,5 @@
-#read Documents/muds/Torilmud-Tintin/autoassist.tin
-#read Documents/muds/Torilmud-Tintin/rescue.tin
-#read Documents/muds/Torilmud-Tintin/auto_shieldpunch.tin
+#read autoassist.tin
+#read rescue.tin
 
 #var autoassist 0
 #var {bag} {sack}
