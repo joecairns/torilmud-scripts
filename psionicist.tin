@@ -1,17 +1,10 @@
-#showme __ xPsionicist.tin
-
-#nop =========================================
-#nop  Character Vars
-#nop =========================================
-
 #var {bag} {bag}
 
-#nop =========================================
-#nop  Spell Aliases
-#nop =========================================
-
-#alias {buffme} {emote enters a trance as he begins invoking psychic rituals.;adrenalize me;expand me;flesharmor me;catfall me;body me; emote emerges from gathering his power.}
+/* Spell Aliases */
+#alias {buff} {emote enters a trance as he begins invoking psychic rituals.;adrenalize me;expand me;flesharmor me;catfall me;body me; emote emerges from gathering his power.}
 #alias {mb} {mindblast %1; #var drain_target %1}
 
-
 #action {%1 is mortally wounded, and will die soon, if not aided.} {#showme Yum Yum! a %1;drain $drain_target}
+
+#showme __ Psionicist.tin
+

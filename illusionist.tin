@@ -9,9 +9,7 @@
 #alias {scrib} {rem $h1;rem $h2;g quill;hold $book; hold quill;rest}
 #alias {dscrib} {rem quill;rem $book;p quill;hold $h1;hold $h2;st}
 
-#nop =========================================
-#nop  Docast, repeats single spell
-#nop =========================================
+/* Docast, repeats single spell */
 
 #alias dc {
 	#var docast 1;
@@ -22,9 +20,7 @@
 #alias dco {#var docast 0;#unvar tocast}
 #alias dca {#var docast 0;abort;#unvar tocast}
 
-#nop =========================================
-#nop  Cast Practice
-#nop =========================================
+/* Cast Practice */
 
 #var {cpr_auto} {0}
 #var {topractarget} {0}
@@ -140,9 +136,7 @@
 	#echo {%c%h} {red} { SPELL ABORTED }
 }
 
-#nop =========================================
-#nop  Spell Aliases
-#nop =========================================
+/* Spell Aliases */
 
 #alias {gate} {c 'gate' %1;#var castarg %1}
 #alias {dm} {c 'detect magic' %1;#var castarg %1}

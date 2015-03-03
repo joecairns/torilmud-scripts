@@ -1,4 +1,4 @@
-#nop == TinTin can't read a C block comment on the first line.
+#nop == TinTin can't read a C block comment on the first line.;
 /* ********************************************************************************************
    Basic stand triggers: Pretty simple, stand up after getting smacked down.
 

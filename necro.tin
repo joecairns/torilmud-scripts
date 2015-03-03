@@ -20,9 +20,7 @@
 
 #action {%0 EC: awful} {#if {$adie == 1} {#var adie 0;#var dietickeron 1;#tick dieticker {say die} {2}}}
 
-#nop =========================================
-#nop  Docast, repeats single spell
-#nop =========================================
+/* Docast, repeats single spell */
 
 #alias dc {
         #var docast 1;
@@ -116,9 +114,7 @@
     }
 }
 
-#nop =========================================
-#nop  Spell Aliases
-#nop =========================================
+/* Spell Aliases */
 
 #alias {hst} {c 'haste' %1;#var castarg %1}
 #alias {dm} {c 'detect magic' %1;#var castarg %1}

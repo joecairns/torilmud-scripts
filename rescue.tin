@@ -22,24 +22,24 @@
 
 #action {Total players online:} {#var getrescuelist 0}
 
-#actionion {%0 %1 here, fighting %2.} {#if {$aResc == 1} {#if {@inlist{%2} != 0} {ratt %2}}}
+#action {%0 %1 here, fighting %2.} {#if {$aResc == 1} {#if {@inlist{%2} != 0} {ratt %2}}}
 
-#actionion {%0 attacks %1,} {#if {$aResc == 1} {#if {@inlist{%1} != 0} {ratt %1}}}
+#action {%0 attacks %1,} {#if {$aResc == 1} {#if {@inlist{%1} != 0} {ratt %1}}}
 
 #unact {burns|pummels|smashes|bites|crushes|hits|slashes %1} {#if {@inlist{%1} != 0} {ratt %1}}
 
-#actionion {%0 switches targets..} {#if {$aResc == 1} {look}}
+#action {%0 switches targets..} {#if {$aResc == 1} {look}}
 
-#actionion {Upon being struck, a mirror image of %1 shatters into a million particles of light!} {#if {$aResc == 1} {#if {@inlist{%1} != 0} {ratt %1}}}
+#action {Upon being struck, a mirror image of %1 shatters into a million particles of light!} {#if {$aResc == 1} {#if {@inlist{%1} != 0} {ratt %1}}}
 
-#actionion {%0 sends %1 sprawling with a powerful bash.} {#if {$aResc == 1} {#if {@inlist{%1} != 0} {ratt %1}}}
+#action {%0 sends %1 sprawling with a powerful bash.} {#if {$aResc == 1} {#if {@inlist{%1} != 0} {ratt %1}}}
 
-#actionion {But nobody is fighting} {rr}
-#actionion {rescues} {#if {$aResc == 1} {rr}}
-#actionion {T: %0 TC:} {#if {$aResc == 1} {#if {@inlist{%0} != 0} {ratt %0}}}
-#actionion {Who do you want to rescue?} {rr}
-#actionion {Banzai!} {rr}
-#actionion {You fail} {#if {$aResc == 1} {ratt $Rescuee;rr}}
+#action {But nobody is fighting} {rr}
+#action {rescues} {#if {$aResc == 1} {rr}}
+#action {T: %0 TC:} {#if {$aResc == 1} {#if {@inlist{%0} != 0} {ratt %0}}}
+#action {Who do you want to rescue?} {rr}
+#action {Banzai!} {rr}
+#action {You fail} {#if {$aResc == 1} {ratt $Rescuee;rr}}
 
 #alias {radd} {
 	#if {@inlist{@upfirst{%1}} != 0} {#show <100>%1 <110>already in rescue list<090>} {

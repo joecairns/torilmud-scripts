@@ -16,9 +16,7 @@
 
 #action {As your poison takes effect, %0 appears to go blind!} {gsay blind --> %0}
 
-#nop =========================================
-#nop  Auto Hide
-#nop =========================================
+/* Auto Hide *
 
 #var Ahide 0
 
@@ -35,9 +33,7 @@
 }
 
 
-#nop =========================================
-#nop  Dragging
-#nop =========================================
+/* Dragging */
 
 #var Adrag {0}
 
@@ -62,30 +58,24 @@
 #alias det {detecttrap %1}
 #alias dis {disarmtrap %1}
 
-#nop =========================================
-#nop  Hidden Stuff
-#nop =========================================
+/* Hidden Stuff */
 
 #var hidden {0}
 
-#UNALIAS '
+#unalias '
 #alias {'} {#if {$hidden == 1} {gsay $myname - %0} {gsay %0}}
 
 #action {You stop trying to hide.} {#var hidden 0}
 #action {You attempt to hide yourself.} {#var hidden 1}
 
-#nop =========================================
-#nop  Shielded Mob
-#nop =========================================
+/* Shielded Mob */
 
 #alias rmw {rem $w1;rem $w2}
 #alias ww {wield $w1;wield $w2}
 #action {You begin to shimmer.} {#if {$burned == 1} {ww;#var $burned 0}}
 #action {You are %1 as you hit} {glb;rmw;#var burned 1}
 
-#nop =========================================
-#nop  Assasinate
-#nop =========================================
+/* Assasinate */
 
 #alias ae {
 #var enemy %1;
@@ -103,9 +93,7 @@ assa $enemy;
 #tick {assasstimer} {#var thetime {@gettime{}};#LINE LOG other.txt {<100>$thetime <010>ASSASSINATE<170> Ready<090>};#untick assasstimer} {1440}
 }
 
-#nop =========================================
-#nop  Pick Locks
-#nop =========================================
+/* Pick Locks */
 
 #var picks_in_hand {0}
 
@@ -126,9 +114,7 @@ assa $enemy;
 #action {Damn!  You broke your} {#var picks_in_hand 0}
 #action {The lock quickly yields to your skills and pops open.} {tpicks}
 
-#nop =========================================
-#nop  Garrote
-#nop =========================================
+/* Garrote */
 
 #var gar_in_hand {0}
 
@@ -151,9 +137,7 @@ assa $enemy;
 #action {does a nifty move, flipping you onto your back!} {stand}
 #action {Your a garroting wire breaks!} {g $garotte;wield $garotte}
 
-#nop =========================================
-#nop  Item Said Procs
-#nop =========================================
+/* Item Said Procs */
 
 #alias in {say crescent moon}
 #alias ds {say fell stars}
@@ -161,9 +145,7 @@ assa $enemy;
 #alias glb {say deeply defend}
 #alias haste {say accelerate}
 
-#nop =========================================
-#nop  Poisons
-#nop =========================================
+/* Poisons */
 
 #var Apoison {0}
 
@@ -180,9 +162,7 @@ assa $enemy;
 #alias poi {#var poison %1;#echo {Poison is $poison}}
 #alias ap {g $poison;apply $poison $w1;apply $poison $w2;p $poison}
 
-#nop =========================================
-#nop  Target Kill, Circle Kill
-#nop =========================================
+/* Target Kill, Circle Kill */
 
 #var Acircl {0}
 
@@ -215,9 +195,7 @@ assa $enemy;
                 }
 }
 
-#nop =========================================
-#nop  Auto Trip
-#nop =========================================
+/* Auto Trip */
 
 #var Atrip {0}
 
@@ -250,9 +228,7 @@ assa $enemy;
 #action {and you go down as well.} {
 	st;#if {$Atrip == 1} {trip} }
 
-#nop =========================================
-#nop  bard stuff
-#nop =========================================
+/* bard stuff */
 
 #alias pl {play 'song of %0'}
 #alias si {sing 'song of %0'}

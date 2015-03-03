@@ -8,9 +8,7 @@
 
 #sub {You have finished praying for %1.} { <100>.<020>( <030>_<100>_ <070>%1 <100>_<030>_ <020>)<100>.<090>}
 
-#nop ****************************
-#nop *** Vitlist Stuff       ****
-#nop ****************************
+/* Vitlist Stuff */
 
 #alias vadd {#list myvits ins -1 @upfirst{%0};#show <100>...<090> Added <140>@upfirst{%0} <090>to my vit list.}
 #alias vdel {#list myvits fnd @upfirst{%0} tovitdelidx;#list myvits del {$tovitdelidx};#show <100>...<090>Removed <140>@upfirst{%0} <090>from my vit list.}
@@ -34,9 +32,7 @@
 	srun;
 }
 
-#nop ************************
-#nop ** More Spellup     ****
-#nop ************************
+/* More Spellup */
 
 #var tocastidx 1
 #var spell_run 0
@@ -58,9 +54,7 @@
         }
 }
 
-#nop =========================================
-#nop  Docast, repeats single spell
-#nop =========================================
+/* Docast, repeats single spell */
 
 #alias dc {
         #var docast 1;
@@ -163,9 +157,7 @@
 #alias liw {look in well}
 #alias ew {ent well}
 
-#nop =========================================
-#nop  Spell Aliases
-#nop =========================================
+/* Spell Aliases */
 
 #alias word {c 'word of rec';}
 #alias pres {c 'preserv' %1;#var castarg %1}

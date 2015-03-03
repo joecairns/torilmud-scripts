@@ -83,7 +83,7 @@
 #config {command echo} {off}
 
 #unprompt %*
-#nop #action {< %1h/%2H %3v/%4V >} {
+#action {< %1h/%2H %3v/%4V >} {
 	#math {myhper} {%1 * 100 / %2};
     #if {$myhper > 100} { #var currhealth {<120>%1};
         #var chgr {<120>||||||||||||||||};};
@@ -154,9 +154,7 @@
 };
 
 
-#nop =========================================
-#nop  Character Loading
-#nop =========================================
+/* Character Loading */
 
 #alias lrogue {#read rogue.tin}
 #alias lench {#read enchanter.tin}
@@ -172,8 +170,8 @@
 
 #action {Score information for %1} {#var myname %1}
 
-#action {You rejoin the land of the living...} {#nop #send assoc chat mung thepasswrd;}
-#nop #macro {\t} {#cursor TAB FORWARD}
+#action {You rejoin the land of the living...} {/* #send assoc chat mung thepasswrd; */}
+#macro {\t} {#cursor TAB FORWARD}
 
 #action {%1 is mortally wounded, and will die soon, if not aided.} {
   #if {$Adrain == 1} {drain $drain_target}
@@ -204,11 +202,7 @@
         }
 }
 
-
-
-#nop =========================================
-#nop  Speedwalker
-#nop =========================================
+/* Speedwalker */
 
 #alias {.%0}
 {
@@ -232,9 +226,7 @@
   }
 }
 
-#nop =========================================
-#nop  Couple Toggles
-#nop =========================================
+/* Couple Toggles */
 
 #alias tloot {
     #if {$Aloot == 1} {
@@ -370,9 +362,7 @@
 }
 
 
-/* =========================================
-   Global Macros
-   ========================================= */
+/* Global Macros */
 
 #macro {\C-f} {flee}
 #macro {\C-l} {get all corpse}
@@ -399,9 +389,7 @@
 #alias u {#send u;#var ld u}
 #alias d {#send d;#var ld d}
 
-/* =========================================
-   Global Aliases
-   ========================================= */
+/* Global Aliases */
 
 #alias {kpfix} {#showme {\e>}}
 #alias {stat} {tell katumi stat %0}
@@ -502,9 +490,7 @@
 #alias {r} {of rescue %1}
 #alias {rn} {fols name %1 %2}
 
-#nop =========================================
-#nop  Global Functions
-#nop =========================================
+/* Global Functions */
 
 #function {gettime} {#FORMAT {time} {%t} {%r};#FORMAT {test} {%t} {$time};#var result {$test}}
 #function {lcase} {#format {result} {%l} {%0}}

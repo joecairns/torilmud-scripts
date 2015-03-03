@@ -10,9 +10,7 @@
 
 #alias totem {g totem;rem $w1;hold totem;use totem;#delay {2} {order followers rep};rem totem;p totem;wield $w1}
 
-#nop ****************************
-#nop *** Vitlist Stuff       ****
-#nop ****************************
+/* Vitlist Stuff */
 
 #alias vadd {#list myvits ins -1 @upfirst{%0};#show <100>...<090> Added <140>@upfirst{%0} <090>to my vit list.}
 #alias vdel {#list myvits fnd @upfirst{%0} tovitdelidx;#list myvits del {$tovitdelidx};#show <100>...<090>Removed <140>@upfirst{%0} <090>from my vit list.}
@@ -36,9 +34,7 @@
 	srun;
 }
 
-#nop ************************
-#nop ** More Spellup     ****
-#nop ************************
+/* More Spellup */
 
 #var tocastidx 1
 #var spell_run 0
@@ -64,16 +60,14 @@
 
 #alias su {
         #list tocastlist clear;
-        #if {$spell_run == 1} {#nop} {
+        #if {$spell_run == 1} {#nop;} {
         #if {${@upfirst{%1}_affects[stone]} == 0} {sadd ss %1};
         #if {${@upfirst{%1}_affects[vit]} == 0} {sadd vit %1};
         srun;
         }
 }
 
-#nop =========================================
-#nop  Docast, repeats single spell
-#nop =========================================
+/* Docast, repeats single spell */
 
 #alias dc {
         #var docast 1;
@@ -175,9 +169,7 @@
 
 #action {%0 suddenly looks worried.} {gsay HEX on %0!}
 
-#nop =========================================
-#nop  Spell Aliases
-#nop =========================================
+/* Spell Aliases */
 
 #alias word {c 'word of rec';}
 #alias fet {c 'unleash fet' %1;#var castarg %1}
