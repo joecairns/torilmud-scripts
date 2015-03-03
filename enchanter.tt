@@ -1,73 +1,73 @@
-#VAR {bag} {hole}
-#VAR {bag2} {gut}
-#VAR {book} {book}
-#VAR {stgsay} {1}
+#var {bag} {hole}
+#var {bag2} {gut}
+#var {book} {book}
+#var {stgsay} {1}
 
-#SUB {You have finished memorizing %1.} {<100>[<030>+ <060>_<160>_ <070>%1 <160>_<060>_<030> +<100>]<090>}
+#sub {You have finished memorizing %1.} {<100>[<030>+ <060>_<160>_ <070>%1 <160>_<060>_<030> +<100>]<090>}
 
-#ALIAS {dopri} {prior blur;prior dragonscale}
-#ALIAS {scrib} {rem $h1;rem $h2;g quill;hold $book; hold quill;rest}
-#ALIAS {dscrib} {rem quill;rem $book;p quill;hold $h1;hold $h2;st}
+#alias {dopri} {prior blur;prior dragonscale}
+#alias {scrib} {rem $h1;rem $h2;g quill;hold $book; hold quill;rest}
+#alias {dscrib} {rem quill;rem $book;p quill;hold $h1;hold $h2;st}
 
 
-#NOP =========================================
-#NOP  Docast, repeats single spell
-#NOP =========================================
+#nop =========================================
+#nop  Docast, repeats single spell
+#nop =========================================
 
-#ALIAS dc {
+#alias dc {
 	#var docast 1;
 	#var tocast %0;
 	$tocast;
 }
 
-#ALIAS dco {#var docast 0;#unvar tocast}
-#ALIAS dca {#var docast 0;abort;#unvar tocast}
+#alias dco {#var docast 0;#unvar tocast}
+#alias dca {#var docast 0;abort;#unvar tocast}
 
-#NOP =========================================
-#NOP  Cast Practice
-#NOP =========================================
+#nop =========================================
+#nop  Cast Practice
+#nop =========================================
 
-#VAR {cpr_auto} {0}
-#VAR {topractarget} {0}
-#VAR {toprac} {0}
+#var {cpr_auto} {0}
+#var {topractarget} {0}
+#var {toprac} {0}
 
-#ALIAS {tcpr} {
-        #IF {$cpr_auto == 1} {
-                #VAR cpr_auto 0;
-                #ECHO {%c%h} {red} { SPELL PRACTICE $toprac off }
+#alias {tcpr} {
+        #if {$cpr_auto == 1} {
+                #var cpr_auto 0;
+                #echo {%c%h} {red} { SPELL PRACTICE $toprac off }
                 } {
-                #VAR cpr_auto 1;
-		#VAR toprac %1;
-		#VAR topractarget %2;
-                #ECHO {%c%h} {green} { SPELL PRACTICE - %1 %2 }
+                #var cpr_auto 1;
+		#var toprac %1;
+		#var topractarget %2;
+                #echo {%c%h} {green} { SPELL PRACTICE - %1 %2 }
         }
 }
 
-#ACT {You don't have that spell memorized.} {
-        #IF {"$castarg" == "%*"} {#unvar castarg};
-	#IF {$cpr_auto == 1} {
+#action {You don't have that spell memorized.} {
+        #if {"$castarg" == "%*"} {#unvar castarg};
+	#if {$cpr_auto == 1} {
 		srm;
 	};
-	#IF {$docast == 1} {
+	#if {$docast == 1} {
 		#unvar tocast;
 		#var docast 0;
 	};
-	#IF {$spell_run == 1} {
+	#if {$spell_run == 1} {
         #math tocastidx {$tocastidx + 1};
         #list tocastlist len tcindex;
-        #IF {$tocastidx <= $tcindex} {
+        #if {$tocastidx <= $tcindex} {
         #list tocastlist get $tocastidx nextspell;
         $nextspell;
         } {#var spell_run 0;#list tocastlist clear;#var tocastidx 1}
     }
 }
 
-#ACT {Nobody here by that name.} {
-        #IF {"$castarg" == "%*"} {#unvar castarg};
-	#IF {$spell_run == 1} {
+#action {Nobody here by that name.} {
+        #if {"$castarg" == "%*"} {#unvar castarg};
+	#if {$spell_run == 1} {
         #math tocastidx {$tocastidx + 1};
         #list tocastlist len tcindex;
-        #IF {$tocastidx <= $tcindex} {
+        #if {$tocastidx <= $tcindex} {
         #list tocastlist get $tocastidx nextspell;
         $nextspell;
         } {#var spell_run 0;#list tocastlist clear;#var tocastidx 1}
@@ -75,139 +75,139 @@
 
 }
 
-#ACT {You can't do this sitting!} {
-        #IF {"$castarg" == "%*"} {#unvar castarg};
+#action {You can't do this sitting!} {
+        #if {"$castarg" == "%*"} {#unvar castarg};
 	st;
-	#IF {$spell_run == 1} {
+	#if {$spell_run == 1} {
         #math tocastidx {$tocastidx + 1};
         #list tocastlist len tcindex;
-        #IF {$tocastidx <= $tcindex} {
+        #if {$tocastidx <= $tcindex} {
         #list tocastlist get $tocastidx nextspell;
         $nextspell;
         } {#var spell_run 0;#list tocastlist clear;#var tocastidx 1}
     }
 }
 
-#ACT {Impossible! You can't concentrate enough!} {
-        #IF {"$castarg" == "%*"} {#unvar castarg};
-        #IF {$spell_run == 1} {
+#action {Impossible! You can't concentrate enough!} {
+        #if {"$castarg" == "%*"} {#unvar castarg};
+        #if {$spell_run == 1} {
         #math tocastidx {$tocastidx + 1};
         #list tocastlist len tcindex;
-        #IF {$tocastidx <= $tcindex} {
+        #if {$tocastidx <= $tcindex} {
         #list tocastlist get $tocastidx nextspell;
         #delay {3} {$nextspell};
         } {#var spell_run 0;#list tocastlist clear;#var tocastidx 1}
     }
 }
 
-#ACT {Your studies are complete.} {
-	#VAR didcast 0;
-        #IF {"$castarg" == "%*"} {#unvar castarg};
+#action {Your studies are complete.} {
+	#var didcast 0;
+        #if {"$castarg" == "%*"} {#unvar castarg};
 	st;
-	#IF {$cpr_auto == 1} {
+	#if {$cpr_auto == 1} {
 		st;
 		#delay {2} {$toprac $topractarget}
 	}
 }
 
-#ACT {You complete your spell...} {
-	#VAR didcast 1;
-        #IF {"$castarg" == "%*"} {#unvar castarg};
-	#IF {$docast == 1} {
+#action {You complete your spell...} {
+	#var didcast 1;
+        #if {"$castarg" == "%*"} {#unvar castarg};
+	#if {$docast == 1} {
 		$tocast;
 	};
-	#VAR lastspell 0;
-	#IF {$cpr_auto == 1} {
+	#var lastspell 0;
+	#if {$cpr_auto == 1} {
 		$toprac $topractarget;
 	};
-	#IF {$spell_run == 1} {
+	#if {$spell_run == 1} {
 		#math tocastidx {$tocastidx + 1};
 		#list tocastlist len tcindex;
-		#IF {$tocastidx <= $tcindex} {
+		#if {$tocastidx <= $tcindex} {
 		#list tocastlist get $tocastidx nextspell;
 		$nextspell;
-		} {#ECHO {Finished spell run.};#var spell_run 0;#list tocastlist clear;#var tocastidx 1}
+		} {#echo {Finished spell run.};#var spell_run 0;#list tocastlist clear;#var tocastidx 1}
 	}
 }
 
-#ACT {You abort your spell} {
-        #IF {"$castarg" == "%*"} {#unvar castarg};
-	#IF {$spell_run == 1} {
+#action {You abort your spell} {
+        #if {"$castarg" == "%*"} {#unvar castarg};
+	#if {$spell_run == 1} {
 		#var spell_run 0;#list tocastlist clear;#var tocastidx 1;
 	};
-	#IF {$autocast == 1} {
-		#VAR icasted {$icasted + 1}
+	#if {$autocast == 1} {
+		#var icasted {$icasted + 1}
 	};
-	#ECHO {%c%h} {red} { SPELL ABORTED }
+	#echo {%c%h} {red} { SPELL ABORTED }
 }
 
-#NOP =========================================
-#NOP  Spell Aliases
-#NOP =========================================
+#nop =========================================
+#nop  Spell Aliases
+#nop =========================================
 
-#ALIAS {pwb} {c 'power word blind' %1;#var pwbtarg %1;#var castarg %1}
-#ACT {^%0 is temporarily blinded by your word!} {gsay %0 ($pwbtarg) is temporarily blind!}
-#ACT {^%0 won't be seeing much in the near future..} {gsay %0 ($pwbtarg) is permanently blind! bahahah!}
-#ALIAS {hst} {hs %1;#var castarg %1}
+#alias {pwb} {c 'power word blind' %1;#var pwbtarg %1;#var castarg %1}
+#action {^%0 is temporarily blinded by your word!} {gsay %0 ($pwbtarg) is temporarily blind!}
+#action {^%0 won't be seeing much in the near future..} {gsay %0 ($pwbtarg) is permanently blind! bahahah!}
+#alias {hst} {hs %1;#var castarg %1}
 
-#ALIAS {gate} {c 'gate' %1;#var castarg %1}
-#ALIAS {relo} {c 'relocate' %1;#var castarg %1}
-#ALIAS {para} {c 'major para' %1;#var castarg %1}
-#ALIAS {dm} {c 'detect magic' %1;#var castarg %1}
-#ALIAS {mm} {c 'magic missile' %1;#var castarg %1}
-#ALIAS {mshield} {c 'missile shield' %1;#var castarg %1}
-#ALIAS {mf} {c 'mage flame' %1;#var castarg %1}
-#ALIAS {mc} {c 'minor crea' %1;#var castarg %1}
-#ALIAS {di} {c 'detect invis' %1;#var castarg %1}
-#ALIAS {ff} {c 'faerie fire' %1;#var castarg %1}
-#ALIAS {dd} {c 'dimension door' %1;#var castarg %1}
-#ALIAS {cons} {c 'constrict' %1;#var castarg %1}
-#ALIAS {breach} {c 'breach' %1;#var castarg %1}
-#ALIAS {blink} {c 'blink' %1;#var castarg %1}
-#ALIAS {clair} {c 'clair' %1;#var castarg %1}
-#ALIAS {ident} {c 'identify' %1;#var castarg %1}
-#ALIAS {fly} {c 'fly' %1;#var castarg %1}
-#ALIAS {fog} {c 'solid fog' %1}
-#ALIAS {red} {c 'reduce' %1;#var castarg %1}
-#ALIAS {prism} {c 'prismatic spray' %1}
-#ALIAS {feeb} {c 'feeblemind' %1;#var castarg %1}
-#ALIAS {need} {c 'needle' %1;#var castarg %1}
-#ALIAS {esh} {c 'energy shield' %1;#var castarg %1}
-#ALIAS {loc} {c 'locate object' %0;#var castarg %1}
-#ALIAS {ds} {#send ds %1;#var castarg %1}
-#ALIAS {ss} {c 'stone' %1;#var castarg %1}
-#ALIAS {bl} {c 'blur' %1;#var castarg %1}
-#ALIAS {globe} {gi %1;#var castarg %1;}
-#ALIAS {chrom} {c 'chromatic orb' %1;#var castarg %1}
-#ALIAS {chil} {c 'chill touch' %1;#var castarg %1}
-#ALIAS {tele} {c 'teleport' %1}
-#ALIAS {invis} {c 'invisib' %1;#var castarg %1}
-#ALIAS {dispel} {c 'dispel magic' %1;#var castarg %1}
-#ALIAS {cone} {c 'cone of cold' %1;#var castarg %1}
-#ALIAS {ray} {c 'ray of enfeeb' %1;#var castarg %1}
-#ALIAS {slow} {c 'slownes' %1;#var castarg %1}
-#ALIAS {charm} {c 'charm person' %1;#var castarg %1}
-#ALIAS {sleep} {c 'sleep' %1;#var castarg %1}
-#ALIAS {lev} {c 'levitate' %1;#var castarg %1}
-#ALIAS {csh} {c 'coldshi';#var castarg %1}
-#ALIAS {bb} {c 'blackligh'}
-#ALIAS {ts} {c 'time stop'}
-#ALIAS {griff} {c 'aura of the griff'}
-#ALIAS {ener} {c 'enervate' %1;#var castarg %1}
+#alias {gate} {c 'gate' %1;#var castarg %1}
+#alias {relo} {c 'relocate' %1;#var castarg %1}
+#alias {para} {c 'major para' %1;#var castarg %1}
+#alias {dm} {c 'detect magic' %1;#var castarg %1}
+#alias {mm} {c 'magic missile' %1;#var castarg %1}
+#alias {mshield} {c 'missile shield' %1;#var castarg %1}
+#alias {mf} {c 'mage flame' %1;#var castarg %1}
+#alias {mc} {c 'minor crea' %1;#var castarg %1}
+#alias {di} {c 'detect invis' %1;#var castarg %1}
+#alias {ff} {c 'faerie fire' %1;#var castarg %1}
+#alias {dd} {c 'dimension door' %1;#var castarg %1}
+#alias {cons} {c 'constrict' %1;#var castarg %1}
+#alias {breach} {c 'breach' %1;#var castarg %1}
+#alias {blink} {c 'blink' %1;#var castarg %1}
+#alias {clair} {c 'clair' %1;#var castarg %1}
+#alias {ident} {c 'identify' %1;#var castarg %1}
+#alias {fly} {c 'fly' %1;#var castarg %1}
+#alias {fog} {c 'solid fog' %1}
+#alias {red} {c 'reduce' %1;#var castarg %1}
+#alias {prism} {c 'prismatic spray' %1}
+#alias {feeb} {c 'feeblemind' %1;#var castarg %1}
+#alias {need} {c 'needle' %1;#var castarg %1}
+#alias {esh} {c 'energy shield' %1;#var castarg %1}
+#alias {loc} {c 'locate object' %0;#var castarg %1}
+#alias {ds} {#send ds %1;#var castarg %1}
+#alias {ss} {c 'stone' %1;#var castarg %1}
+#alias {bl} {c 'blur' %1;#var castarg %1}
+#alias {globe} {gi %1;#var castarg %1;}
+#alias {chrom} {c 'chromatic orb' %1;#var castarg %1}
+#alias {chil} {c 'chill touch' %1;#var castarg %1}
+#alias {tele} {c 'teleport' %1}
+#alias {invis} {c 'invisib' %1;#var castarg %1}
+#alias {dispel} {c 'dispel magic' %1;#var castarg %1}
+#alias {cone} {c 'cone of cold' %1;#var castarg %1}
+#alias {ray} {c 'ray of enfeeb' %1;#var castarg %1}
+#alias {slow} {c 'slownes' %1;#var castarg %1}
+#alias {charm} {c 'charm person' %1;#var castarg %1}
+#alias {sleep} {c 'sleep' %1;#var castarg %1}
+#alias {lev} {c 'levitate' %1;#var castarg %1}
+#alias {csh} {c 'coldshi';#var castarg %1}
+#alias {bb} {c 'blackligh'}
+#alias {ts} {c 'time stop'}
+#alias {griff} {c 'aura of the griff'}
+#alias {ener} {c 'enervate' %1;#var castarg %1}
 
-#ALIAS {dmem} {prior power word blind;prior globe of invul;prior fly;prior constrict;prior reduce;prior enlarge;prior levi;prior dispel magic;prior detect magic;prior detect invis;prior invis;prior haste;prior minor creat;prior blur;prior dragonscales;prior time stop;prior gate;prior relo}
+#alias {dmem} {prior power word blind;prior globe of invul;prior fly;prior constrict;prior reduce;prior enlarge;prior levi;prior dispel magic;prior detect magic;prior detect invis;prior invis;prior haste;prior minor creat;prior blur;prior dragonscales;prior time stop;prior gate;prior relo}
 
-#ALIAS {gfr} {f relo;mem gate}
-#ALIAS {rfg} {f gate;mem relo}
-#ALIAS {dfg} {f aura of the griff;mem dragonscale}
-#ALIAS {gfd} {f dragonscale;mem aura of the griff}
-#ALIAS {pfb} {f power word blind;mem prism}
-#ALIAS {bfp} {f prism;mem power word blind}
-#ALIAS {sskin} {innate scale}
+#alias {gfr} {f relo;mem gate}
+#alias {rfg} {f gate;mem relo}
+#alias {dfg} {f aura of the griff;mem dragonscale}
+#alias {gfd} {f dragonscale;mem aura of the griff}
+#alias {pfb} {f power word blind;mem prism}
+#alias {bfp} {f prism;mem power word blind}
+#alias {sskin} {innate scale}
 
-#ALIAS {sss} {ss me}
-#ALIAS {dss} {ds me}
-#ALIAS {bls} {bl me}
+#alias {sss} {ss me}
+#alias {dss} {ds me}
+#alias {bls} {bl me}
 
 #alias pb {prior blur}
 #alias pd {prior dragonscales}

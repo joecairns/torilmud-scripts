@@ -1,10 +1,10 @@
-#VAR dosearch 0
+#var dosearch 0
 
-#ALIAS srch {
-	#VAR dosearch 1;
-	#VAR srchtarg %1;
-	#ECHO {.. searching <140>$srchtarg<090>};
-	#IF {"$srchtarg" == "room"} 
+#alias srch {
+	#var dosearch 1;
+	#var srchtarg %1;
+	#echo {.. searching <140>$srchtarg<090>};
+	#if {"$srchtarg" == "room"}
 		{
 			#tick {srchin} {search} {5};
 		} {
@@ -12,18 +12,18 @@
 		}
 }
 
-#ACT {You search exhaustively} {
-	#IF {$dosearch == 1} {
-		#VAR dosearch 0;
+#action {You search exhaustively} {
+	#if {$dosearch == 1} {
+		#var dosearch 0;
 		#untick srchin;
 	}
 }
 
-#ACT {You find %0!} {
-	#IF {$dosearch == 1} {
+#action {You find %0!} {
+	#if {$dosearch == 1} {
 		#untick srchin;
-		#IF {$asearch == 1} {loot};
-		#VAR dosearch 0;
+		#if {$asearch == 1} {loot};
+		#var dosearch 0;
 	}
 }
 

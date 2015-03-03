@@ -1,30 +1,56 @@
-#VAR autoassist {1}
-#VAR assist {1}
+#var autoassist {1}
+#var assist {1}
 
-#ALIAS {tassist} {
-        #IF {$autoassist == 1} {
-                #VAR autoassist 0;
+#alias {tassist} {
+        #if {$autoassist == 1} {
+                #var autoassist 0;
                 #echo {%c%h} {red} { AUTO ASSIST off }
                 } {
-                #VAR autoassist 1;
-				#VAR assist 1;
+                #var autoassist 1;
+				#var assist 1;
                 #echo {%c%h} {green} { AUTO ASSIST on }
                 }
 }
 
-#ACT {You can't see who is fighting $tank.} {#DELAY {15} aa}
-#ACT {You stumble and miss your attack!} {#IF {$autoassist == 1} {aa}}
+#action {You can't see who is fighting $tank.} {#DELAY {15} aa}
+#action {You stumble and miss your attack!} {#if {$autoassist == 1} {aa}}
 
-#ACT {$tank sends %0 sprawling with a powerful bash.} {
-	#IF {$autoassist == 1 && $assist == 1} {aa};
-	#IF {$temp == 1 && $assist == 1} {ss $tank;#delay {7} {dc es}};
-	#var assist 0;
-} 
-
-#ACT {$tank attacks %0, landing} {
-	#IF {$autoassist == 1 && $assist == 1} {aa};
-	#IF {$temp == 1 && $assist == 1} {ss $tank;#delay {7} {dc es}};
+#action {$tank sends %0 sprawling with a powerful bash.} {
+	#if {$autoassist == 1 && $assist == 1} {aa};
+	#if {$temp == 1 && $assist == 1} {ss $tank;#delay {7} {dc es}};
 	#var assist 0;
 }
+
+#action {$tank places %0 in the back} {
+  #if {$autoassist == 1 && $assist == 1} {aa};
+  #if {$temp == 1 && $assist == 1} {ss $tank;#delay {7} {dc es}};
+  #var assist 0;
+}
+
+#action {$tank does an acrobatic maneuver} {
+  #if {$autoassist == 1 && $assist == 1} {aa};
+  #if {$temp == 1 && $assist == 1} {ss $tank;#delay {7} {dc es}};
+  #var assist 0;
+}
+
+#action {$tank attacks %0, landing} {
+  #if {$autoassist == 1 && $assist == 1} {aa};
+  #if {$temp == 1 && $assist == 1} {ss $tank;#delay {7} {dc es}};
+  #var assist 0;
+}
+
+#action {$tank's attack only grazes %0} {
+  #if {$autoassist == 1 && $assist == 1} {aa};
+  #if {$temp == 1 && $assist == 1} {ss $tank;#delay {7} {dc es}};
+  #var assist 0;
+}
+
+
+#action {$tank {wounds|hits|slashes} %0} {
+  #if {$autoassist == 1 && $assist == 1} {aa};
+  #if {$temp == 1 && $assist == 1} {ss $tank;#delay {7} {dc es}};
+  #var assist 0;
+}
+
 
 #showme __ AUTOASSIST.tt

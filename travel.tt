@@ -1,103 +1,103 @@
-#VAR travel 0
+#var travel 0
 
-#FUNCTION fixnew
+#function fixnew
 {
-     #IF {"%1" == "-N"}  {#VAR result north};
-     #IF {"%1" == "-E"}  {#VAR result east};
-     #IF {"%1" == "-S"}  {#VAR result south};
-     #IF {"%1" == "-W"}  {#VAR result west};
-     #IF {"%1" == "-U"}  {#VAR result up};
-     #IF {"%1" == "-D"}  {#VAR result down}
-}
-
-#FUNCTION revdir
-{
-     #IF {"%1" == "north"} {#VAR result -S};
-     #IF {"%1" == "east"}  {#VAR result -W};
-     #IF {"%1" == "south"} {#VAR result -N};
-     #IF {"%1" == "west"}  {#VAR result -E};
-     #IF {"%1" == "up"}    {#VAR result -D};
-     #IF {"%1" == "down"}  {#VAR result -U}
-}
- 
-#FUNCTION longdir
-{
-     #IF {"%1" == "n"} {#VAR result north};
-     #IF {"%1" == "e"} {#VAR result east};
-     #IF {"%1" == "s"} {#VAR result south};
-     #IF {"%1" == "w"} {#VAR result west};
-     #IF {"%1" == "u"} {#VAR result up};
-     #IF {"%1" == "d"} {#VAR result down}
-}
- 
-#FUNCTION shortdir
-{
-     #IF {"%1" == "north"} {#VAR result n};
-     #IF {"%1" == "east"}  {#VAR result e};
-     #IF {"%1" == "south"} {#VAR result s};
-     #IF {"%1" == "west"}  {#VAR result w};
-     #IF {"%1" == "up"}    {#VAR result u};
-     #IF {"%1" == "down"}  {#VAR result d}
-}
- 
-#FUNCTION finddir
-{
-     #IF {"%1" == "%2"}
-     {
-          #VAR result %3
-     }
-     {
-          #VAR result %2
-     }
+     #if {"%1" == "-N"}  {#var result north};
+     #if {"%1" == "-E"}  {#var result east};
+     #if {"%1" == "-S"}  {#var result south};
+     #if {"%1" == "-W"}  {#var result west};
+     #if {"%1" == "-U"}  {#var result up};
+     #if {"%1" == "-D"}  {#var result down}
 }
 
-#ALIAS go {
-     #IF {$travel}
+#function revdir
+{
+     #if {"%1" == "north"} {#var result -S};
+     #if {"%1" == "east"}  {#var result -W};
+     #if {"%1" == "south"} {#var result -N};
+     #if {"%1" == "west"}  {#var result -E};
+     #if {"%1" == "up"}    {#var result -D};
+     #if {"%1" == "down"}  {#var result -U}
+}
+
+#function longdir
+{
+     #if {"%1" == "n"} {#var result north};
+     #if {"%1" == "e"} {#var result east};
+     #if {"%1" == "s"} {#var result south};
+     #if {"%1" == "w"} {#var result west};
+     #if {"%1" == "u"} {#var result up};
+     #if {"%1" == "d"} {#var result down}
+}
+
+#function shortdir
+{
+     #if {"%1" == "north"} {#var result n};
+     #if {"%1" == "east"}  {#var result e};
+     #if {"%1" == "south"} {#var result s};
+     #if {"%1" == "west"}  {#var result w};
+     #if {"%1" == "up"}    {#var result u};
+     #if {"%1" == "down"}  {#var result d}
+}
+
+#function finddir
+{
+     #if {"%1" == "%2"}
      {
-          #VAR travel 0;
-          #SHOWME <100>[_ <070>You <010>stop <110>traveling<100>. _]
+          #var result %3
      }
      {
-          #VAR travel 1;
-          #VAR lastdir @longdir{%1};
-          #VAR lastdir @revdir{$lastdir}; 
-          #SHOWME <100>.. <170>T<070>raveling <140>%1<100>;
+          #var result %2
+     }
+}
+
+#alias go {
+     #if {$travel}
+     {
+          #var travel 0;
+          #showme <100>[_ <070>You <010>stop <110>traveling<100>. _]
+     }
+     {
+          #var travel 1;
+          #var lastdir @longdir{%1};
+          #var lastdir @revdir{$lastdir};
+          #showme <100>.. <170>T<070>raveling <140>%1<100>;
           %0
      }
 }
 
-#ACT {Exits: %0}
+#action {Exits: %0}
 {
-     #IF {$travel}
+     #if {$travel}
      {
-          #IF {"%0" != "%* %*"}
+          #if {"%0" != "%* %*"}
           {
-               #VAR travel 0;
-               #SHOWME <100>[_ <110>D<010>ead <070>End <100>_]
-          };      
-
-          #IF {"%0" == "%* %* %*"}
-          {
-               #VAR travel 0;
-               #SHOWME <100>[_ <170>C<070>rossroads <120>R<020>eached <100>_]
+               #var travel 0;
+               #showme <100>[_ <110>D<010>ead <070>End <100>_]
           };
 
-          #IF {$travel}
+          #if {"%0" == "%* %* %*"}
           {
-               #VAR newdir @finddir{$lastdir %0};
-               #VAR newdir @fixnew{$newdir};
-	       #SHOWME <100>.. <170>T<070>raveling <140>$newdir<100>;
+               #var travel 0;
+               #showme <100>[_ <170>C<070>rossroads <120>R<020>eached <100>_]
+          };
 
-               #VAR lastdir @revdir{$newdir};
+          #if {$travel}
+          {
+               #var newdir @finddir{$lastdir %0};
+               #var newdir @fixnew{$newdir};
+	       #showme <100>.. <170>T<070>raveling <140>$newdir<100>;
+
+               #var lastdir @revdir{$newdir};
 
                @shortdir{$newdir}
           }
      };
 }
 
-#ACT {You need to board a ship to travel the oceans.} {
-	#IF {$travel} {go}}
+#action {You need to board a ship to travel the oceans.} {
+	#if {$travel} {go}}
 
-#ACT {Alas, you cannot go that way} {#if {$travel} {go}}
+#action {Alas, you cannot go that way} {#if {$travel} {go}}
 
-#SHOWME __ TRAVEL.tt
+#showme __ TRAVEL.tt

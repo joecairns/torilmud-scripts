@@ -1,0 +1,93 @@
+#config           {256 COLORS}  {ON}
+#config           {AUTO TAB}  {5000}
+#config           {BUFFER SIZE}  {20000}
+#config           {CHARSET}  {ASCII}
+#config           {COMMAND COLOR}  {<078>}
+#config           {COMMAND ECHO}  {ON}
+#config           {CONNECT RETRY}  {15}
+#config           {HISTORY SIZE}  {1000}
+#config           {LOG}  {HTML}
+#config           {PACKET PATCH}  {0.00}
+#config           {REPEAT CHAR}  {!}
+#config           {REPEAT ENTER}  {OFF}
+#config           {SCROLL LOCK}  {ON}
+#config           {SPEEDWALK}  {OFF}
+#config           {TINTIN CHAR}  {#}
+#config           {VERBATIM}  {OFF}
+#config           {VERBATIM CHAR}  {\}
+#config           {VERBOSE}  {OFF}
+#config           {WORDWRAP}  {ON}
+#pathdir          {d}  {u}  {32}
+#pathdir          {e}  {w}  {2}
+#pathdir          {n}  {s}  {1}
+#pathdir          {ne}  {sw}  {3}
+#pathdir          {nw}  {se}  {9}
+#pathdir          {s}  {n}  {4}
+#pathdir          {se}  {nw}  {6}
+#pathdir          {sw}  {ne}  {12}
+#pathdir          {u}  {d}  {16}
+#pathdir          {w}  {e}  {8}
+
+#forall {session_average_score;average_score_count;bad;mundane;average;fair;good;mighty;heroic;perfect;count;average;total} {#var &0 0};
+
+
+#action {^Strength:        %w%sPower:           %w%s$} {#var str %1;#var pow %3};
+#action {^Dexterity:       %w%sIntelligence:    %w%s$} {#var dex %1;#var int %3};
+#action {^Agility:         %w%sWisdom:          %w%s$} {#var agi %1;#var wis %3};
+#action {^Constitution:    %w%sCharisma:        %w%s$} {#var con %1;#var cha %3};
+#alias {addcount} {#math {count} {$count + 1}};
+
+
+#action {To swap stats: enter the first stat name folowed by the second stat}
+{
+   #forall {$str;$pow;$dex;$int;$agi;$wis;$con;$cha}
+   {
+      #if {"&0" == "good"} {#math {good} {$good + 1};addcount};
+      #if {"&0" == "mighty"} {#math {mighty} {$mighty + 1};addcount};
+      #if {"&0" == "heroic"} {#math {heroic} {$heroic + 1};addcount};
+      #if {"&0" == "perfect"} {#math {perfect} {$perfect + 1};addcount};
+   };
+   #math {good} {$good * 82.00};
+   #math {mighty} {$mighty * 88.00};
+   #math {heroic} {$heroic * 94.00};
+   #math {perfect} {$perfect * 110.00};
+   #math {total} {$good + $mighty + $heroic + $perfect};
+
+   #if {$count >= 4} {#math {average} {$total / $count}};#else #var {average} {--};
+
+   #math {total_rolls} {$total_rolls + 1};
+   #math {total_score_count} {$count + $total_score_count};
+   #math {average_score_count} {$total_score_count / $total_rolls};
+
+
+   #if {$count >= 4} {
+     #math {session_exceptional_score_counts} {$session_exceptional_score_counts + 1};
+     #math {session_average_score_total} {$average + $session_average_score_total};
+     #math {session_average_score} {$session_average_score_total / $session_exceptional_score_counts};
+
+     #if {$average > $session_high} {#var session_high $average};
+  };
+
+   #show S: $str    D: $dex    A: $agi    C: $con    P: $pow    I: $int    W: $wis    Ch: $cha;
+   #show Total Rolls    Count (Avg) (except)    Score Index (Avg) (Sessn Avg);
+   #show -----------    --------------------    -----------------------------;
+   #show $total_rolls ($total_score_count)        $count ($average_score_count) ($session_exceptional_score_counts)           $total ($average) ($session_average_score);
+   #show Session High: $session_high;
+
+   #if {$count >= 4 && $average >= 92} {#showme /a/} {#cr};
+
+
+   #forall {good;mighty;heroic;perfect;count;average;total} {#var &0 0};
+}
+
+#alias {login}
+{
+   #action {Please enter your term type}
+   {
+      #cr;y;
+      #unact {Please enter your term type};
+   };
+   #session Roller torilmud.org 9999;
+   #split {0} {0};
+   #forall {session_high;total_rolls;total_score_count;session_average_score;session_average_score_total;session_exceptional_score_counts} {#var &0 0};
+}

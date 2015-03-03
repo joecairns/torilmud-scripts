@@ -1,20 +1,20 @@
-#VAR autobot 0
-#VAR didcast 0
+#var autobot 0
+#var didcast 0
 
-#ACT {%w grovels in the dirt before you like a slave.} {#IF {$autobot == 1} {bl %1}}
-#ACT {%w worships you, and crawls at your feet.} {#IF {$autobot == 1} {ds %1}}
-#ACT {%w tugs on your sleeve. Hey! Pay attention!} {#IF {$autobot == 1} {hst %1}}
-#ACT {%w gives you a great big, warm hug.} {#IF {$autobot == 1} {globe %1}}
-#ACT {%w jumps high in the air, and lands on top of you!} {#IF {$autobot == 1} {fly %1}}
+#action {%w grovels in the dirt before you like a slave.} {#if {$autobot == 1} {bl %1}}
+#action {%w worships you, and crawls at your feet.} {#if {$autobot == 1} {ds %1}}
+#action {%w tugs on your sleeve. Hey! Pay attention!} {#if {$autobot == 1} {hst %1}}
+#action {%w gives you a great big, warm hug.} {#if {$autobot == 1} {globe %1}}
+#action {%w jumps high in the air, and lands on top of you!} {#if {$autobot == 1} {fly %1}}
 
-#TICK {botmem} {#IF {$didcast == 1} {srm}} {30}
+#tick {botmem} {#if {$didcast == 1} {srm}} {30}
 
-#ALIAS tbot {
-        #IF {$autobot == 1} {
-                #VAR autobot 0;
-                #ECHO {%c%h} {red} { BOTTING CHANTER off }
+#alias tbot {
+        #if {$autobot == 1} {
+                #var autobot 0;
+                #echo {%c%h} {red} { BOTTING CHANTER off }
                 } {
-                #VAR autobot 1;
-                #ECHO {%c%h} {green} { BOTTING CHANTER on }
+                #var autobot 1;
+                #echo {%c%h} {green} { BOTTING CHANTER on }
         }
 }

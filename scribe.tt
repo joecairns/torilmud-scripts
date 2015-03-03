@@ -1,17 +1,17 @@
 #var toscribe 1
 
-#ALIAS scradd {#list toscribelist ins -1 %0;#show <100>...<090> Added <130>%0 <090>to scribe list}
-#ALIAS scrclr {#list toscribelist clr}
+#alias scradd {#list toscribelist ins -1 %0;#show <100>...<090> Added <130>%0 <090>to scribe list}
+#alias scrclr {#list toscribelist clr}
 
-#act {~You finish scribing %*} {
-		#math toscribe {$toscribe + 1};	
+#action {~You finish scribing %*} {
+		#math toscribe {$toscribe + 1};
 		#list toscribelist len toscribeidx;
-                #IF {$toscribe <= $toscribeidx} {
+                #if {$toscribe <= $toscribeidx} {
                 #delay {4} {scribe $toscribelist[$toscribe]};
-                } {#ECHO {Finished scribing book.};#var toscribe 1}
+                } {#echo {Finished scribing book.};#var toscribe 1}
 }
 
-#ALIAS scrun {
+#alias scrun {
         scribe $toscribelist[$toscribe]
 }
 

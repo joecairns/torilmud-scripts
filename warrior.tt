@@ -1,95 +1,93 @@
-#READ autoassist.tt
-#READ rescue.tt
+#read Documents/muds/Torilmud-Tintin/autoassist.tt
+#read Documents/muds/Torilmud-Tintin/rescue.tt
+#read Documents/muds/Torilmud-Tintin/auto_shieldpunch.tt
 
-#VAR autoassist 0
-#VAR {bag} {silk}
-#VAR {bag2} {chest}
-#VAR {myname} {Eln}
-#VAR {autobash} {0}
-#VAR {aResc} {1}
-#VAR {auto_loot} {0}
-#VAR {condcall} {1}
-#VAR {cPrac} {1}
-#VAR {poison} {jar}
-#VAR {weapon} {avenger}
-#VAR {auto_poison} {0}
+#var autoassist 0
+#var {bag} {sack}
+#var {bag2} {chest}
+#var {myname} {Rahaz}
+#var {autobash} {0}
+#var {aResc} {1}
+#var {auto_loot} {0}
+#var {condcall} {1}
+#var {cPrac} {1}
+#var {poison} {jar}
+#var {weapon} {avenger}
+#var {auto_poison} {0}
 
-#ALIAS {cp} {ce %1;#tick {chargePractice} {charge} {10};#var cPrac 1}
-#ALIAS {ap} {apply $poison $weapon}
-#ACT {You do a horrible job of applying} {ap}
-#ACT {You use the last of the poison.} {g $poison}
+#alias {cp} {ce %1;#tick {chargePractice} {charge} {10};#var cPrac 1}
+#alias {ap} {apply $poison $weapon}
+#action {You do a horrible job of applying} {ap}
+#action {You use the last of the poison.} {g $poison}
 
-#SUB {You have finished praying for %1.} {<100>[ <010>+<110>+ <170>_ <070>%1 <170>_ <110>+<010>+<100> ]<090>}
-#ACT {Your prayers are complete.} {st}
+#sub {You have finished praying for %1.} {<100>[ <010>+<110>+ <170>_ <070>%1 <170>_ <110>+<010>+<100> ]<090>}
+#action {Your prayers are complete.} {st}
 
-#ALIAS {srp} {rest;pray}
-#ALIAS {m} {mount nightmare}
-#ALIAS {dm} {dism}
+#alias {srp} {rest;pray}
+#alias {m} {mount nightmare}
+#alias {dm} {dism}
 
-#ACT {Casting: %0 *%1} { 
-        #IF {&{castarg}} {#NOP} {#if {$incombat == 1} {#var castarg fighting} {#var castarg room}};
+#action {Casting: %0 *%1} {
+        #if {&{castarg}} {#nop} {#if {$incombat == 1} {#var castarg fighting} {#var castarg room}};
         #UNSUB {Casting: %0 *%1};
-        #IF {@getlen{%1} > 3} {
-                #SUB {Casting: %0 *%1} {<070>cast <100>(<060>%0<070> <100>-> <160>$castarg<100>): <100>*%1};
+        #if {@getlen{%1} > 3} {
+                #sub {Casting: %0 *%1} {<070>cast <100>(<060>%0<070> <100>-> <160>$castarg<100>): <100>*%1};
         };
-        #IF {@getlen{%1} <= 3} {
-                #SUB {Casting: %0 *%1} {<070>cast <100>(<060>%0<070> <100>-> <160>$castarg<100>): <140>*%1};
+        #if {@getlen{%1} <= 3} {
+                #sub {Casting: %0 *%1} {<070>cast <100>(<060>%0<070> <100>-> <160>$castarg<100>): <140>*%1};
         }
 }
 
-#NOP =========================================
-#NOP  ANTI STUFF
-#NOP =========================================
+/* =========================================
+  ANTI STUFF
+========================================= */
 
-#ALIAS {of} {order followers %0}
-#ALIAS {off} {order followers flee}
+#alias {of} {order followers %0}
+#alias {off} {order followers flee}
 
-#ALIAS {lt} {lifetap %1;}
+#alias {lt} {lifetap %1;}
 
-#ACT {You grin evilly as your hands glow} {
+#action {You grin evilly as your hands glow} {
 #var thetime {@gettime{}};
 #line log other.txt {<100>$thetime <070>LIFETAP <070>: <010>USED<110>!};
-#TICK {ltready} {
-	#ECHO {<110>-<010>-<100> :: <170>LIFETAP <070>READY!<090>};
+#tick {ltready} {
+	#echo {<110>-<010>-<100> :: <170>LIFETAP <070>READY!<090>};
 	#var thetime {@gettime{}};
 	#line log other.txt {<100>$thetime <170>LIFETAP <070>: READY!<090>};
 	#untick ltready;
 	} {1440};
 }
 
-#ACT {You lose your balance and are dismounted.} {m}
-#ACT {Your mount charges %0 and knocks %1 off balance!} {}
-#ACT {Your mount misses %0 with its charge!} {}
+#action {You lose your balance and are dismounted.} {m}
+#action {Your mount charges %0 and knocks %1 off balance!} {}
+#action {Your mount misses %0 with its charge!} {}
 
-#act {%0 clambers to %1 feet.} {
+#action {%0 clambers to %1 feet.} {
 	#if {$autobash == 1} {bash} }
-#act {%0 avoids your bash,} {
+#action {%0 avoids your bash,} {
 	#if {$autobash == 1} {st;bash} {st} }
-#act {%0 rises to %1 feet.} {
+#action {%0 rises to %1 feet.} {
 	#if {$autobash == 1} {bash} }
-#act {%0 staggers about, but manages to get to %* feet.} {
+#action {%0 staggers about, but manages to get to %* feet.} {
 	#if {$autobash == 1} {bash} }
-	
-#ALIAS be {#var enemy %1;bash $enemy}
-#ALIAS ce {#var enemy %1;#send mc $enemy}
 
-#ACT {%0 throws you off-balance.} {st}
+#alias be {#var enemy %1;bash $enemy}
+#alias ce {#var enemy %1;#send mc $enemy}
 
-#NOP =========================================
-#NOP  Spell Aliases
-#NOP =========================================
+#action {%0 throws you off-balance.} {st}
 
-#ALIAS {arm} {c 'armor' %1;#var castarg %1}
-#ALIAS {bless} {c 'bless' %1;#var castarg %1}
-#ALIAS {curse} {c 'curse' %1;#var castarg %1}
-#ALIAS {dispel} {c 'dispel magic' %1;#var castarg %1}
-#ALIAS {taz} {c 'tazriks' %1;#var castarg %1}
-#ALIAS {dw} {c 'dark wrath' %1;#var castarg %1}
-#ALIAS {word} {c 'unholy word' %1;#var castarg %1}
-#ALIAS {aura} {c 'unholy aura' %1;#var castarg %1}
-#ALIAS {blind} {c 'blind' %1;#var castarg %1}
-#ALIAS {harm} {c 'harm' %1;#var castarg %1}
-#ALIAS {wither} {c 'wither' %1;#var castarg %1}
-#ALIAS {hm} {c 'heal mount' nightmare;#var castarg nightmare}
+
+#alias {arm} {c 'armor' %1;#var castarg %1}
+#alias {bless} {c 'bless' %1;#var castarg %1}
+#alias {curse} {c 'curse' %1;#var castarg %1}
+#alias {dispel} {c 'dispel magic' %1;#var castarg %1}
+#alias {taz} {c 'tazriks' %1;#var castarg %1}
+#alias {dw} {c 'dark wrath' %1;#var castarg %1}
+#alias {word} {c 'unholy word' %1;#var castarg %1}
+#alias {aura} {c 'unholy aura' %1;#var castarg %1}
+#alias {blind} {c 'blind' %1;#var castarg %1}
+#alias {harm} {c 'harm' %1;#var castarg %1}
+#alias {wither} {c 'wither' %1;#var castarg %1}
+#alias {hm} {c 'heal mount' nightmare;#var castarg nightmare}
 
 #showme __ WARRIOR.tt
