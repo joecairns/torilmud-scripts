@@ -1,6 +1,6 @@
 #read travel.tin
 #read spelltracker.tin
-#read glance.tin
+/* #read glance.tin */
 #read return.tin
 #read search.tin
 #read stand.tin
