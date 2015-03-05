@@ -2,14 +2,14 @@
 #var assist {1}
 
 #alias {tassist} {
-        #if {$autoassist == 1} {
-                #var autoassist 0;
-                #echo {%c%h} {red} { AUTO ASSIST off }
-                } {
-                #var autoassist 1;
-				#var assist 1;
-                #echo {%c%h} {green} { AUTO ASSIST on }
-                }
+  #if {$autoassist == 1} {
+    #var autoassist 0;
+    #echo {%c%h} {red} { AUTO ASSIST off }
+  } {
+    #var autoassist 1;
+		#var assist 1;
+    #echo {%c%h} {green} { AUTO ASSIST on }
+  }
 }
 
 #action {You can't see who is fighting $tank.} {#DELAY {15} aa}
