@@ -170,7 +170,7 @@
 #action {Score information for %1} {#var myname %1}
 
 #action {You rejoin the land of the living...} {/* #send assoc chat mung thepasswrd; */}
-#macro {\t} {#cursor TAB FORWARD}
+/* #macro {\t} {#cursor TAB FORWARD} */
 
 #action {%1 is mortally wounded, and will die soon, if not aided.} {
   #if {$Adrain == 1} {drain $drain_target}
@@ -568,7 +568,10 @@
 	#math currgs {$currgs + 1};
 }
 
-#action {%1 group-say '%1'$} {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <120>-\> <090>: <030>%1<090>}}
+#action {%1 group-say '%1'$} {
+  #var thetime {@gettime{}};
+  #line log comms.txt {<100>$thetime <120>-\> <090>: <030>%1<090>}
+}
 
 #action {%1 tells you '%2'$} {
 	#if {$imafk == 0} {
@@ -617,20 +620,25 @@
 }
 
 #action {You have learned something new about %0!} {
-    #var thetime {@gettime{}};
-    #line log other.txt {<100>$thetime <020>LEARNED<090> : <120>%0<090>};
+  #var thetime {@gettime{}};
+  #line log other.txt {<100>$thetime <020>LEARNED<090> : <120>%0<090>};
 	#math currlrn {$currlrn + 1}
 }
 
-#action {%1 OOC: '%2'$} {#if {"%1" != "%* %*"}
-{#var thetime {@gettime{}};#line log chat.txt {<100>$thetime <090>%1 : <120>%2<090>}
-}}
+#action {%1 OOC: '%2'$} {
+  #if {"%1" != "%* %*"} {
+    #var thetime {@gettime{}};
+    #line log chat.txt {<100>$thetime <090>%1 : <120>%2<090>}
+  }
+}
 
 #action {%w ASSOC: '%2'$} {
-#var thetime {@gettime{}};#line log chat.txt {<100>$thetime <090>%1 : <050>%2<090>}
+  #var thetime {@gettime{}};
+  #line log chat.txt {<100>$thetime <090>%1 : <050>%2<090>}
 }
 
 #action {%w ASSOC:: '%2'$} {
-#var thetime {@gettime{}};#line log chat.txt {<100>$thetime <090>%1 : <050>%2<090>};
-#math curracc {$curracc + 1}
+  #var thetime {@gettime{}};
+  #line log chat.txt {<100>$thetime <090>%1 : <050>%2<090>};
+  #math curracc {$curracc + 1}
 }
