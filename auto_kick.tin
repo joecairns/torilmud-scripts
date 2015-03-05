@@ -1,0 +1,38 @@
+#var auto_kick {0}
+
+#alias {tkick} {
+  #if {$auto_kick == 1} {
+    #var auto_kick  0;
+    #echo {%c%h} {red} { AUTO KICK off };
+  } {
+    #var auto_kick 1;
+    #var kick 1;
+    #echo {%c%h} {green} { AUTO KICK on };
+  }
+}
+
+#action {Your beautiful full-circle-kick misses %0 by a mile.} {
+  #if {$auto_kick == 1} {
+    kick
+  }
+}
+
+#action {You miss your kick at %0 groin, much to his relief.} {
+  #if {$auto_kick == 1} {
+    kick
+  }
+}
+
+#action {Your boots need polishing again - blood all over.} {
+  #if {$auto_kick == 1} {
+    kick
+  }
+}
+
+#action {Your kick hits %0 in the solar plexus.} {
+  #if {$auto_kick == 1} {
+    kick
+  }
+}
+
+#showme __ AUTO_KICK.tin

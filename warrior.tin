@@ -1,5 +1,6 @@
 #read autoassist.tin
 #read rescue.tin
+#read auto_kick.tin
 
 #var autoassist 0
 #var {bag} {sack}
