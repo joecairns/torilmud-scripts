@@ -46,7 +46,6 @@
   #var assist 0;
 }
 
-
 #action {$tank {wounds|hits|slashes} %0} {
   #if {$autoassist == 1 && $assist == 1} {aa};
   #if {$temp == 1 && $assist == 1} {ss $tank;#delay {7} {dc es}};
@@ -57,6 +56,10 @@
   #if {$autoassist == 1 && $assist == 1} {aa};
   #if {$temp == 1 && $assist == 1} {ss $tank;#delay {7} {dc es}};
   #var assist 0;
+}
+
+#action {You assist $tank heroically.} {
+  #if {$auto_kick == 1 && $autoassist == 1 } {kick}
 }
 
 #showme __ AUTOASSIST.tin
