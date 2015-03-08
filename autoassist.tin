@@ -53,5 +53,10 @@
   #var assist 0;
 }
 
+#action {$tank grits {his|her} teeth and viciously headbutts %0 in the face!} {
+  #if {$autoassist == 1 && $assist == 1} {aa};
+  #if {$temp == 1 && $assist == 1} {ss $tank;#delay {7} {dc es}};
+  #var assist 0;
+}
 
 #showme __ AUTOASSIST.tin
