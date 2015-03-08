@@ -625,6 +625,13 @@
 	#math currlrn {$currlrn + 1}
 }
 
+#action {^You raise a level!} {
+  #var thetime {@gettime{}};
+  #line log other.txt {<100>$thetime <020>LEVEL<090> : <120>$mychar<090>};
+  #math currlrn {$currlrn + 1}
+}
+
+
 #action {%1 OOC: '%2'$} {
   #if {"%1" != "%* %*"} {
     #var thetime {@gettime{}};
