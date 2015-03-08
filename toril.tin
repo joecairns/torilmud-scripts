@@ -74,6 +74,7 @@
 #var gleader 0
 #var myname 0
 #var auto_path 0
+#var am_fighting 0
 
 #gag {Your spell is partially absorbed}
 #gag {If you do not get a response, it's because the staff are busy or unavailable.}
@@ -84,7 +85,7 @@
 
 #unprompt %*
 #action {< %1h/%2H %3v/%4V >} {
-	#math {myhper} {%1 * 100 / %2};
+  #math {myhper} {%1 * 100 / %2};
     #if {$myhper > 100} { #var currhealth {<120>%1};
         #var chgr {<120>||||||||||||||||};};
     #if {$myhper == 100 } { #var currhealth {<020>%1};
@@ -141,16 +142,16 @@
   #var {myclass} {%3};
 
   #if {$loaded} {} {
-		#if {"$myclass" == "Enchanter"} {lench;  #var loaded 1};
-		#if {"$myclass" == "Elementalist"} {lelem;  #var loaded 1};
-		#if {"$myclass" == "Illusionist"} {lill;   #var loaded 1};
-		#if {"$myclass" == "Necromancer"} {lnec;   #var loaded 1};
-		#if {"$myclass" == "Warrior"} {lwarr;  #var loaded 1};
-		#if {"$myclass" == "Shaman"} {lsham;  #var loaded 1};
-		#if {"$myclass" == "Rogue"} {lrogue; #var loaded 1};
-        #if {"$myclass" == "Druid"} {ldruid; #var loaded 1};
-        #if {"$myclass" == "Psionicist"} {lpsion; #var loaded 1};
-	};
+    #if {"$myclass" == "Enchanter"} {lench;  #var loaded 1};
+    #if {"$myclass" == "Elementalist"} {lelem;  #var loaded 1};
+    #if {"$myclass" == "Illusionist"} {lill;   #var loaded 1};
+    #if {"$myclass" == "Necromancer"} {lnec;   #var loaded 1};
+    #if {"$myclass" == "Warrior"} {lwarr;  #var loaded 1};
+    #if {"$myclass" == "Shaman"} {lsham;  #var loaded 1};
+    #if {"$myclass" == "Rogue"} {lrogue; #var loaded 1};
+    #if {"$myclass" == "Druid"} {ldruid; #var loaded 1};
+    #if {"$myclass" == "Psionicist"} {lpsion; #var loaded 1};
+  };
 };
 
 
@@ -251,17 +252,17 @@
     #if {$smscontrol == 1} {
                 #var smscontrol 0;
                 #echo {%c%h} {red} { SMS CONTROL off };
-				#untick smscontroller;
+        #untick smscontroller;
                 } {
                 #var smscontrol 1;
                 #echo {%c%h} {green} { SMS CONTROL on };
-					#tick {smscontroller} {
-						#script {smsobject} {cat ~/tt/ttsms/data.txt};
-						#if {"$smsobject" != ""} {$smsobject[1]};
-						#system {rm ~/tt/ttsms/data.txt};
-						#system {touch ~/tt/ttsms/data.txt};
-						#system {chmod 777 ~/tt/ttsms/data.txt};
-					} {15};
+          #tick {smscontroller} {
+            #script {smsobject} {cat ~/tt/ttsms/data.txt};
+            #if {"$smsobject" != ""} {$smsobject[1]};
+            #system {rm ~/tt/ttsms/data.txt};
+            #system {touch ~/tt/ttsms/data.txt};
+            #system {chmod 777 ~/tt/ttsms/data.txt};
+          } {15};
                 }
 }
 
@@ -276,7 +277,7 @@
 }
 
 #alias tdoors {
-	#if {$tdoor == 1} {
+  #if {$tdoor == 1} {
                 #var tdoor 0;
                 #echo {%c%h} {red} { AUTO OPEN DOORS off }
                 } {
@@ -298,16 +299,16 @@
 
 #alias tafk {
     #if {$imafk == 1} {
-				tog afk;
+        tog afk;
                 #var imafk 0;
                 #echo {%c%h} {red} { AFK off };
-		#SYSTEM cat afkcomms.txt;
-		#system rm afkcomms.txt
+    #SYSTEM cat afkcomms.txt;
+    #system rm afkcomms.txt
                 } {
-				tog afk;
+        tog afk;
                 #var imafk 1;
                 #echo {%c%h} {green} { AFK on };
-		#line log afkcomms.txt {<100>...<090>}
+    #line log afkcomms.txt {<100>...<090>}
         }
 }
 
@@ -342,22 +343,22 @@
 }
 
 #alias {tbash} {
-	#if {$autobash == 1} {
-		#var autobash 0;
-		#echo {%c%h} {red} { AUTOBASH off }
-		} {
-		#var autobash 1;
-		#echo {%c%h} {green} { AUTOBASH on }
-		}
+  #if {$autobash == 1} {
+    #var autobash 0;
+    #echo {%c%h} {red} { AUTOBASH off }
+    } {
+    #var autobash 1;
+    #echo {%c%h} {green} { AUTOBASH on }
+    }
 }
 
 #action {%0 has just given you %1 consent.} {
-	#if {$Agroup == 1} {
-		#var thetime {@gettime{}};
-		group %0;
-		gsay -- grouped %0 at $thetime EST --;
-		#if {"$myname" ==  "Eln"} {radd %0};
-	}
+  #if {$Agroup == 1} {
+    #var thetime {@gettime{}};
+    group %0;
+    gsay -- grouped %0 at $thetime EST --;
+    #if {"$myname" ==  "Eln"} {radd %0};
+  }
 }
 
 
@@ -447,8 +448,8 @@
 #alias {srp} {rest;pray}
 
 #alias {imafk} {
-	#var wentafk {@gettime{}};
-	#if {$imafk} {#var afkmessage {%0 - Away since $wentafk EST}} {#var afkmessage {%0 - Away since $wentafk EST};tafk;}
+  #var wentafk {@gettime{}};
+  #if {$imafk} {#var afkmessage {%0 - Away since $wentafk EST}} {#var afkmessage {%0 - Away since $wentafk EST};tafk;}
 }
 #alias {imback} {tafk}
 
@@ -458,12 +459,12 @@
 #alias {loot} {#if {"%1" == ""} {#var lootl 1} {#var lootl %1};#loop {1} {$lootl} {cnt} {get all $cnt.corpse}}
 
 #alias po {
-	#if {"%1" == "w"} {emote points to the room to the west.};
-	#if {"%1" == "e"} {emote points to the room to the east.};
-	#if {"%1" == "s"} {emote points to the room to the south.};
-	#if {"%1" == "n"} {emote points to the room to the north.};
-	#if {"%1" == "u"} {emote points to the room above.};
-	#if {"%1" == "d"} {emote points to the room below.};
+  #if {"%1" == "w"} {emote points to the room to the west.};
+  #if {"%1" == "e"} {emote points to the room to the east.};
+  #if {"%1" == "s"} {emote points to the room to the south.};
+  #if {"%1" == "n"} {emote points to the room to the north.};
+  #if {"%1" == "u"} {emote points to the room above.};
+  #if {"%1" == "d"} {emote points to the room below.};
 }
 
 #alias gl {glance %1}
@@ -514,58 +515,58 @@
 
 #action {%w group-%3s '%0'$} {
    #if {"$stgsay" == "1"} {
-	#if {"@lcase{%0}" == "%*haste%*"}
-		{
-		#var thetime {@gettime{}};
-		delaffect %1 haste;sg;
-   	    #line log comms.txt {<100>$thetime <090>%1 : <110>%0<090>}
-		};
-	#elseif {"@lcase{%0}" == "%*$myname%*}
-		{
-		#var thetime {@gettime{}};
-		#line log comms.txt {<100>$thetime <090>%1 : <150>%0<090>}
-		}
-	#elseif {"@lcase{%0}" == "%*blur%*"}
-		{
-		#var thetime {@gettime{}};
-		delaffect %1 blur;sg;
+  #if {"@lcase{%0}" == "%*haste%*"}
+    {
+    #var thetime {@gettime{}};
+    delaffect %1 haste;sg;
+        #line log comms.txt {<100>$thetime <090>%1 : <110>%0<090>}
+    };
+  #elseif {"@lcase{%0}" == "%*$myname%*}
+    {
+    #var thetime {@gettime{}};
+    #line log comms.txt {<100>$thetime <090>%1 : <150>%0<090>}
+    }
+  #elseif {"@lcase{%0}" == "%*blur%*"}
+    {
+    #var thetime {@gettime{}};
+    delaffect %1 blur;sg;
         #line log comms.txt {<100>$thetime <090>%1 : <140>%0<090>}
-		};
-	#elseif {"@lcase{%0}" == "%*vit%*"}
+    };
+  #elseif {"@lcase{%0}" == "%*vit%*"}
         {
         #var thetime {@gettime{}};
         delaffect %1 vit;sg;
         #line log comms.txt {<100>$thetime <090>%1 : <040>%0<090>}
         };
-	#elseif {"@lcase{%0}" == "%*globe%*"}
+  #elseif {"@lcase{%0}" == "%*globe%*"}
         {
         #var thetime {@gettime{}};
         delaffect %1 globe;sg;
         #line log comms.txt {<100>$thetime <090>%1 : <010>%0<090>}
         };
-	#elseif {"@lcase{%0}" == "%*stone%*"}
-		{
-		#var thetime {@gettime{}};
-		delaffect %1 stone;sg;
-   	    #line log comms.txt {<100>$thetime <090>%1 : <100>%0<090>}
-		};
-	#elseif {"@lcase{%0}" == "%*scale%*" || "@lcase{%0}" == "%*dscale%*"}
-		{
-		#var thetime {@gettime{}};
-		delaffect %1 scale;sg;
-    	#line log comms.txt {<100>$thetime <090>%1 : <130>%0<090>}
-		};
-	#elseif {"@lcase{%0}" == "%*displace%*"}
-		{
-		#var thetime {@gettime{}};
-    	delaffect %1 disp;sg;
-    	#line log comms.txt {<100>$thetime <090>%1 : <050>%0<090>}
-    	};
-	#ELSE {
-		#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 : <030>%0<090>}
-	}
+  #elseif {"@lcase{%0}" == "%*stone%*"}
+    {
+    #var thetime {@gettime{}};
+    delaffect %1 stone;sg;
+        #line log comms.txt {<100>$thetime <090>%1 : <100>%0<090>}
+    };
+  #elseif {"@lcase{%0}" == "%*scale%*" || "@lcase{%0}" == "%*dscale%*"}
+    {
+    #var thetime {@gettime{}};
+    delaffect %1 scale;sg;
+      #line log comms.txt {<100>$thetime <090>%1 : <130>%0<090>}
+    };
+  #elseif {"@lcase{%0}" == "%*displace%*"}
+    {
+    #var thetime {@gettime{}};
+      delaffect %1 disp;sg;
+      #line log comms.txt {<100>$thetime <090>%1 : <050>%0<090>}
+      };
+  #ELSE {
+    #var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 : <030>%0<090>}
+  }
    } {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 : <030>%0<090>}};
-	#math currgs {$currgs + 1};
+  #math currgs {$currgs + 1};
 }
 
 #action {%1 group-say '%1'$} {
@@ -574,55 +575,55 @@
 }
 
 #action {%1 tells you '%2'$} {
-	#if {$imafk == 0} {
-		#if {"%1" == "nerun"} {
-			#var thetime {@gettime{}};#line log comms.txt {<100>$thetime nerun <090>: <060>%2<090>};
-			#if {$smscontrol == 1} {#system dosms -p 15617040453 -t "%2";};
-		} {
-			#if {"%1" != "%* %*"} {
-				#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 <100>: <170>%2<090>}
-			};
-			#if {$smscontrol == 1} {#system dosms -p 15617040453 -t "%1 tell: %2";};
-		};
-	} {
-		repl $afkmessage;
-		#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 <100>: <170>%2<090>};
-		#var thetime {@gettime{}};#line log afkcomms.txt {<100>$thetime <090>%1 <100>: <170>%2<090>}
-	};
-	#math currtells {$currtells + 1};
+  #if {$imafk == 0} {
+    #if {"%1" == "nerun"} {
+      #var thetime {@gettime{}};#line log comms.txt {<100>$thetime nerun <090>: <060>%2<090>};
+      #if {$smscontrol == 1} {#system dosms -p 15617040453 -t "%2";};
+    } {
+      #if {"%1" != "%* %*"} {
+        #var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 <100>: <170>%2<090>}
+      };
+      #if {$smscontrol == 1} {#system dosms -p 15617040453 -t "%1 tell: %2";};
+    };
+  } {
+    repl $afkmessage;
+    #var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 <100>: <170>%2<090>};
+    #var thetime {@gettime{}};#line log afkcomms.txt {<100>$thetime <090>%1 <100>: <170>%2<090>}
+  };
+  #math currtells {$currtells + 1};
 }
 
 #action {You tell %1 '%2'$} {
-	#if {$imafk == 0} {
-		#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>You <170>-\> <060>%1 <090>: <160>%2<090>}
-	}
+  #if {$imafk == 0} {
+    #var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>You <170>-\> <060>%1 <090>: <160>%2<090>}
+  }
 }
 
 #action {%1 says '%2'$} {#if {"%1" != "%* %*"}
-	{#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 : %2}};
-	#if {$smscontrol == 1} {
-		#system dosms -p 15617040453 -t "%1 just said %2";
-	};
+  {#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 : %2}};
+  #if {$smscontrol == 1} {
+    #system dosms -p 15617040453 -t "%1 just said %2";
+  };
 }
 
 #action {%1 responds to your petition with '%2'$} {#if {"%1" != "%* %*"} {
-	#var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 : <010>%2<090>};
-	#system dosms -p 15617040453 -t "%1 petitioned %2";
-	};}
+  #var thetime {@gettime{}};#line log comms.txt {<100>$thetime <090>%1 : <010>%2<090>};
+  #system dosms -p 15617040453 -t "%1 petitioned %2";
+  };}
 
 #action {%1 GCC: '%2'$} {#if {"%1" != "%* %*"}
-	{#var thetime {@gettime{}};#line log chat.txt {<100>$thetime <120>%1 : <030>%2<100>}}}
+  {#var thetime {@gettime{}};#line log chat.txt {<100>$thetime <120>%1 : <030>%2<100>}}}
 
 #action {%*You have learned something new about %0!} {
-	#var thetime {@gettime{}};
-	#line log other.txt {<100>$thetime <020>LEARNED<090> <120>: <070>%0<090>};
-	#math currlrn {$currlrn + 1}
+  #var thetime {@gettime{}};
+  #line log other.txt {<100>$thetime <020>LEARNED<090> <120>: <070>%0<090>};
+  #math currlrn {$currlrn + 1}
 }
 
 #action {You have learned something new about %0!} {
   #var thetime {@gettime{}};
   #line log other.txt {<100>$thetime <020>LEARNED<090> : <120>%0<090>};
-	#math currlrn {$currlrn + 1}
+  #math currlrn {$currlrn + 1}
 }
 
 #action {^You raise a level!} {
